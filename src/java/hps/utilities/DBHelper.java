@@ -25,7 +25,7 @@ public class DBHelper implements Serializable {
         //Retrieve Tomcat's context
         Context tomcatCtx = (Context) curCtx.lookup("java:comp/env");
         //Retrieved DataSource
-        DataSource ds = (DataSource) tomcatCtx.lookup("DBCon");
+        DataSource ds = (DataSource) tomcatCtx.lookup("DBContext");
         Connection con = ds.getConnection();
         return con;
     }
