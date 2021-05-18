@@ -1,10 +1,10 @@
 # Welcome to Happy Programming System
+
 ## This is a web application's repository which developed and powered by FPT University Coding Kinship Team (or "Team Anh Tài").
 
-### You will find in this repository a social 
+### You will find in this repository a social network system for mentors and mentees.
+TobeContinue...
 
-* MathUtil class includes multiple math
-methods
 * .gitignore file
 * README.md file
 * Security.md file
