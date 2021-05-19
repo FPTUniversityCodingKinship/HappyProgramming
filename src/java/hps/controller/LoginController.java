@@ -5,6 +5,7 @@
  */
 package hps.controller;
 
+import hps.filter.FilterDispatcher;
 import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +27,7 @@ import javax.servlet.RequestDispatcher;
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
     
-    private static final String LOGIN_SUCCESS = "login_successplaceholder.html";
+    private static final String LOGIN_SUCCESS = "LoginSuccess";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,7 +47,7 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         String url = "";
         try {
-            if (!username.isBlank() && !password.isBlank()) {
+            if (!username.isEmpty() && !password.isEmpty()) {
                 
                 UsersDAO usersDao = new UsersDAO();
                 boolean result = usersDao.checkLogin(username, password);
@@ -59,6 +60,8 @@ public class LoginController extends HttpServlet {
         } catch (SQLException ex) {
             log(ex.getMessage());
         } finally {
+            String uri = request.getRequestURI();
+            System.out.println("URL:" + url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
