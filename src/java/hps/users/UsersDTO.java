@@ -12,7 +12,8 @@ import java.util.Date;
  *
  * @author DELL
  */
-public class UsersDTO implements Serializable{
+public class UsersDTO implements Serializable {
+    private String userID;
     private String username;
     private String password;
     private String email;
@@ -21,15 +22,18 @@ public class UsersDTO implements Serializable{
     private String address;
     private Date dob;
     private String sex;
-    //image
-    private String roleID;
+    // image
+    private String image;
+//    private String roleID;
     private boolean status;
     //email status
+    private boolean emailStatus;
 
     public UsersDTO() {
     }
 
-    public UsersDTO(String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String roleID, boolean status) {
+    public UsersDTO(String userID, String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -38,9 +42,11 @@ public class UsersDTO implements Serializable{
         this.address = address;
         this.dob = dob;
         this.sex = sex;
-        this.roleID = roleID;
+        this.image = image;
         this.status = status;
+        this.emailStatus = emailStatus;
     }
+
 
     /**
      * @return the username
@@ -155,20 +161,6 @@ public class UsersDTO implements Serializable{
     }
 
     /**
-     * @return the roleID
-     */
-    public String getRoleID() {
-        return roleID;
-    }
-
-    /**
-     * @param roleID the roleID to set
-     */
-    public void setRoleID(String roleID) {
-        this.roleID = roleID;
-    }
-
-    /**
      * @return the status
      */
     public boolean isStatus() {
@@ -182,12 +174,61 @@ public class UsersDTO implements Serializable{
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "UsersDTO{" + "username=" + username + ", password=" + password + ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + ", address=" + address + ", dob=" + dob + ", sex=" + sex + ", roleID=" + roleID + ", status=" + status + '}';
+    /**
+     *
+     * @return userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     *
+     * @param userID the user ID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    /**
+     *
+     * @return image url
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     *
+     * @param image image url to set
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
+     *
+     * @return email is confirmed or not
+     */
+    public boolean isEmailStatus() {
+        return emailStatus;
+    }
+
+    /**
+     *
+     * @param emailStatus is confirmed or not
+     */
+    public void setEmailStatus(boolean emailStatus) {
+        this.emailStatus = emailStatus;
     }
     
     
-    
+
+    @Override
+    public String toString() {
+        return "UsersDTO{" + "userID = " + userID + ", username=" + username + ", password=" + password + 
+                ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + 
+                ", address=" + address + ", dob=" + dob + ", sex=" + sex +  ", status=" + status + ", emailStatus = " + emailStatus + "}";
+    }
     
 }
