@@ -1,9 +1,12 @@
 # Created by FPTUniversityCodingKinship
+# -----------------------------------------------
 # Start of Controller
 Login = LoginController
+FollowingRequest = FollowingRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
 LoginSuccess = loginsuccess_placeholder.html
+ViewFollowingRequest = viewFollowingRequest.jsp
 # End of Page
