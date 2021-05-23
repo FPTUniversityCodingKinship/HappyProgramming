@@ -7,6 +7,7 @@ package hps.controller;
 
 import hps.filter.FilterDispatcher;
 import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,7 +29,7 @@ import javax.servlet.RequestDispatcher;
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
     
-    private static final String LOGIN_SUCCESS = "LoginSuccess";
+    private static final String LOGIN_SUCCESS = "mentee_homepage.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,9 +52,11 @@ public class LoginController extends HttpServlet {
             if (!username.isEmpty() && !password.isEmpty()) {
                 
                 UsersDAO usersDao = new UsersDAO();
-                boolean result = usersDao.checkLogin(username, password);
-                if (result) {
+                UsersDTO result = usersDao.checkLogin(username, password);
+                if (result != null) {
                     url = LOGIN_SUCCESS;
+                    HttpSession session = request.getSession();
+                    session.setAttribute("CURRENT_USER", result);
                 }
             }
         } catch (NamingException ex) {

@@ -13,6 +13,7 @@ import java.util.Date;
  * @author DELL
  */
 public class UsersDTO implements Serializable{
+    private String userID;
     private String username;
     private String password;
     private String email;
@@ -22,14 +23,14 @@ public class UsersDTO implements Serializable{
     private Date dob;
     private String sex;
     //image
-    private String roleID;
     private boolean status;
     //email status
 
     public UsersDTO() {
     }
 
-    public UsersDTO(String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String roleID, boolean status) {
+    public UsersDTO(String userID, String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, boolean status) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -38,8 +39,21 @@ public class UsersDTO implements Serializable{
         this.address = address;
         this.dob = dob;
         this.sex = sex;
-        this.roleID = roleID;
         this.status = status;
+    }
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     /**
@@ -155,20 +169,6 @@ public class UsersDTO implements Serializable{
     }
 
     /**
-     * @return the roleID
-     */
-    public String getRoleID() {
-        return roleID;
-    }
-
-    /**
-     * @param roleID the roleID to set
-     */
-    public void setRoleID(String roleID) {
-        this.roleID = roleID;
-    }
-
-    /**
      * @return the status
      */
     public boolean isStatus() {
@@ -184,10 +184,7 @@ public class UsersDTO implements Serializable{
 
     @Override
     public String toString() {
-        return "UsersDTO{" + "username=" + username + ", password=" + password + ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + ", address=" + address + ", dob=" + dob + ", sex=" + sex + ", roleID=" + roleID + ", status=" + status + '}';
+        return "UsersDTO{" + "userID=" + userID + ", username=" + username + ", password=" + password + ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + ", address=" + address + ", dob=" + dob + ", sex=" + sex + ", status=" + status + '}';
     }
-    
-    
-    
     
 }
