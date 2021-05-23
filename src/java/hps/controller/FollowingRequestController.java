@@ -55,7 +55,7 @@ public class FollowingRequestController extends HttpServlet {
             List<UsersDTO> listFollowers = followersDAO.getListFollowers(mentorID);
             
             RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequets = requestsDAO.getFollowingRequestsList(mentorID, listFollowers);
+            List<RequestsDTO> listFollowingRequets = requestsDAO.getFollowingRequestsList(listFollowers);
             
             request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequets);
             url = VIEW_PAGE;
