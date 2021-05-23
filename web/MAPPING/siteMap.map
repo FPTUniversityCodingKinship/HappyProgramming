@@ -1,9 +1,16 @@
 # Created by FPTUniversityCodingKinship
+# -----------------------------------------------
 # Start of Controller
 Login = LoginController
+FollowingRequest = FollowingRequestController
+UpdateProfileController = UpdateProfileServlet
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
-LoginSuccess = loginsuccess_placeholder.html
+ADMIN = admin.jsp
+MENTEE = mentee.jsp
+MENTOR = mentor.jsp
+UpdateProfile = user_profile.jsp
+ViewFollowingRequest = viewFollowingRequest.jsp
 # End of Page

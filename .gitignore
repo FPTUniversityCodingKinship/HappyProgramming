@@ -6,11 +6,13 @@
 **/nbproject/private/
 **/nbproject/Makefile-*.mk
 **/nbproject/Package-*.bash
+nbproject/
 build/
 nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+web/META-INF/
 
 # End of https://www.toptal.com/developers/gitignore/api/netbeans
 /nbproject/private/

@@ -8,26 +8,25 @@ package hps.controller;
 import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author DELL
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/UpdateProfileServlet"})
+public class UpdateProfileServlet extends HttpServlet {
 
-    private static final String LOGIN_SUCCESS = "UpdateProfile";
-    private static final String LOGIN_FAILURE = "login";
-    
+    private static final String PROFILE_PAGE = "UpdateProfile";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,37 +37,53 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request,
-            HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String url = LOGIN_FAILURE;
+        String url = PROFILE_PAGE;
         try {
-            if (!username.isBlank() && !password.isBlank()) {
-                UsersDAO usersDao = new UsersDAO();
-                boolean result = usersDao.checkLogin(username, password);
+            String userID = request.getParameter("txtUserID");
+            
+            String username = request.getParameter("txtUsername");
+            String password = request.getParameter("txtPassword");
+            String fullname = request.getParameter("txtFullname");
+            String phone = request.getParameter("txtPhone");
+            String address = request.getParameter("txtAddress");
+            String dob = request.getParameter("txtDob");
+
+            String sex = request.getParameter("txtSex");
+            //User's avatar
+            Part filePart = request.getPart("imageFile");
+            //TO-DO Code
+            //Update if the parameters are not null
+            if (!username.trim().isEmpty()
+                    && !password.trim().isEmpty()
+                    && !fullname.trim().isEmpty()
+                    && !phone.trim().isEmpty()
+                    && !address.trim().isEmpty()
+                    && !dob.trim().isEmpty()) {
+                Date dob_date = Date.valueOf(dob);
+                UsersDAO dao = new UsersDAO();
+                boolean result = dao.updateProfile(userID, username, password,
+                        fullname, phone, address, dob_date, sex);
                 if (result) {
-                    url = LOGIN_SUCCESS;
+                    request.setAttribute("UPDATE_STATUS", "Profile Updated");
                 }
-                System.out.println("The url was : " + url);
             }
-        } catch (NamingException ex) {
-            log(ex.getMessage());
+
         } catch (SQLException ex) {
             log(ex.getMessage());
+            request.setAttribute("UPDATE_STATUS", "Error, Please try again");
+        } catch (NamingException ex) {
+            log(ex.getMessage());
         } finally {
-            String uri = request.getRequestURI();
-            System.out.println("URL:" + url);
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
             if (out != null) {
                 out.close();
             }
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

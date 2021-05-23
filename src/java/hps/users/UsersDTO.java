@@ -13,33 +13,48 @@ import java.util.Date;
  * @author DELL
  */
 public class UsersDTO implements Serializable{
+    private String userID;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String fullname;
     private String phone;
     private String address;
     private Date dob;
     private String sex;
-    //image
-    private String roleID;
+    private String image;
     private boolean status;
     //email status
 
     public UsersDTO() {
     }
 
-    public UsersDTO(String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String roleID, boolean status) {
+    public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status) {
+        this.userID = userID;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
         this.dob = dob;
         this.sex = sex;
-        this.roleID = roleID;
+        this.image = image;
         this.status = status;
+    }
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     /**
@@ -57,20 +72,6 @@ public class UsersDTO implements Serializable{
     }
 
     /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * @return the email
      */
     public String getEmail() {
@@ -82,6 +83,20 @@ public class UsersDTO implements Serializable{
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
@@ -155,17 +170,17 @@ public class UsersDTO implements Serializable{
     }
 
     /**
-     * @return the roleID
+     * @return the image
      */
-    public String getRoleID() {
-        return roleID;
+    public String getImage() {
+        return image;
     }
 
     /**
-     * @param roleID the roleID to set
+     * @param image the image to set
      */
-    public void setRoleID(String roleID) {
-        this.roleID = roleID;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /**
@@ -182,10 +197,6 @@ public class UsersDTO implements Serializable{
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "UsersDTO{" + "username=" + username + ", password=" + password + ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + ", address=" + address + ", dob=" + dob + ", sex=" + sex + ", roleID=" + roleID + ", status=" + status + '}';
-    }
     
     
     
