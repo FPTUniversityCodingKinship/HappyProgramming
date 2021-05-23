@@ -24,13 +24,12 @@ public class RequestsDAO implements Serializable {
 
     /**
      * Get a list of requests that come from mentees who follow the mentor
-     * @param mentorID
      * @param listFollowers
      * @return an Array List of Requests
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    public List<RequestsDTO> getFollowingRequestsList(String mentorID, List<UsersDTO> listFollowers) 
+    public List<RequestsDTO> getFollowingRequestsList(List<UsersDTO> listFollowers) 
         throws SQLException, NamingException {
         List<RequestsDTO> listRequests = new ArrayList<>();
         
@@ -46,13 +45,12 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, content, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
-                        + "WHERE menteeID = ? AND mentorID = ? AND status = ?";
+                        + "WHERE menteeID = ? AND status = ?";
                 
                 for (UsersDTO follower : listFollowers) {
                     String menteeID = follower.getUserID();
                     stmt = con.prepareStatement(sql);
                     stmt.setString(1, menteeID);
-                    stmt.setString(2, mentorID);
                     stmt.setString(3, "P");
                     
                     rs = stmt.executeQuery();
