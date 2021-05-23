@@ -50,7 +50,7 @@
                         ${(fn:split(request.deadline, " " ))[1]}
                     </td>
                     <td>
-                        ${request.content}
+                        ${request.reqContent}
                     </td>
                     <td>
                         

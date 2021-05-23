@@ -19,7 +19,7 @@ public class RequestsDTO implements Serializable {
     private String skillsID;
     private Timestamp deadline;
     private String title;
-    private String content;
+    private String reqContent;
     private String status;
     private Timestamp openedTime;
     private Timestamp approvedTime;
@@ -36,7 +36,7 @@ public class RequestsDTO implements Serializable {
         this.skillsID = skillsID;
         this.deadline = deadline;
         this.title = title;
-        this.content = content;
+        this.reqContent = content;
         this.status = status;
         this.openedTime = openedTime;
         this.approvedTime = approvedTime;
@@ -92,12 +92,12 @@ public class RequestsDTO implements Serializable {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getReqContent() {
+        return reqContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setReqContent(String reqContent) {
+        this.reqContent = reqContent;
     }
 
     public String getStatus() {

@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
 public class FollowingRequestController extends HttpServlet {
     
-    private static final String VIEW_PAGE = "ViewFollowingRequest";
+    private static final String VIEW_PAGE = "ViewFollowingRequestPage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
