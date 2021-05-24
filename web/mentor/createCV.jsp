@@ -53,11 +53,32 @@
             <br/>
             <!--Address-->
             <label for="address">Address: </label>
-            <textarea name="address" id="address" rows="4" cols="20">${mentor.address}</textarea>
+            <textarea name="address" id="address" rows="5" cols="20">${mentor.address}</textarea>
+            <br/>
             <!--Profession-->
             <label for="profession">Profession: </label>
-            
-            
+            <textarea name="profession" id="profession" rows="3" cols="20"></textarea>
+            <br/>
+            <!--Profession Description-->
+            <label for="proDescription">Profession Description: </label>
+            <textarea name="proDescription" id="proDescription" rows="5" cols="20"></textarea>
+            <br/>
+            <!--Skills-->
+            Skills:
+            <label for="c#">C# </label>
+            <input type="checkbox" name="c#" id="c#" value="ON" /> <!-- TODO Code -->
+            <br/>
+            <!--Service Description-->
+            <label for="serDescription">Service Description: </label>
+            <textarea name="serDescription" id="serDescription" rows="5" cols="20"></textarea>
+            <br/>
+            <!--Achievement Description-->
+            <label for="achDescription">Achievement Description: </label>
+            <textarea name="achDescription" id="achDescription" rows="5" cols="20"></textarea>
+            <br/>
+            <!--button-->
+            <input type="submit" value="OK" name="btnAction" />
+            <input type="reset" value="Reset" />
 
         </form>
     </body>
