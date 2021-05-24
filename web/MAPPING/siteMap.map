@@ -3,10 +3,12 @@
 # Start of Controller
 Login = LoginController
 FollowingRequest = FollowingRequestController
+InvitingRequest = InvitingRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
 LoginSuccess = loginsuccess_placeholder.html
-ViewFollowingRequest = viewFollowingRequest.jsp
+ViewFollowingRequestPage = viewFollowingRequest.jsp
+ViewInvitingRequestPage = viewInvitingRequest.jsp
 # End of Page

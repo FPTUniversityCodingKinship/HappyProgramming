@@ -25,10 +25,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
-@WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
-public class FollowingRequestController extends HttpServlet {
-    
-    private static final String VIEW_PAGE = "ViewFollowingRequestPage";
+@WebServlet(name = "InvitingRequestController", urlPatterns = {"/InvitingRequestController"})
+public class InvitingRequestController extends HttpServlet {
+    private static final String VIEW_PAGE = "ViewInvitingRequestPage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,13 +50,11 @@ public class FollowingRequestController extends HttpServlet {
             UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
             
             String mentorID = curMentor.getUserID();
-            FollowersDAO followersDAO = new FollowersDAO();
-            List<UsersDTO> listFollowers = followersDAO.getListFollowers(mentorID);
             
             RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequets = requestsDAO.getFollowingRequestsList(listFollowers);
+            List<RequestsDTO> listInvitingRequets = requestsDAO.getInvitingRequestsList(mentorID);
             
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequets);
+            request.setAttribute("INVITING_REQUESTS", listInvitingRequets);
             url = VIEW_PAGE;
         }
         catch (SQLException ex) {
