@@ -48,16 +48,17 @@ public class FollowingRequestController extends HttpServlet {
         
         try {
             // Get current mentor
-            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-            
-            String mentorID = curMentor.getUserID();
+//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
+//            
+//            String mentorID = curMentor.getUserID();
+            String mentorID = "MT000001";
             FollowersDAO followersDAO = new FollowersDAO();
-            List<UsersDTO> listFollowers = followersDAO.getListFollowers(mentorID);
+            List<String> listFollowers = followersDAO.getListFollowers(mentorID);
             
             RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequets = requestsDAO.getFollowingRequestsList(listFollowers);
+            List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
             
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequets);
+            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
             url = VIEW_PAGE;
         }
         catch (SQLException ex) {

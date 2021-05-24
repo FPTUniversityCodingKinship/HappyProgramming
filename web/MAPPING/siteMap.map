@@ -8,5 +8,5 @@ FollowingRequest = FollowingRequestController
 # Start of Page
  = login.html
 LoginSuccess = loginsuccess_placeholder.html
-ViewFollowingRequest = viewFollowingRequest.jsp
+ViewFollowingRequest = mentor/viewFollowingRequest.jsp
 # End of Page

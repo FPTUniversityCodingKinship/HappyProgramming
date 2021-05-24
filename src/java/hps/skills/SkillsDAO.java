@@ -49,10 +49,13 @@ public class SkillsDAO implements Serializable {
                     stmt.setString(1, skillID);
                     rs = stmt.executeQuery();
                     if (rs.next()) {
+//                        String id = rs.getString("skillID");
+//                        String name = rs.getNString("skillName");
+//                        boolean stt = rs.getBoolean("status");
                         SkillsDTO skill = new SkillsDTO(
                                 rs.getString("skillID"), 
                                 rs.getNString("skillName"), 
-                                rs.getBoolean("status")
+                                true
                         );
                         listSkills.add(skill);
                     }

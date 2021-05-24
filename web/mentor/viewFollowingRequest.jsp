@@ -15,7 +15,8 @@
     </head>
     <body>
         <h1>Requests from the Mentees following you</h1>
-        <c:set var="requestsList" value="${FOLLOWING_REQUESTS}" />
+        <c:set var="requestsList" value="${requestScope.FOLLOWING_REQUESTS}" />
+        <c:if test="${not empty requestsList}">
         <table border="1">
             <thead>
                 <tr>
@@ -30,13 +31,11 @@
             </thead>
             <tbody>
                 <jsp:useBean id="skillsDAO" class="hps.skills.SkillsDAO" />
-                <c:forEach items="requestsList" var="request" varStatus="count">
-                    <c:set var="listSkills" value="${skillsDAO.getSkillsList(request.skillsID)}" />
-                    <c:set var="listSkillsName" value="" />
-                    <c:forEach items="listSkills" var="skill">
-                        <c:set var="listSkillsName" value="${listSkillsName + skill.skillName}" />
-                    </c:forEach>
-                <tr>
+                
+                <c:forEach items="${requestsList}" var="request" varStatus="count">
+                    <c:set var="listSkillsID" value="${request.skillsID}" />
+                    <c:set var="listSkills" value="${skillsDAO.getSkillsList(listSkillsID)}" />
+              <tr>
                     <td>
                         ${count.count}
                     </td>
@@ -53,13 +52,19 @@
                         ${request.reqContent}
                     </td>
                     <td>
-                        
+                        <c:forEach items="${listSkills}" var="skill">
+                            ${skill.skillName}, 
+                         </c:forEach>
                     </td>
-                    <td></td>
-                </tr>
+                    <td>
+                        <input type="submit" value="Accept" name="btnAction" />
+                        <input type="submit" value="Reject" name="btnAction" />
+                    </td>
+                </tr> 
                 </c:forEach>
             </tbody>
         </table>
+                </c:if>
 
     </body>
 </html>
