@@ -4,6 +4,7 @@
 Login = LoginController
 FollowingRequest = FollowingRequestController
 InvitingRequest = InvitingRequestController
+CreateCV = CreateCVController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -11,4 +12,5 @@ InvitingRequest = InvitingRequestController
 LoginSuccess = loginsuccess_placeholder.html
 ViewFollowingRequestPage = viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
+CreateCVPage = mentor/createCV.jsp
 # End of Page
