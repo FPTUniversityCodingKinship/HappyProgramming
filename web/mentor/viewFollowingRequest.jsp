@@ -34,7 +34,7 @@
                     <c:set var="listSkills" value="${skillsDAO.getSkillsList(request.skillsID)}" />
                     <c:set var="listSkillsName" value="" />
                     <c:forEach items="listSkills" var="skill">
-                        <c:set var="listSkillsName" value="${listSkillsName + skill.skillName}"
+                        <c:set var="listSkillsName" value="${listSkillsName + skill.skillName}" />
                     </c:forEach>
                 <tr>
                     <td>
