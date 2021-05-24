@@ -76,4 +76,52 @@ public class SkillsDAO implements Serializable {
         
         return listSkills;
     }
+    public String getSkillsID(String[] skills)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String skillsID = "";
+        try {
+            //1.Establish Connection
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                for (int i = 0; i < skills.length; i++) {
+                    if (i == skills.length - 1) {
+                        String sql = "SELECT skillID "
+                                + "FROM skills "
+                                + "WHERE skillName like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skills[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsID += rs.getString("skillID");
+                        }
+                    } else {
+                        String sql = "SELECT skillID "
+                                + "FROM skills "
+                                + "WHERE skillName like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skills[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsID += rs.getString("skillID") + ", ";
+                        }
+                    }
+                }
+                return skillsID;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
 }
