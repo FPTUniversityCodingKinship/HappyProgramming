@@ -62,7 +62,7 @@ public class RequestsDAO implements Serializable {
                                 rs.getString("skillsID"), 
                                 rs.getTimestamp("deadline"), 
                                 rs.getNString("title"), 
-                                rs.getNString("content"), 
+                                rs.getNString("reqContent"), 
                                 rs.getString("status"), 
                                 rs.getTimestamp("openedTime"), 
                                 rs.getTimestamp("approvedTime"), 
