@@ -8,7 +8,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
+    <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+    <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+           scope="page"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Profile Management</title>
@@ -17,8 +19,9 @@
         <h1>Welcome, ${user.username}</h1>
         ${requestScope.UPDATE_STATUS}
         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
-            Avatar: <img src="./images/${user.image}" alt="The user's avatar"><br />
-            <input type="file" name="imageFile"/><br />
+            Avatar: <img src="./images/${user.image}" alt="The user's avatar" 
+                         style="width:250x;height:300px;"><br />
+            Update your avatar here: <input type="file" name="imageFile"/><br />
             User ID: ${user.userID}<br />
             <input type="hidden" name="txtUserID" value="${user.userID}" />
             Username: <input type="text" name="txtUsername" value="${user.username}" /><br />

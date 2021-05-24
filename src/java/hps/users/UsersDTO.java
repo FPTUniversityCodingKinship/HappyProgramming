@@ -24,7 +24,7 @@ public class UsersDTO implements Serializable{
     private String sex;
     private String image;
     private boolean status;
-    //email status
+    private boolean emailStatus;
 
     public UsersDTO() {
     }
@@ -42,6 +42,23 @@ public class UsersDTO implements Serializable{
         this.image = image;
         this.status = status;
     }
+
+    public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.address = address;
+        this.dob = dob;
+        this.sex = sex;
+        this.image = image;
+        this.status = status;
+        this.emailStatus = emailStatus;
+    }
+    
+    
 
     /**
      * @return the userID
@@ -195,6 +212,14 @@ public class UsersDTO implements Serializable{
      */
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public boolean isEmailStatus() {
+        return emailStatus;
+    }
+
+    public void setEmailStatus(boolean emailStatus) {
+        this.emailStatus = emailStatus;
     }
 
     

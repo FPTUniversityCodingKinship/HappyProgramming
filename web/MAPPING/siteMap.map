@@ -8,9 +8,10 @@ UpdateProfileController = UpdateProfileServlet
 # -----------------------------------------------
 # Start of Page
  = login.html
-ADMIN = admin.jsp
-MENTEE = mentee.jsp
-MENTOR = mentor.jsp
-UpdateProfile = user_profile.jsp
-ViewFollowingRequest = viewFollowingRequest.jsp
+LoginFailPage = login.jsp
+AdminPage = admin.jsp
+MenteePage = mentee.jsp
+MentorPage = mentor.jsp
+UpdateProfilePage = user_profile.jsp
+ViewFollowingRequestPge = viewFollowingRequest.jsp
 # End of Page

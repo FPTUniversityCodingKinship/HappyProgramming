@@ -26,7 +26,7 @@ import javax.servlet.RequestDispatcher;
 @WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/UpdateProfileServlet"})
 public class UpdateProfileServlet extends HttpServlet {
 
-    private static final String PROFILE_PAGE = "UpdateProfile";
+    private static final String PROFILE_PAGE = "UpdateProfilePage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,18 +40,18 @@ public class UpdateProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String url = PROFILE_PAGE;
         try {
             String userID = request.getParameter("txtUserID");
-            
+
             String username = request.getParameter("txtUsername");
             String password = request.getParameter("txtPassword");
             String fullname = request.getParameter("txtFullname");
             String phone = request.getParameter("txtPhone");
             String address = request.getParameter("txtAddress");
             String dob = request.getParameter("txtDob");
-
             String sex = request.getParameter("txtSex");
             //User's avatar
             Part filePart = request.getPart("imageFile");
@@ -71,18 +71,19 @@ public class UpdateProfileServlet extends HttpServlet {
                     request.setAttribute("UPDATE_STATUS", "Profile Updated");
                 }
             }
-
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         } catch (SQLException ex) {
             log(ex.getMessage());
             request.setAttribute("UPDATE_STATUS", "Error, Please try again");
         } catch (NamingException ex) {
             log(ex.getMessage());
+            request.setAttribute("UPDATE_STATUS", "Error, Please try again");
         } finally {
             if (out != null) {
                 out.close();
             }
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+
         }
     }
 

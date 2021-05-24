@@ -6,6 +6,7 @@
 package hps.controller;
 
 import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -24,10 +25,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
-
-    private static final String LOGIN_SUCCESS = "UpdateProfile";
-    private static final String LOGIN_FAILURE = "login";
     
+    private static final String LOGIN_SUCCESS = "UpdateProfilePage";
+    private static final String LOGIN_FAILURE = "LoginFailPage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,11 +49,13 @@ public class LoginController extends HttpServlet {
         try {
             if (!username.isBlank() && !password.isBlank()) {
                 UsersDAO usersDao = new UsersDAO();
-                boolean result = usersDao.checkLogin(username, password);
-                if (result) {
+                String result = usersDao.checkLogin(username, password);
+                if (result != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("CURRENT_USER",
+                            (UsersDTO) usersDao.getProfile(result));
                     url = LOGIN_SUCCESS;
                 }
-                System.out.println("The url was : " + url);
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
@@ -68,7 +70,7 @@ public class LoginController extends HttpServlet {
                 out.close();
             }
         }
-
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

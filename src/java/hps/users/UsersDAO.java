@@ -24,7 +24,7 @@ public class UsersDAO implements Serializable {
      * @return
      * @throws javax.naming.NamingException
      */
-    public boolean checkLogin(String username, String password)
+    public String checkLogin(String username, String password)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -43,7 +43,8 @@ public class UsersDAO implements Serializable {
                 //3. Store in ResultSet
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    return true;
+                    System.out.println("ID is" + rs.getString("userID"));
+                    return rs.getString("userID");
                 }
             }
         } finally {
@@ -55,7 +56,7 @@ public class UsersDAO implements Serializable {
             }
         }
 
-        return false;
+        return null;
     }
 
     public UsersDTO getProfile(String userID) throws NamingException, SQLException {
@@ -68,7 +69,7 @@ public class UsersDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 //2. Prepare sql string
-                String sql = "SELECT * FROM users WHERE username = ?";
+                String sql = "SELECT * FROM users WHERE userID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, userID);
                 //3. Store in ResultSet
@@ -79,7 +80,7 @@ public class UsersDAO implements Serializable {
                             rs.getString("username"),
                             rs.getString("email"),
                             rs.getString("password"),
-                            rs.getString("fullname"),
+                            rs.getNString("fullname"),
                             rs.getString("phone"),
                             rs.getString("address"),
                             rs.getDate("dob"),
@@ -87,7 +88,6 @@ public class UsersDAO implements Serializable {
                             rs.getString("image"),
                             rs.getBoolean("status")
                     );
-                    System.out.println("Returning DTO");
                     return dto;
                 }
 
@@ -122,7 +122,7 @@ public class UsersDAO implements Serializable {
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
                 stm.setString(2, password);
-                stm.setString(3, fullname);
+                stm.setNString(3, fullname);
                 stm.setString(4, phone);
                 stm.setString(5, address);
                 stm.setDate(6, dob);
@@ -133,7 +133,6 @@ public class UsersDAO implements Serializable {
                     return true;
                 }
             }
-
         } finally {
             if (stm != null) {
                 stm.close();

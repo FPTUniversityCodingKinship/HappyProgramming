@@ -10,11 +10,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-
-        <font style="color:red;">${requestScope.ERROR}</font>
+        <h1>This means your account's credentials were wrong!</h1>
     </body>
 </html>
