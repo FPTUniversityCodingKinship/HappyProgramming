@@ -5,6 +5,7 @@ Login = LoginController
 FollowingRequest = FollowingRequestController
 InvitingRequest = InvitingRequestController
 MenteeRequest = MenteeRequestController
+UpdateProfileController = UpdateProfileServlet
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -13,4 +14,6 @@ MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 ViewFollowingRequestPage = viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
+UpdateProfilePage = user_profile.jsp
 # End of Page
+# -----------------------------------------------
