@@ -15,8 +15,8 @@ import java.util.Date;
 public class UsersDTO implements Serializable {
     private String userID;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String fullname;
     private String phone;
     private String address;
@@ -32,11 +32,11 @@ public class UsersDTO implements Serializable {
     public UsersDTO() {
     }
 
-    public UsersDTO(String userID, String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
+    public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
         this.userID = userID;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
