@@ -12,7 +12,8 @@ import java.util.Date;
  *
  * @author DELL
  */
-public class UsersDTO implements Serializable{
+
+public class UsersDTO implements Serializable {
     private String userID;
     private String username;
     private String email;
@@ -59,6 +60,7 @@ public class UsersDTO implements Serializable{
     }
     
     
+
 
     /**
      * @return the userID
@@ -186,21 +188,6 @@ public class UsersDTO implements Serializable{
         this.sex = sex;
     }
 
-    /**
-     * @return the image
-     */
-    public String getImage() {
-        return image;
-    }
-
-    /**
-     * @param image the image to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
      * @return the status
      */
     public boolean isStatus() {
@@ -212,18 +199,66 @@ public class UsersDTO implements Serializable{
      */
     public void setStatus(boolean status) {
         this.status = status;
+
     }
 
+    /**
+     *
+     * @return userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     *
+     * @param userID the user ID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    /**
+     *
+     * @return image url
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     *
+     * @param image image url to set
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
+     *
+     * @return email is confirmed or not
+     */
     public boolean isEmailStatus() {
         return emailStatus;
+    }
+
+    /**
+     *
+     * @param emailStatus is confirmed or not
+     */
+    public void setEmailStatus(boolean emailStatus) {
+        this.emailStatus = emailStatus;
     }
 
     public void setEmailStatus(boolean emailStatus) {
         this.emailStatus = emailStatus;
     }
 
-    
-    
-    
+    @Override
+    public String toString() {
+        return "UsersDTO{" + "userID = " + userID + ", username=" + username + ", password=" + password + 
+                ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + 
+                ", address=" + address + ", dob=" + dob + ", sex=" + sex +  ", status=" + status + ", emailStatus = " + emailStatus + "}";
+    }
     
 }

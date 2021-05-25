@@ -4,14 +4,18 @@
 Login = LoginController
 FollowingRequest = FollowingRequestController
 UpdateProfileController = UpdateProfileServlet
+InvitingRequest = InvitingRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
+
 LoginFailPage = login.jsp
 AdminPage = admin.jsp
 MenteePage = mentee.jsp
 MentorPage = mentor.jsp
 UpdateProfilePage = user_profile.jsp
 ViewFollowingRequestPge = viewFollowingRequest.jsp
+ViewInvitingRequestPage = viewInvitingRequest.jsp
+
 # End of Page
