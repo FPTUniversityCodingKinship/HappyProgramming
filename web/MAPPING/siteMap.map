@@ -8,9 +8,10 @@ MenteeRequest = MenteeRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.jsp
+ = login.html
+LoginSuccess = loginsuccess_placeholder.html
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
-ViewFollowingRequestPage = viewFollowingRequest.jsp
+ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
 # End of Page
