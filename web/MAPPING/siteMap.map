@@ -8,7 +8,7 @@ MenteeRequest = MenteeRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.html
+ = login.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 ViewFollowingRequestPage = viewFollowingRequest.jsp
