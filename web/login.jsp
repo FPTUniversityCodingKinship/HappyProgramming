@@ -1,5 +1,4 @@
 <%-- 
-<<<<<<< HEAD
     Document   : login
     Created on : May 22, 2021, 6:07:10 PM
     Author     : Admin
