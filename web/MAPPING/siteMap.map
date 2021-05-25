@@ -3,10 +3,15 @@
 # Start of Controller
 Login = LoginController
 FollowingRequest = FollowingRequestController
+InvitingRequest = InvitingRequestController
+MenteeRequest = MenteeRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
 LoginSuccess = loginsuccess_placeholder.html
-ViewFollowingRequest = mentor/viewFollowingRequest.jsp
+MenteeHomePage = mentee_homepage.jsp
+MenteeRequestPage = mentee_request.jsp
+ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
+ViewInvitingRequestPage = viewInvitingRequest.jsp
 # End of Page
