@@ -23,7 +23,7 @@ public class UsersDAO implements Serializable {
      * @return 
      * @throws javax.naming.NamingException 
      */
-    public boolean checkLogin(String username, String password)
+    public UsersDTO checkLogin(String username, String password)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -33,7 +33,7 @@ public class UsersDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 //2. Prepare sql string
-                String sql = "SELECT * "
+                String sql = "SELECT userID "
                         + "FROM users "
                         + "WHERE username = ? AND password = ?";
                 stm = con.prepareStatement(sql);
@@ -42,7 +42,10 @@ public class UsersDAO implements Serializable {
                 //3. Store in ResultSet
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    return true;
+                    String userID = rs.getNString("userID");
+                    UsersDTO dto = new UsersDTO();
+                    dto = getUserData(userID);
+                    return dto;
                 }
             }
         } finally {
@@ -53,8 +56,41 @@ public class UsersDAO implements Serializable {
                 con.close();
             }
         }
-
-        return false;
+        return null;
+    }
+    
+    public UsersDTO getUserData(String userID) 
+                throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            //1.Establish Connection
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                String sql = "SELECT * "
+                        + "FROM users "
+                        + "WHERE userID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, userID);
+                //3. Store in ResultSet
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    //missing
+                    UsersDTO dto = new UsersDTO();
+                    return dto;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
     }
 
 }
