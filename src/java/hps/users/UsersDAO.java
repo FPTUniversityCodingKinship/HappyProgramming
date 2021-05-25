@@ -20,7 +20,7 @@ public class UsersDAO implements Serializable {
      * Check if the account has been registered
      * @param username
      * @param password
-     * @return 
+     * @return ...
      * @throws javax.naming.NamingException 
      */
 //    public boolean checkLogin(String username, String password)
@@ -68,7 +68,7 @@ public class UsersDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 //2. Prepare sql string
-                String sql = "SELECT userID "
+                String sql = "SELECT * "
                         + "FROM users "
                         + "WHERE username = ? AND password = ?";
                 stm = con.prepareStatement(sql);
@@ -135,6 +135,9 @@ public class UsersDAO implements Serializable {
                 con.close();
             }
         }
+        return null;
+    }
+    public UsersDTO newUser(String username, String password) {
         return null;
     }
 }

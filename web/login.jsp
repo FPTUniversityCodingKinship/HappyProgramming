@@ -18,26 +18,17 @@
     <body>
         <h1>LOG IN HERE!!!</h1>
         <form method="POST" action="Login">
-            Username: <input type="text" name="username" value="" /> 
-            Password: <input type="password" name="password" value="" />
+            Username: <input type="text" name="txtUsername" value="" /> 
+            Password: <input type="password" name="txtPassword" value="" />
             <input type="submit" value="LOG IN" />
         </form>
+        <%--
         <div id="my-signin2"></div>
         <img id="myImg"><br/>
         <p>Welcome, <span id="myName"></span></p>
         <div id="status"></div>
         <a href="#" onclick="signOut();">Sign out</a>
         <script>
-            function onLogin(googleUser) {
-                var id_token = googleUser.getAuthResponse().id_token;
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'https://yourbackend.example.com/tokensignin');
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                  console.log('Signed in as: ' + xhr.responseText);
-                };
-                xhr.send('idtoken=' + id_token);
-            }
             function onSuccess(googleUser) {
                 var auth2 = gapi.auth2.getAuthInstance();
                 if (auth2.isSignedIn.get()) {
@@ -70,7 +61,7 @@
                     'height': 50,
                     'longtitle': true,
                     'theme': 'dark',
-                    'onsuccess': onLogin,
+                    'onsuccess': onSuccess,
                     'onfailure': onFailure
                 });
             }
@@ -84,5 +75,6 @@
             }
         </script>
         <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    --%>
     </body>
 </html>
