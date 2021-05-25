@@ -81,6 +81,8 @@ public class LoginController extends HttpServlet {
         } catch (SQLException ex) {
             log(ex.getMessage());
         } finally {
+//            String uri = request.getRequestURI();
+//            System.out.println("URL:" + url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
