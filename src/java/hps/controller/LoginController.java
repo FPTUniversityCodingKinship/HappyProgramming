@@ -5,7 +5,6 @@
  */
 package hps.controller;
 
-import hps.filter.FilterDispatcher;
 import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 
@@ -26,8 +23,14 @@ import javax.servlet.RequestDispatcher;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
+<<<<<<< Updated upstream
     
     private static final String LOGIN_SUCCESS = "LoginSuccess";
+=======
+    private static final String MENTEE_PAGE = "MenteeHomePage";
+    private static final String MENTOR_PAGE = "MentorHomePage";
+    private static final String ADMIN_PAGE = "AdminHomePage";
+>>>>>>> Stashed changes
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,9 +53,17 @@ public class LoginController extends HttpServlet {
             if (!username.isEmpty() && !password.isEmpty()) {
                 
                 UsersDAO usersDao = new UsersDAO();
+<<<<<<< Updated upstream
                 boolean result = usersDao.checkLogin(username, password);
                 if (result) {
                     url = LOGIN_SUCCESS;
+=======
+                UsersDTO result = usersDao.checkLogin(username, password);
+                if (result != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("CURRENT_USER", result);
+                    url = MENTEE_PAGE;
+>>>>>>> Stashed changes
                 }
             }
         } catch (NamingException ex) {
@@ -60,8 +71,8 @@ public class LoginController extends HttpServlet {
         } catch (SQLException ex) {
             log(ex.getMessage());
         } finally {
-            String uri = request.getRequestURI();
-            System.out.println("URL:" + url);
+//            String uri = request.getRequestURI();
+//            System.out.println("URL:" + url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
