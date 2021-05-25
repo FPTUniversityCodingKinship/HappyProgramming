@@ -5,7 +5,6 @@
  */
 package hps.controller;
 
-import hps.filter.FilterDispatcher;
 import hps.users.UsersDAO;
 import hps.users.UsersDTO;
 import java.io.IOException;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
@@ -28,8 +25,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
-    
-    private static final String LOGIN_SUCCESS = "MenteeHomePage";
+    private static final String MENTEE_PAGE = "MenteeHomePage";
+    private static final String MENTOR_PAGE = "MentorHomePage";
+    private static final String ADMIN_PAGE = "AdminHomePage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,9 +52,9 @@ public class LoginController extends HttpServlet {
                 UsersDAO usersDao = new UsersDAO();
                 UsersDTO result = usersDao.checkLogin(username, password);
                 if (result != null) {
-                    url = LOGIN_SUCCESS;
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
+                    url = MENTEE_PAGE;
                 }
             }
         } catch (NamingException ex) {
@@ -64,15 +62,14 @@ public class LoginController extends HttpServlet {
         } catch (SQLException ex) {
             log(ex.getMessage());
         } finally {
-            String uri = request.getRequestURI();
-            System.out.println("URL:" + url);
+//            String uri = request.getRequestURI();
+//            System.out.println("URL:" + url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
                 out.close();
             }
-        }
-        
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
