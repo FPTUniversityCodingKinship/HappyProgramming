@@ -48,6 +48,7 @@ public class LoginController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
+        String remember = request.getParameter("chkCookie");
         UsersCreateError err = new UsersCreateError();
         boolean flag = false;
         String url = ERROR_PAGE;
@@ -102,9 +103,12 @@ public class LoginController extends HttpServlet {
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
+            sout = "NamingException was caught.";
         } catch (SQLException ex) {
             log(ex.getMessage());
+            sout = "SQLException was caught.";
         } finally {
+            System.out.println("[LoginController] " + sout);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
