@@ -17,8 +17,10 @@
     <body>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
+
             Mentee ID: ${user.userID}<br/>
         </c:if>
+
         <c:if test="${not empty requestScope.MENTEE_LIST_REQUEST}">
             <c:set var="listRequest" value="${requestScope.MENTEE_LIST_REQUEST}"/>
             <table border="1">

@@ -360,7 +360,7 @@ public class RequestsDAO implements Serializable {
         }
         return false;
     }
-    
+
     public ArrayList<String> getRequestTitle(String menteeID) 
             throws NamingException, SQLException{
         Connection con = null;
@@ -503,4 +503,5 @@ public class RequestsDAO implements Serializable {
         }
         return totalMentor;
     }
+
 }
