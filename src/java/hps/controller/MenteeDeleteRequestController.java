@@ -5,14 +5,10 @@
  */
 package hps.controller;
 
-import hps.followers.FollowersDAO;
 import hps.requests.RequestsDAO;
-import hps.requests.RequestsDTO;
-import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,13 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Tran Phong <phongntse150974@fpt.edu.vn>
+ * @author ADMIN
  */
-@WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
-public class FollowingRequestController extends HttpServlet {
-    
-    private static final String VIEW_PAGE = "ViewFollowingRequestPage";
-
+@WebServlet(name = "MenteeDeleteRequestController", urlPatterns = {"/MenteeDeleteRequestController"})
+public class MenteeDeleteRequestController extends HttpServlet {
+private final String DELETE_REQUEST_SUCCESS = "MenteeListRequest";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,32 +38,25 @@ public class FollowingRequestController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = VIEW_PAGE;
-        
-        try {
-            // Get current mentor
-//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-//            
-//            String mentorID = curMentor.getUserID();
-            String mentorID = "MT000001";
-            FollowersDAO followersDAO = new FollowersDAO();
-            List<String> listFollowers = followersDAO.getListFollowers(mentorID);
-            
-            RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
-            
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
-            url = VIEW_PAGE;
-        }
-        catch (SQLException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
+        String requestID = request.getParameter("requestID");
+        String url = "";
+        try{
+            RequestsDAO dao = new RequestsDAO();
+            boolean result = dao.menteeDeleteRequest(requestID);
+            if(result){
+                url = DELETE_REQUEST_SUCCESS;
+            }
         } catch (NamingException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
-        }
-        finally {
+            log("MenteeDeleteRequestController NamingException: " + ex.getMessage());
+        } catch (SQLException ex) {
+            log("MenteeDeleteRequestController SQLException: " + ex.getMessage());
+        }        
+        finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
+            if(out != null){
+                out.close();
+            }
         }
     }
 

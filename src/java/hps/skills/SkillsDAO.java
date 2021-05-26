@@ -79,4 +79,102 @@ public class SkillsDAO implements Serializable {
         
         return listSkills;
     }
+    public String getSkillsID(String[] skillsName)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String skillsID = "";
+        try {
+            //1.Establish Connection
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                for (int i = 0; i < skillsName.length; i++) {
+                    if (i == skillsName.length - 1) {
+                        String sql = "SELECT skillID "
+                                + "FROM skills "
+                                + "WHERE skillName like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skillsName[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsID += rs.getString("skillID");
+                        }
+                    } else {
+                        String sql = "SELECT skillID "
+                                + "FROM skills "
+                                + "WHERE skillName like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skillsName[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsID += rs.getString("skillID") + ", ";
+                        }
+                    }
+                }
+                return skillsID;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
+    
+    public String getSkillsName(String skillID)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String skillsName = "";
+        String[] skillsID = skillID.replace(" ","").split(",");
+        try {
+            //1.Establish Connection
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                for (int i = 0; i < skillsID.length; i++) {
+                    if (i == skillsID.length - 1) {
+                        String sql = "SELECT skillName "
+                                + "FROM skills "
+                                + "WHERE skillID like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skillsID[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsName += rs.getString("skillName");
+                        }
+                    } else {
+                        String sql = "SELECT skillName "
+                                + "FROM skills "
+                                + "WHERE skillID like ?";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, skillsID[i]);
+                        //3. Store in ResultSet
+                        rs = stm.executeQuery();
+                        if (rs.next()) {
+                            skillsName += rs.getString("skillName") + ", ";
+                        }
+                    }
+                }
+                return skillsName;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
 }

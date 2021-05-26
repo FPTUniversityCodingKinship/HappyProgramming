@@ -25,10 +25,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
-@WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
-public class FollowingRequestController extends HttpServlet {
-    
-    private static final String VIEW_PAGE = "ViewFollowingRequestPage";
+@WebServlet(name = "InvitingRequestController", urlPatterns = {"/InvitingRequestController"})
+public class InvitingRequestController extends HttpServlet {
+    private static final String VIEW_PAGE = "ViewInvitingRequestPage";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,17 +47,14 @@ public class FollowingRequestController extends HttpServlet {
         
         try {
             // Get current mentor
-//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-//            
-//            String mentorID = curMentor.getUserID();
-            String mentorID = "MT000001";
-            FollowersDAO followersDAO = new FollowersDAO();
-            List<String> listFollowers = followersDAO.getListFollowers(mentorID);
+            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
+            
+            String mentorID = curMentor.getUserID();
             
             RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
+            List<RequestsDTO> listInvitingRequets = requestsDAO.getInvitingRequestsList(mentorID);
             
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
+            request.setAttribute("INVITING_REQUESTS", listInvitingRequets);
             url = VIEW_PAGE;
         }
         catch (SQLException ex) {

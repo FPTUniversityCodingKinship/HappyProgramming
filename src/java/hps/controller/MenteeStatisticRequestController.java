@@ -5,14 +5,12 @@
  */
 package hps.controller;
 
-import hps.followers.FollowersDAO;
 import hps.requests.RequestsDAO;
-import hps.requests.RequestsDTO;
 import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,16 +18,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Tran Phong <phongntse150974@fpt.edu.vn>
+ * @author ADMIN
  */
-@WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
-public class FollowingRequestController extends HttpServlet {
-    
-    private static final String VIEW_PAGE = "ViewFollowingRequestPage";
-
+@WebServlet(name = "MenteeStatisticRequestController", urlPatterns = {"/MenteeStatisticRequestController"})
+public class MenteeStatisticRequestController extends HttpServlet {
+private final String SUCCESS_PAGE = "MenteeStatisticRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,33 +40,34 @@ public class FollowingRequestController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String url = SUCCESS_PAGE;
         
-        String url = VIEW_PAGE;
-        
-        try {
-            // Get current mentor
-//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-//            
-//            String mentorID = curMentor.getUserID();
-            String mentorID = "MT000001";
-            FollowersDAO followersDAO = new FollowersDAO();
-            List<String> listFollowers = followersDAO.getListFollowers(mentorID);
-            
-            RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
-            
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
-            url = VIEW_PAGE;
-        }
-        catch (SQLException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
-        } catch (NamingException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
-        }
-        finally {
+        try{
+            HttpSession session = request.getSession();
+            UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
+            String menteeID = user.getUserID();
+            RequestsDAO dao = new RequestsDAO();
+            ArrayList<String> titles = (ArrayList)dao.getRequestTitle(menteeID);
+            if(!titles.isEmpty()){
+                request.setAttribute("REQUESTS_TITLE", titles);
+            }
+            String totalRequest = dao.getTotalNumberOfRequest(menteeID);
+            request.setAttribute("TOTAL_REQUEST", totalRequest);
+            String totalHours = dao.getTotalHoursOfRequest(menteeID);
+            request.setAttribute("TOTAL_HOUR", totalHours);
+            String totalMentor = dao.getTotalMentor(menteeID);
+            request.setAttribute("TOTAL_MENTOR", totalMentor);
+        }catch (NamingException ex) {
+            log("MenteeStatisticRequestController NamingException: " + ex.getMessage());
+        } catch (SQLException ex) {
+            log("MenteeStatisticRequestController SQLException: " + ex.getMessage());
+        }  
+        finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
+            if(out != null){
+                out.close();
+            }
         }
     }
 
