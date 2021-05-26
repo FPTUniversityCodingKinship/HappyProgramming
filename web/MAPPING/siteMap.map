@@ -2,6 +2,7 @@
 # -----------------------------------------------
 # Start of Controller
 Login = LoginController
+Logout = LogoutController
 FollowingRequest = FollowingRequestController
 InvitingRequest = InvitingRequestController
 MenteeRequest = MenteeRequestController
@@ -9,8 +10,11 @@ MenteeRequest = MenteeRequestController
 # -----------------------------------------------
 # Start of Page
  = login.jsp
+MailVerificationPage = userVerification.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 ViewFollowingRequestPage = viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
+MentorHomePage = loginsuccess_placeholder.html
+AdminHomePage = loginsuccess_placeholder.html
 # End of Page

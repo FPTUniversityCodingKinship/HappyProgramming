@@ -29,6 +29,7 @@ public class LoginController extends HttpServlet {
     private static final String MENTEE_PAGE = "MenteeHomePage";
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
+    private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "";
 
     /**
@@ -66,7 +67,20 @@ public class LoginController extends HttpServlet {
                 if (result != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
-                    url = MENTEE_PAGE;
+                    String role = result.getUserID().substring(0, 1);
+                    if (result.isStatus()) {
+                        switch (role) {
+                            case "ME":
+                                url = MENTEE_PAGE;
+                            case "MT":
+                                url = MENTOR_PAGE;
+                            case "AD":
+                                url = ADMIN_PAGE;
+                        }
+                    }
+                    else
+                        url = INACTIVE_PAGE;
+                        
                 } 
                 else {
                     flag = true;
