@@ -9,6 +9,7 @@ MenteeListRequest = MenteeListRequestController
 MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
+MenteeStatisticRequest = MenteeStatisticRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -17,7 +18,7 @@ LoginSuccess = loginsuccess_placeholder.html
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp
-ViewFollowingRequestPage = viewFollowingRequest.jsp
+MenteeStatisticRequestPage = mentee_statisticRequest.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
 # End of Page
