@@ -6,11 +6,25 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>You have logged in</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="google-signin-client_id" 
+              content="401908117605-vofu7m8maarbv0c6remdnf8n1r568060.apps.googleusercontent.com">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
     </head>
     <body>
         <div>You have logged in, i guess?</div>
+        <a href="/" onclick="signOut();">Sign out</a>
+        <script>
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                  console.log('User signed out.');
+                });
+                gapi.auth2.getAuthInstance().disconnect();
+            }
+        </script>
     </body>
 </html>

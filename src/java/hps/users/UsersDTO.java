@@ -22,11 +22,8 @@ public class UsersDTO implements Serializable {
     private String address;
     private Date dob;
     private String sex;
-    // image
     private String image;
-//    private String roleID;
     private boolean status;
-    //email status
     private boolean emailStatus;
 
     public UsersDTO() {
@@ -45,6 +42,20 @@ public class UsersDTO implements Serializable {
         this.image = image;
         this.status = status;
         this.emailStatus = emailStatus;
+    }
+    
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
 
@@ -161,6 +172,21 @@ public class UsersDTO implements Serializable {
     }
 
     /**
+     * @return image url
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     *
+     * @param image image url to set
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+  
+    /**
      * @return the status
      */
     public boolean isStatus() {
@@ -176,38 +202,6 @@ public class UsersDTO implements Serializable {
 
     /**
      *
-     * @return userID
-     */
-    public String getUserID() {
-        return userID;
-    }
-
-    /**
-     *
-     * @param userID the user ID to set
-     */
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    /**
-     *
-     * @return image url
-     */
-    public String getImage() {
-        return image;
-    }
-
-    /**
-     *
-     * @param image image url to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
-     *
      * @return email is confirmed or not
      */
     public boolean isEmailStatus() {
@@ -215,14 +209,11 @@ public class UsersDTO implements Serializable {
     }
 
     /**
-     *
-     * @param emailStatus is confirmed or not
+     * @param emailStatus the emailStatus to set
      */
     public void setEmailStatus(boolean emailStatus) {
         this.emailStatus = emailStatus;
     }
-    
-    
 
     @Override
     public String toString() {
