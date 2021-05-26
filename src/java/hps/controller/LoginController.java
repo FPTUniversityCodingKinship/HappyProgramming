@@ -51,6 +51,7 @@ public class LoginController extends HttpServlet {
         UsersCreateError err = new UsersCreateError();
         boolean flag = false;
         String url = ERROR_PAGE;
+        String sout = "";
         
         try {
             if (username.isEmpty()) {
@@ -67,36 +68,43 @@ public class LoginController extends HttpServlet {
                 if (result != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
-                    String role = result.getUserID().substring(0, 1);
+                    String role = result.getUserID().substring(0, 2);
                     if (result.isStatus()) {
                         switch (role) {
                             case "ME":
                                 url = MENTEE_PAGE;
+                                sout = "Logged in as Mentee. ";
+                                break;
                             case "MT":
                                 url = MENTOR_PAGE;
+                                sout = "Logged in as Mentor. ";
+                                break;
                             case "AD":
                                 url = ADMIN_PAGE;
+                                sout = "Logged in as Admin. ";
+                                break;
                         }
                     }
-                    else
+                    else {
                         url = INACTIVE_PAGE;
-                        
+                        sout += "Activation Status of ["
+                                    + result.getUsername() + "] is [false]";
+                    }
                 } 
                 else {
                     flag = true;
-                    err.setLoginInfoNotMatch("Username or Password is incorrect.");
+                    err.setLoginInfoNotMatch("Username or Password is incorrect");
                 }
             }
             if (flag == true) {
                 request.setAttribute("LOGIN_ERROR", err);
+                sout = "Failed to Login. ";
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
         } catch (SQLException ex) {
             log(ex.getMessage());
         } finally {
-//            String uri = request.getRequestURI();
-//            System.out.println("URL:" + url);
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if (out != null) {
