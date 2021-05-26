@@ -16,7 +16,8 @@
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <c:set var="CURRENT_USER" value="${sessionScope.CURRENT_USER}"/>
             Welcome, ${CURRENT_USER.username}<br/>
-            <a href="mentee_request.jsp">Create request</a>
+            <a href="MenteeRequestPage">Create request</a><br/>
+            <a href="MenteeListRequest">List my requests</a><br/>
         </c:if>
     </body>
 </html>

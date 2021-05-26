@@ -43,7 +43,7 @@ public class RequestsDTO implements Serializable {
         this.canceledTime = canceledTime;
         this.closedTime = closedTime;
     }
-
+    
     public String getRequestID() {
         return requestID;
     }

@@ -5,12 +5,17 @@ Login = LoginController
 FollowingRequest = FollowingRequestController
 InvitingRequest = InvitingRequestController
 MenteeRequest = MenteeRequestController
+MenteeListRequest = MenteeListRequestController
+MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
+MenteeDeleteRequest = MenteeDeleteRequestController
+MenteeUpdateRequest = MenteeUpdateRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
  = login.html
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
+MenteeListRequestPage = mentee_listRequest.jsp
 ViewFollowingRequestPage = viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
 # End of Page
