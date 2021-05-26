@@ -3,6 +3,8 @@
 # Start of Controller
 Login = LoginController
 FollowingRequest = FollowingRequestController
+Approve = ApproveRequestController
+Reject = RejectRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
