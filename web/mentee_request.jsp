@@ -20,14 +20,14 @@
                 <font color="red">${error.titleLengthError}</font><br/>
             </c:if>
             Deadline date (year-month-day): <input type="text" name="deadlineDate" value="${param.deadlineDate}" /><br/>
+            <c:if test="${not empty error.deadlineDateError}" >
+                <font color="red">${error.deadlineDateError}</font><br/>
+            </c:if>
             Deadline hour (hour:minute): <input type="text" name="deadlineHour" value="${param.deadlineHour}" /><br/>
-            <c:if test="${not empty error.deadlineDateTimeError}" >
-                <font color="red">${error.deadlineDateTimeError}</font><br/>
+            <c:if test="${not empty error.deadlineTimeError}" >
+                <font color="red">${error.deadlineTimeError}</font><br/>
             </c:if>
-            <c:if test="${not empty error.deadlineError}" >
-                <font color="red">${error.deadlineError}</font><br/>
-            </c:if>
-            Content: <br/> <textarea name="content" rows="4" cols="30"></textarea><br/>
+            Content: <br/> <textarea name="reqContent" rows="4" cols="30"></textarea><br/>
             <c:if test="${not empty error.contentLengthError}" >
                 <font color="red">${error.contentLengthError}</font><br/>
             </c:if>
