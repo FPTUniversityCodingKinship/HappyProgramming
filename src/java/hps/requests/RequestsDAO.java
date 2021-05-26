@@ -357,4 +357,147 @@ public class RequestsDAO implements Serializable {
         }
         return false;
     }
+    
+    public ArrayList<String> getRequestTitle(String menteeID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<String> titles = new ArrayList<>();
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select title "
+                        + "From requests "
+                        + "Where menteeID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    titles.add(rs.getString("title"));
+                }
+            }
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return titles;
+    }
+    
+    public String getTotalNumberOfRequest(String menteeID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String totalRequest = "";
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select count(*) as totalRequest "
+                        + "From requests "
+                        + "Where menteeID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    totalRequest = rs.getString("totalRequest");
+                }
+            }
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return totalRequest;
+    }
+    
+    public String getTotalHoursOfRequest(String menteeID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int total = 0;
+        String totalHours = "";
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select DATEDIFF(second,approvedTime,closedTime)/(60*60) as hours " 
+                        + "From requests " 
+                        + "Where menteeID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    total += Integer.parseInt(rs.getString("hours"));
+                }
+                totalHours = String.valueOf(total);
+            }
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return totalHours;
+    }
+    public String getTotalMentor(String menteeID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int total = 0;
+        String totalMentor = "";
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select COUNT(DISTINCT(mentorID)) as totalMentor " 
+                        + "From requests " 
+                        + "Where menteeID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    total = Integer.parseInt(rs.getString("totalMentor"));
+                }
+                totalMentor = String.valueOf(total);
+            }
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return totalMentor;
+    }
 }
