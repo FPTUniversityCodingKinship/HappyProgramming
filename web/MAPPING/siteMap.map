@@ -14,6 +14,7 @@ MenteeStatisticRequest = MenteeStatisticRequestController
 # -----------------------------------------------
 # Start of Page
  = login.html
+LoginSuccess = loginsuccess_placeholder.html
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp

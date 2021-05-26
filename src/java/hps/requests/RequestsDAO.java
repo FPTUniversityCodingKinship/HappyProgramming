@@ -30,8 +30,9 @@ public class RequestsDAO implements Serializable {
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    public List<RequestsDTO> getFollowingRequestsList(List<UsersDTO> listFollowers)
-            throws SQLException, NamingException {
+    public List<RequestsDTO> getFollowingRequestsList(List<String> listFollowers) 
+        throws SQLException, NamingException {
+
         List<RequestsDTO> listRequests = new ArrayList<>();
 
         Connection con = null;
@@ -43,16 +44,18 @@ public class RequestsDAO implements Serializable {
 
             if (con != null) {
                 String sql = "SELECT requestID, menteeID, mentorID, skillsID, "
-                        + "deadline, title, content, status, openedTime, "
+                        + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
                         + "WHERE menteeID = ? AND status = ?";
 
-                for (UsersDTO follower : listFollowers) {
-                    String menteeID = follower.getUserID();
+                
+                for (String follower : listFollowers) {
+                    String menteeID = follower;
                     stmt = con.prepareStatement(sql);
                     stmt.setString(1, menteeID);
-                    stmt.setString(3, "P");
+                    stmt.setString(2, "P");
+                    
 
                     rs = stmt.executeQuery();
                     while (rs.next()) {
