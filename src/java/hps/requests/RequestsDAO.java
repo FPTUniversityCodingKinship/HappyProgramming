@@ -5,13 +5,13 @@
  */
 package hps.requests;
 
-import hps.users.UsersDTO;
 import hps.utilities.DBHelper;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
@@ -45,16 +45,17 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
-                        + "WHERE menteeID = ? AND status = ?";
+                        + "WHERE menteeID = ? AND (status = ? OR status = ?)";
                 
                 for (String follower : listFollowers) {
                     String menteeID = follower;
                     stmt = con.prepareStatement(sql);
                     stmt.setString(1, menteeID);
                     stmt.setString(2, "P");
+                    stmt.setString(3, "A");
                     
                     rs = stmt.executeQuery();
-                    if (rs.next()) {
+                    while (rs.next()) {
                         RequestsDTO request = new RequestsDTO(
                                 rs.getString("requestID"),
                                 rs.getString("menteeID"), 
@@ -90,4 +91,77 @@ public class RequestsDAO implements Serializable {
         
         return listRequests;
     }
+    
+    public boolean approveRequest(String requestID) 
+            throws SQLException, NamingException {
+        boolean result = false;
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE requests "
+                        + "SET status = ?, approvedTime = ? "
+                        + "WHERE requestID = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "A");
+                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(3, requestID);
+                
+                boolean iCheck = stmt.execute();
+                if (iCheck) {
+                    result = true;
+                }
+            }
+            
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return result;
+    }
+    
+    public boolean rejectRequest(String requestID) 
+            throws SQLException, NamingException {
+        boolean result = false;
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE requests "
+                        + "SET status = ?, canceledTime = ? "
+                        + "WHERE requestID = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "R");
+                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(3, requestID);
+                
+                boolean iCheck = stmt.execute();
+                if (iCheck) {
+                    result = true;
+                }
+            }
+            
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return result;
+    }
+    
 }
