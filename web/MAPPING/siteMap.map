@@ -15,6 +15,6 @@ MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 ViewFollowingRequestPage = viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
-MentorHomePage = loginsuccess_placeholder.html
-AdminHomePage = loginsuccess_placeholder.html
+MentorHomePage = mentor_homepage.jsp
+AdminHomePage = admin_homepage.jsp
 # End of Page
