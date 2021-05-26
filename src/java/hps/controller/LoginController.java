@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -69,6 +70,11 @@ public class LoginController extends HttpServlet {
                 if (result != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
+                    if (remember.equals("ON")) {
+                        Cookie cookie = new Cookie(username, password);
+                        cookie.setMaxAge(60*5);
+                        response.addCookie(cookie);
+                    }
                     String role = result.getUserID().substring(0, 2);
                     if (result.isStatus()) {
                         switch (role) {
@@ -109,8 +115,7 @@ public class LoginController extends HttpServlet {
             sout = "SQLException was caught.";
         } finally {
             System.out.println("[LoginController] " + sout);
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
             if (out != null) {
                 out.close();
             }
