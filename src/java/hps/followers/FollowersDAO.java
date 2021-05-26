@@ -29,9 +29,9 @@ public class FollowersDAO implements Serializable {
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    public List<UsersDTO> getListFollowers(String mentorID) 
+    public List<String> getListFollowers(String mentorID) 
         throws SQLException, NamingException {
-        List<UsersDTO> listFollowers = new ArrayList<>();
+        List<String> listFollowers = new ArrayList<>();
         
         Connection con = null;
         PreparedStatement stmt = null;
@@ -40,28 +40,14 @@ public class FollowersDAO implements Serializable {
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "SELECT menteeUsername "
+                String sql = "SELECT menteeID "
                         + "FROM followers "
-                        + "WHERE mentorUsername = ?";
+                        + "WHERE mentorID = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, mentorID);
                 rs = stmt.executeQuery();
                 while (rs.next()) {
-                    UsersDTO mentee = new UsersDTO(
-                            rs.getString("userID"), 
-                            rs.getString("username"), 
-                            rs.getString("password"), 
-                            rs.getString("email"), 
-                            rs.getNString("fullname"), 
-                            rs.getString("phone"), 
-                            rs.getNString("address"), 
-                            rs.getDate("dob"), 
-                            rs.getString("sex"), 
-                            rs.getNString("image"), 
-                            rs.getBoolean("status"), 
-                            rs.getBoolean("emailStatus")
-                    );
-                    listFollowers.add(mentee);
+                    listFollowers.add(rs.getString("menteeID"));
                 }
             }
         }
