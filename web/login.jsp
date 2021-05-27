@@ -25,6 +25,15 @@
                         <input type="text" name="txtUsername" value="${param.txtUsername}"/>
                     </td>
                 </tr>
+                <c:if test="${not empty errors.usernameLengthErr}">
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <font color="red">
+                            ${errors.usernameLengthErr}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
                 <tr>
                     <td>
                         Password
@@ -33,6 +42,15 @@
                         <input type="password" name="txtPassword" value=""/>
                     </td>
                 </tr>
+                <c:if test="${not empty errors.passwordLengthErr}">
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <font color="red">
+                            ${errors.passwordLengthErr}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
                 <c:if test="${not empty errors.loginInfoNotMatch}">
                 <tr>
                     <td colspan="2" style="text-align: center">
@@ -49,8 +67,8 @@
                     </td>
                 </tr>
             </table> 
-            <input type="submit" value="LOG IN" class="btn"/>
-            <input type="reset" value="RESET" class="btn"/>
+            <input type="submit" value="LOG IN" class="btn">
+            <input type="reset" value="RESET" class="btn">
         </form>
     </body>
 </html>
