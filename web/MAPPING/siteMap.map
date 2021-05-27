@@ -3,6 +3,7 @@
 # Start of Controller
 Login = LoginController
 Logout = LogoutController
+SignUp = SignUpController
 UpdateProfileController = UpdateProfileServlet
 FollowingRequest = FollowingRequestController
 Approve = ApproveRequestController
@@ -20,6 +21,7 @@ Close = CloseRequestController
 # Start of Page
  = login.jsp
 MailVerificationPage = userVerification.jsp
+SignUpPage = signup.jsp
 UpdateProfilePage = user_profile.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
