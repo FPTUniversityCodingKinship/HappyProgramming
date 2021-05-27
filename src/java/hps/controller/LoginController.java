@@ -73,12 +73,10 @@ public class LoginController extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
                     System.out.println(remember);
-                    if (remember != null) {
-                        if (remember.equals("ON")) {
-                            Cookie cookie = new Cookie(username, password);
-                            cookie.setMaxAge(60 * 5);
-                            response.addCookie(cookie);
-                        }
+                    if (remember.equals("ON")) {
+                        Cookie cookie = new Cookie(username, password);
+                        cookie.setMaxAge(60 * 5);
+                        response.addCookie(cookie);
                     }
                     String role = result.getUserID().substring(0, 2);
                     if (result.isStatus()) {
