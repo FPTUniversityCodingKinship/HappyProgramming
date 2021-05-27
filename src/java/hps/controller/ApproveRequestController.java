@@ -47,7 +47,7 @@ public class ApproveRequestController extends HttpServlet {
         
         try {
             String requestID = request.getParameter("requestID");
-            if (!requestID.isBlank()) {
+            if (!requestID.isEmpty()) {
                 RequestsDAO dao = new RequestsDAO();
                 boolean iApprove = dao.approveRequest(requestID);
                 
