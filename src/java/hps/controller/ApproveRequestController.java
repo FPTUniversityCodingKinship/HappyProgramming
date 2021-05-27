@@ -9,8 +9,6 @@ import hps.requests.RequestsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,9 +23,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ApproveRequestController", urlPatterns = {"/ApproveRequestController"})
 public class ApproveRequestController extends HttpServlet {
-    
-    private static final String VIEW_CONTROLLER = "FollowingRequest";
-    private static final String ERROR = "FollowingRequest";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,7 +38,8 @@ public class ApproveRequestController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = VIEW_CONTROLLER;
+        String redirect = request.getParameter("redirect");
+        String url = redirect;
         
         try {
             String requestID = request.getParameter("requestID");
@@ -52,20 +48,20 @@ public class ApproveRequestController extends HttpServlet {
                 boolean iApprove = dao.approveRequest(requestID);
                 
                 if (iApprove) {
-                    url = VIEW_CONTROLLER;
+                    url = redirect;
                 } else {
                     request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-                    url = ERROR;
+                    url = redirect;
                 }
             }
         } catch (SQLException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
             request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = ERROR;
+            url = redirect;
         } catch (NamingException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
             request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = ERROR;
+            url = redirect;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
