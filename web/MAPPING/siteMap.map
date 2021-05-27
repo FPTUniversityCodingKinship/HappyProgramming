@@ -14,6 +14,7 @@ MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
+Close = CloseRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -25,7 +26,7 @@ MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp
 MenteeStatisticRequestPage = mentee_statisticRequest.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
-ViewInvitingRequestPage = viewInvitingRequest.jsp
+ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp
 AdminHomePage = admin_homepage.jsp
 # End of Page
