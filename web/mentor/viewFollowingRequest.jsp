@@ -4,7 +4,7 @@
     Author     : Tran Phong <phongntse150974@fpt.edu.vn>
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,51 +15,91 @@
     </head>
     <body>
         <h1>Requests from the Mentees following you</h1>
-        <c:set var="requestsList" value="${FOLLOWING_REQUESTS}" />
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Title</th>
-                    <th>Deadline date</th>
-                    <th>Deadline hour</th>
-                    <th>Content</th>
-                    <th>Skills</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <jsp:useBean id="skillsDAO" class="hps.skills.SkillsDAO" />
-                <c:forEach items="requestsList" var="request" varStatus="count">
-                    <c:set var="listSkills" value="${skillsDAO.getSkillsList(request.skillsID)}" />
-                    <c:set var="listSkillsName" value="" />
-                    <c:forEach items="listSkills" var="skill">
-                        <c:set var="listSkillsName" value="${listSkillsName + skill.skillName}" />
+        <c:set var="requestsList" value="${requestScope.FOLLOWING_REQUESTS}" />
+        <c:if test="${not empty requestsList}">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>From Mentee</th>
+                        <th>Title</th>
+                        <th>Deadline date</th>
+                        <th>Deadline hour</th>
+                        <th>Content</th>
+                        <th>Skills</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <jsp:useBean id="skillsDAO" class="hps.skills.SkillsDAO" />
+                    <jsp:useBean id="usersDAO" class="hps.users.UsersDAO" />
+
+                    <c:forEach items="${requestsList}" var="request" varStatus="count">
+                        <c:set var="listSkillsID" value="${request.skillsID}" />
+                        <c:set var="listSkills" value="${skillsDAO.getSkillsList(listSkillsID)}" />
+                        <tr>
+                            <td>
+                                ${count.count}
+                            </td>
+                            <td>
+                                <c:set var="menteeInfo" value="${usersDAO.getUserData(request.menteeID)}" />
+                                ${menteeInfo.fullname}
+                            </td>
+                            <td>
+                                ${request.title}
+                            </td>
+                            <td>
+                                ${(fn:split(request.deadline, " " ))[0]}
+                            </td>
+                            <td>
+                                ${(fn:split(request.deadline, " " ))[1]}
+                            </td>
+                            <td>
+                                ${request.reqContent}
+                            </td>
+                            <td>
+                                <c:forEach items="${listSkills}" var="skill" varStatus="count">
+                                    <c:if test="${count.count eq 1}">
+                                        ${skill.skillName}
+                                    </c:if>
+                                    <c:if test="${count.count ne 1}">
+                                        , ${skill.skillName}
+                                    </c:if>
+
+                                </c:forEach>
+                            </td>
+
+                            <c:if test="${request.status eq 'P'}">
+                                <td>
+                                    <font color="purple">Pending</font>
+                                </td>
+                                <td>
+                                    <c:url var="approveURL" value="Approve">
+                                        <c:param name="requestID" value="${request.requestID}" />
+                                    </c:url>
+                                    <a href="${approveURL}">Approve</a>
+                                    <c:url var="rejectURL" value="Reject">
+                                        <c:param name="requestID" value="${request.requestID}" />
+                                    </c:url>
+                                    <a href="${rejectURL}">Reject</a>
+                                </td>
+                            </c:if>
+                            <c:if test="${request.status eq 'A'}">
+                                <td>
+                                    <font color="purple">Approved - Processing</font>
+                                </td>
+                                <td>
+                                    <a href="Close">Close</a>
+                                </td>
+                            </c:if>
+
+
+                        </tr> 
                     </c:forEach>
-                <tr>
-                    <td>
-                        ${count.count}
-                    </td>
-                    <td>
-                        ${request.title}
-                    </td>
-                    <td>
-                        ${(fn:split(request.deadline, " " ))[0]}
-                    </td>
-                    <td>
-                        ${(fn:split(request.deadline, " " ))[1]}
-                    </td>
-                    <td>
-                        ${request.reqContent}
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td></td>
-                </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </c:if>
 
     </body>
 </html>

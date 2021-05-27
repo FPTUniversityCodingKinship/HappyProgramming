@@ -2,15 +2,33 @@
 # -----------------------------------------------
 # Start of Controller
 Login = LoginController
+Logout = LogoutController
+UpdateProfileController = UpdateProfileServlet
 FollowingRequest = FollowingRequestController
+Approve = ApproveRequestController
+Reject = RejectRequestController
 InvitingRequest = InvitingRequestController
+MenteeRequest = MenteeRequestController
+MenteeListRequest = MenteeListRequestController
+MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
+MenteeDeleteRequest = MenteeDeleteRequestController
+MenteeUpdateRequest = MenteeUpdateRequestController
+MenteeStatisticRequest = MenteeStatisticRequestController
 CreateCV = CreateCVController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.html
-LoginSuccess = loginsuccess_placeholder.html
-ViewFollowingRequestPage = viewFollowingRequest.jsp
+ = login.jsp
+MailVerificationPage = userVerification.jsp
+UpdateProfilePage = user_profile.jsp
+MenteeHomePage = mentee_homepage.jsp
+MenteeRequestPage = mentee_request.jsp
+MenteeListRequestPage = mentee_listRequest.jsp
+MenteeStatisticRequestPage = mentee_statisticRequest.jsp
+ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
+MentorHomePage = mentor_homepage.jsp
+AdminHomePage = admin_homepage.jsp
 CreateCVPage = mentor/createCV.jsp
 # End of Page
+# -----------------------------------------------

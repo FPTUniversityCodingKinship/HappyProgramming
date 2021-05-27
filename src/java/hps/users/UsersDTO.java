@@ -12,31 +12,43 @@ import java.util.Date;
  *
  * @author DELL
  */
-public class UsersDTO implements Serializable {
+public class UsersDTO implements Serializable{
     private String userID;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String fullname;
     private String phone;
     private String address;
     private Date dob;
     private String sex;
-    // image
     private String image;
-//    private String roleID;
     private boolean status;
-    //email status
     private boolean emailStatus;
 
     public UsersDTO() {
     }
 
-    public UsersDTO(String userID, String username, String password, String email, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
+
+    public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status) {
         this.userID = userID;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.address = address;
+        this.dob = dob;
+        this.sex = sex;
+        this.image = image;
+        this.status = status;
+    }
+
+    public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status, boolean emailStatus) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.fullname = fullname;
         this.phone = phone;
         this.address = address;
@@ -46,7 +58,23 @@ public class UsersDTO implements Serializable {
         this.status = status;
         this.emailStatus = emailStatus;
     }
+    
 
+    
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 
     /**
      * @return the username
@@ -63,20 +91,6 @@ public class UsersDTO implements Serializable {
     }
 
     /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * @return the email
      */
     public String getEmail() {
@@ -88,6 +102,20 @@ public class UsersDTO implements Serializable {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
@@ -161,6 +189,22 @@ public class UsersDTO implements Serializable {
     }
 
     /**
+
+     * @return the image
+
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * @param image the image to set
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+  
+    /**
      * @return the status
      */
     public boolean isStatus() {
@@ -176,38 +220,6 @@ public class UsersDTO implements Serializable {
 
     /**
      *
-     * @return userID
-     */
-    public String getUserID() {
-        return userID;
-    }
-
-    /**
-     *
-     * @param userID the user ID to set
-     */
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    /**
-     *
-     * @return image url
-     */
-    public String getImage() {
-        return image;
-    }
-
-    /**
-     *
-     * @param image image url to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
-     *
      * @return email is confirmed or not
      */
     public boolean isEmailStatus() {
@@ -215,20 +227,19 @@ public class UsersDTO implements Serializable {
     }
 
     /**
-     *
-     * @param emailStatus is confirmed or not
+     * @param emailStatus the emailStatus to set
      */
     public void setEmailStatus(boolean emailStatus) {
         this.emailStatus = emailStatus;
     }
-    
-    
 
     @Override
     public String toString() {
         return "UsersDTO{" + "userID = " + userID + ", username=" + username + ", password=" + password + 
                 ", email=" + email + ", fullname=" + fullname + ", phone=" + phone + 
                 ", address=" + address + ", dob=" + dob + ", sex=" + sex +  ", status=" + status + ", emailStatus = " + emailStatus + "}";
+
     }
+
     
 }
