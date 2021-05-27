@@ -545,6 +545,7 @@ public class RequestsDAO implements Serializable {
     
         return totalHours;
     }
+  
     public String getTotalMentor(String menteeID) 
             throws NamingException, SQLException{
         Connection con = null;
@@ -581,5 +582,4 @@ public class RequestsDAO implements Serializable {
         }
         return totalMentor;
     }
-
 }
