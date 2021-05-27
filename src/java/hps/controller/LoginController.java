@@ -5,7 +5,9 @@
  */
 package hps.controller;
 
+
 import hps.users.UsersCreateError;
+
 import hps.users.UsersDAO;
 import hps.users.UsersDTO;
 import java.io.IOException;
@@ -27,11 +29,13 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
+
     private static final String MENTEE_PAGE = "MenteeHomePage";
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
     private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "";
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
