@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/HappyProgramming" allowCasualMultipartParsing="true">
-    <Resource
-        name="DBContext" auth="Container" type="javax.sql.DataSource"
-        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-        url="jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming;
-                    instanceName=SQLExpress2019"
-        username="sa" password="123456"
-    />
+<Context allowCasualMultipartParsing="true" path="/HappyProgramming">
+  <Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" name="DBContext" password="123456" type="javax.sql.DataSource" url="jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming;                     instanceName=SQLExpress2019" username="sa"/>
 </Context>

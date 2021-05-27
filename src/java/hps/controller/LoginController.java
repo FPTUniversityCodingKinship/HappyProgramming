@@ -5,7 +5,6 @@
  */
 package hps.controller;
 
-
 import hps.users.UsersCreateError;
 
 import hps.users.UsersDAO;
@@ -36,7 +35,6 @@ public class LoginController extends HttpServlet {
     private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "";
 
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -58,7 +56,7 @@ public class LoginController extends HttpServlet {
         boolean flag = false;
         String url = ERROR_PAGE;
         String sout = "";
-        
+
         try {
             if (username.isEmpty()) {
                 flag = true;
@@ -74,10 +72,13 @@ public class LoginController extends HttpServlet {
                 if (result != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
-                    if (remember.equals("ON")) {
-                        Cookie cookie = new Cookie(username, password);
-                        cookie.setMaxAge(60*5);
-                        response.addCookie(cookie);
+                    System.out.println(remember);
+                    if (remember != null) {
+                        if (remember.equals("ON")) {
+                            Cookie cookie = new Cookie(username, password);
+                            cookie.setMaxAge(60 * 5);
+                            response.addCookie(cookie);
+                        }
                     }
                     String role = result.getUserID().substring(0, 2);
                     if (result.isStatus()) {
@@ -95,14 +96,12 @@ public class LoginController extends HttpServlet {
                                 sout = "Logged in as Admin. ";
                                 break;
                         }
-                    }
-                    else {
+                    } else {
                         url = INACTIVE_PAGE;
                         sout += "Activation Status of ["
-                                    + result.getUsername() + "] is [false]";
+                                + result.getUsername() + "] is [false]";
                     }
-                } 
-                else {
+                } else {
                     flag = true;
                     err.setLoginInfoNotMatch("Username or Password is incorrect");
                 }
@@ -112,8 +111,7 @@ public class LoginController extends HttpServlet {
                 sout = "Failed to Login. ";
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
-            }
-            else {
+            } else {
                 response.sendRedirect(url);
             }
         } catch (NamingException ex) {
@@ -127,7 +125,7 @@ public class LoginController extends HttpServlet {
             if (out != null) {
                 out.close();
             }
-        } 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -23,7 +23,8 @@
             Welcome, ${CURRENT_USER.username}<br/>
             <a href="MenteeRequestPage">Create request</a><br/>
             <a href="MenteeListRequest">List my requests</a><br/>
-            <a href="MenteeStatisticRequest">Statistic of requests</a>
+            <a href="MenteeStatisticRequest">Statistic of requests</a><br />
+            <a href="UpdateProfilePage">View Profile</a>
         </c:if>
     </body>
 </html>
