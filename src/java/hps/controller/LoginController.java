@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,6 +33,7 @@ public class LoginController extends HttpServlet {
     private static final String MENTEE_PAGE = "MenteeHomePage";
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
+    private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "";
 
 
@@ -51,9 +53,11 @@ public class LoginController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
+        String remember = request.getParameter("chkCookie");
         UsersCreateError err = new UsersCreateError();
         boolean flag = false;
         String url = ERROR_PAGE;
+        String sout = "";
         
         try {
             if (username.isEmpty()) {
@@ -70,25 +74,52 @@ public class LoginController extends HttpServlet {
                 if (result != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", result);
-                    url = MENTEE_PAGE;
+                    if (remember.equals("ON")) {
+                        Cookie cookie = new Cookie(username, password);
+                        cookie.setMaxAge(60*5);
+                        response.addCookie(cookie);
+                    }
+                    String role = result.getUserID().substring(0, 2);
+                    if (result.isStatus()) {
+                        switch (role) {
+                            case "ME":
+                                url = MENTEE_PAGE;
+                                sout = "Logged in as Mentee. ";
+                                break;
+                            case "MT":
+                                url = MENTOR_PAGE;
+                                sout = "Logged in as Mentor. ";
+                                break;
+                            case "AD":
+                                url = ADMIN_PAGE;
+                                sout = "Logged in as Admin. ";
+                                break;
+                        }
+                    }
+                    else {
+                        url = INACTIVE_PAGE;
+                        sout += "Activation Status of ["
+                                    + result.getUsername() + "] is [false]";
+                    }
                 } 
                 else {
                     flag = true;
-                    err.setLoginInfoNotMatch("Username or Password is incorrect.");
+                    err.setLoginInfoNotMatch("Username or Password is incorrect");
                 }
             }
             if (flag == true) {
                 request.setAttribute("LOGIN_ERROR", err);
+                sout = "Failed to Login. ";
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
+            sout = "NamingException was caught.";
         } catch (SQLException ex) {
             log(ex.getMessage());
+            sout = "SQLException was caught.";
         } finally {
-//            String uri = request.getRequestURI();
-//            System.out.println("URL:" + url);
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            System.out.println("[LoginController] " + sout);
+            response.sendRedirect(url);
             if (out != null) {
                 out.close();
             }
