@@ -15,8 +15,10 @@ public class RequestError implements Serializable{
     private String mentorIDConflictError;
     private String contentLengthError;
     private String titleLengthError;
-    private String deadlineDateTimeError;
-    private String deadlineError;
+//    private String deadlineDateTimeError;
+//    private String deadlineError;
+    private String deadlineDateError;
+    private String deadlineTimeError;
     private String ckbError;
 
     public RequestError() {
@@ -67,31 +69,31 @@ public class RequestError implements Serializable{
     /**
      * @return the deadlineDateTimeError
      */
-    public String getDeadlineDateTimeError() {
-        return deadlineDateTimeError;
-    }
-
-    /**
-     * @param deadlineDateTimeError the deadlineDateTimeError to set
-     */
-    public void setDeadlineDateTimeError(String deadlineDateTimeError) {
-        this.deadlineDateTimeError = deadlineDateTimeError;
-    }
-
-    /**
-     * @return the deadlineError
-     */
-    public String getDeadlineError() {
-        return deadlineError;
-    }
-
-    /**
-     * @param deadlineError the deadlineError to set
-     */
-    public void setDeadlineError(String deadlineError) {
-        this.deadlineError = deadlineError;
-    }
-
+//    public String getDeadlineDateTimeError() {
+//        return deadlineDateTimeError;
+//    }
+//
+//    /**
+//     * @param deadlineDateTimeError the deadlineDateTimeError to set
+//     */
+//    public void setDeadlineDateTimeError(String deadlineDateTimeError) {
+//        this.deadlineDateTimeError = deadlineDateTimeError;
+//    }
+//
+//    /**
+//     * @return the deadlineError
+//     */
+//    public String getDeadlineError() {
+//        return deadlineError;
+//    }
+//
+//    /**
+//     * @param deadlineError the deadlineError to set
+//     */
+//    public void setDeadlineError(String deadlineError) {
+//        this.deadlineError = deadlineError;
+//    }
+    
     /**
      * @return the ckbError
      */
@@ -104,6 +106,34 @@ public class RequestError implements Serializable{
      */
     public void setCkbError(String ckbError) {
         this.ckbError = ckbError;
+    }
+
+    /**
+     * @return the deadlineDateError
+     */
+    public String getDeadlineDateError() {
+        return deadlineDateError;
+    }
+
+    /**
+     * @param deadlineDateError the deadlineDateError to set
+     */
+    public void setDeadlineDateError(String deadlineDateError) {
+        this.deadlineDateError = deadlineDateError;
+    }
+
+    /**
+     * @return the deadlineTimeError
+     */
+    public String getDeadlineTimeError() {
+        return deadlineTimeError;
+    }
+
+    /**
+     * @param deadlineTimeError the deadlineTimeError to set
+     */
+    public void setDeadlineTimeError(String deadlineTimeError) {
+        this.deadlineTimeError = deadlineTimeError;
     }
 
     
