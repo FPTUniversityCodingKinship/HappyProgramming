@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet {
             }
             if (password.isEmpty()) {
                 flag = true;
-                err.setUsernameLengthErr("Password is empty");
+                err.setPasswordLengthErr("Password is empty");
             }
             if (flag == false) {
                 UsersDAO usersDao = new UsersDAO();
@@ -106,6 +106,11 @@ public class LoginController extends HttpServlet {
             if (flag == true) {
                 request.setAttribute("LOGIN_ERROR", err);
                 sout = "Failed to Login. ";
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            }
+            else {
+                response.sendRedirect(url);
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
@@ -115,7 +120,6 @@ public class LoginController extends HttpServlet {
             sout = "SQLException was caught.";
         } finally {
             System.out.println("[LoginController] " + sout);
-            response.sendRedirect(url);
             if (out != null) {
                 out.close();
             }
