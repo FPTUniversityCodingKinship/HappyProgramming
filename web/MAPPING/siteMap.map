@@ -2,6 +2,7 @@
 # -----------------------------------------------
 # Start of Controller
 Login = LoginController
+Logout = LogoutController
 FollowingRequest = FollowingRequestController
 Approve = ApproveRequestController
 Reject = RejectRequestController
@@ -15,12 +16,14 @@ MenteeStatisticRequest = MenteeStatisticRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.html
-LoginSuccess = loginsuccess_placeholder.html
+ = login.jsp
+MailVerificationPage = userVerification.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp
 MenteeStatisticRequestPage = mentee_statisticRequest.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = viewInvitingRequest.jsp
+MentorHomePage = mentor_homepage.jsp
+AdminHomePage = admin_homepage.jsp
 # End of Page
