@@ -326,10 +326,17 @@ public class RequestsDAO implements Serializable {
                     result = true;
                 }
             }
-            
         } finally {
             if (stmt != null) {
                 stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return result;
+    }
 
     public boolean menteeDeleteRequest(String requestID) 
             throws SQLException, NamingException{
@@ -391,8 +398,7 @@ public class RequestsDAO implements Serializable {
             }
         }
 
-        
-        return result;
+        return false;
     }
     
     public boolean rejectRequest(String requestID) 
@@ -422,8 +428,13 @@ public class RequestsDAO implements Serializable {
         } finally {
             if (stmt != null) {
                 stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
 
-        return false;
+        return result;
     }
 
     public ArrayList<String> getRequestTitle(String menteeID) 
@@ -531,10 +542,6 @@ public class RequestsDAO implements Serializable {
                 con.close();
             }
         }
-
-        
-        return result;
-    }
     
         return totalHours;
     }
@@ -574,6 +581,5 @@ public class RequestsDAO implements Serializable {
         }
         return totalMentor;
     }
-
 
 }
