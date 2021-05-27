@@ -21,7 +21,9 @@
             </form>
             <c:set var="CURRENT_USER" value="${sessionScope.CURRENT_USER}"/>
             Welcome, ${CURRENT_USER.username}<br/>
-            <a href="mentee_request.jsp">Create request</a>
+            <a href="MenteeRequestPage">Create request</a><br/>
+            <a href="MenteeListRequest">List my requests</a><br/>
+            <a href="MenteeStatisticRequest">Statistic of requests</a>
         </c:if>
     </body>
 </html>

@@ -8,15 +8,13 @@ package hps.controller;
 import hps.requests.RequestError;
 import hps.requests.RequestsDAO;
 import hps.skills.SkillsDAO;
-import hps.users.UsersDAO;
 import hps.users.UsersDTO;
+import hps.validation.Validation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,9 +47,9 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
         PrintWriter out = response.getWriter();
         
         String title = request.getParameter("title");
-        String content = request.getParameter("content");
+        String reqContent = request.getParameter("reqContent");
         String mentorID = request.getParameter("mentorID");
-        String[] skills = request.getParameterValues("ckb");
+        String[] skillsName = request.getParameterValues("ckb");
         String status = "P";
         
         String deadlineDate = request.getParameter("deadlineDate");
@@ -72,10 +70,10 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
             RequestsDAO requestsDAO = new RequestsDAO();
             SkillsDAO skillsDAO = new SkillsDAO();
             
-            String skillsID = skillsDAO.getSkillsID(skills);
-            String requestID = requestsDAO.generateRequestID(skills);
+            String skillsID = skillsDAO.getSkillsID(skillsName);
+            String requestID = requestsDAO.generateRequestID(skillsName);
             
-            if(content.trim().length()<2 || content.trim().length()>500){
+            if(reqContent.trim().length()<2 || reqContent.trim().length()>500){
                 isError = true;
                 errors.setContentLengthError("Content must be 2-500 characters");
             }
@@ -83,32 +81,65 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
                 isError = true;
                 errors.setTitleLengthError("Title must be 1-100 characters");
             }
-            int diff = openedTime.compareTo(deadline);
-            if(diff >= 0){
-                isError = true;
-                errors.setDeadlineError("Overdue deadline!");
-            }
+            Validation.validDate(deadlineDate);
+            Validation.validTime(deadlineHour);
+            
             if(isError){
                 request.setAttribute("REQUEST_ERROR", errors);
             }else{
                 boolean result = requestsDAO.menteeCreateRequest(requestID , menteeID, 
-                    mentorID, skillsID, deadline, title, content, status, openedTime);
+                    mentorID, skillsID, deadline, title, reqContent, status, openedTime);
                 if(result){
                     url = REQUEST_SUCCESS;
                 }
             }
         } catch (NamingException ex) {
-            log("NamingException: " + ex.getMessage());
+            log("MenteeRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("SQLException: " + ex.getMessage());
+            log("MenteeRequestController SQLException: " + ex.getMessage());
             if(ex.getMessage().contains("conflicted")){
                 errors.setMentorIDConflictError("Not a valid mentor");
                 request.setAttribute("REQUEST_ERROR", errors);
-            }else if(ex.getMessage().contains("datetime")){
-                errors.setDeadlineDateTimeError("Not a valid deadline!");
+            }
+        } catch (Exception ex){
+            log("MenteeRequestController Exception: " + ex.getMessage());
+            if(ex.getMessage().contains("For input string")){
+                errors.setDeadlineDateError("Date: year-month-day, Time: hour:minute");
                 request.setAttribute("REQUEST_ERROR", errors);
             }
-        }        
+            if(ex.getMessage().contains("Exceed 3")){
+                errors.setDeadlineDateError("Date must follow: year-month-day");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Not valid date")){
+                errors.setDeadlineDateError("Not a valid date");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Overdue deadline year")){
+                errors.setDeadlineDateError("Overdue deadline year");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Overdue deadline month")){
+                errors.setDeadlineDateError("Overdue deadline month");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Overdue deadline day")){
+                errors.setDeadlineDateError("Overdue deadline day");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Exceed 2")){
+                errors.setDeadlineTimeError("Time must follow: hour:minute");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Not valid hour")){
+                errors.setDeadlineTimeError("Not valid hour");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+            if(ex.getMessage().contains("Not valid minute")){
+                errors.setDeadlineTimeError("Not valid minute");
+                request.setAttribute("REQUEST_ERROR", errors);
+            }
+        }
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
