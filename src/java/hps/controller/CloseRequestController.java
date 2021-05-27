@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
-@WebServlet(name = "ApproveRequestController", urlPatterns = {"/ApproveRequestController"})
-public class ApproveRequestController extends HttpServlet {
+@WebServlet(name = "CloseRequestController", urlPatterns = {"/CloseRequestController"})
+public class CloseRequestController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,22 +45,22 @@ public class ApproveRequestController extends HttpServlet {
             String requestID = request.getParameter("requestID");
             if (!requestID.isEmpty()) {
                 RequestsDAO dao = new RequestsDAO();
-                boolean iApprove = dao.approveRequest(requestID);
+                boolean iClose = dao.closeRequest(requestID);
                 
-                if (iApprove) {
+                if (iClose) {
                     url = redirect;
                 } else {
-                    request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+                    request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
                     url = redirect;
                 }
             }
         } catch (SQLException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
             url = redirect;
         } catch (NamingException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
             url = redirect;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
