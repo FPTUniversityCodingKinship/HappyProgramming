@@ -5,25 +5,24 @@
  */
 package hps.controller;
 
-import hps.requests.RequestsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Tran Phong <phongntse150974@fpt.edu.vn>
+ * @author Admin
  */
-@WebServlet(name = "ApproveRequestController", urlPatterns = {"/ApproveRequestController"})
-public class ApproveRequestController extends HttpServlet {
-
+@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
+public class LogoutController extends HttpServlet {
+    private final String LOGIN_PAGE = "";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,38 +33,25 @@ public class ApproveRequestController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
-        String redirect = request.getParameter("redirect");
-        String url = redirect;
+        HttpSession session = request.getSession(false);
+        String url = LOGIN_PAGE;
         
         try {
-            String requestID = request.getParameter("requestID");
-            if (!requestID.isEmpty()) {
-                RequestsDAO dao = new RequestsDAO();
-                boolean iApprove = dao.approveRequest(requestID);
-                
-                if (iApprove) {
-                    url = redirect;
-                } else {
-                    request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-                    url = redirect;
-                }
+            Cookie[] cookies = request.getCookies();
+            
+            for (Cookie cookie : cookies) {
+                cookie.setValue("");
+                response.addCookie(cookie);
             }
-        } catch (SQLException ex) {
-            log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = redirect;
-        } catch (NamingException ex) {
-            log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = redirect;
+            session.invalidate();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-            out.close();
+            response.sendRedirect(url);
+            if (out != null) {
+                out.close();
+            }
         }
     }
 
@@ -80,7 +66,7 @@ public class ApproveRequestController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -94,7 +80,7 @@ public class ApproveRequestController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         processRequest(request, response);
     }
 

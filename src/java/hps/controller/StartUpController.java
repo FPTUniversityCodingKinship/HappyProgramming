@@ -5,25 +5,26 @@
  */
 package hps.controller;
 
-import hps.requests.RequestsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Tran Phong <phongntse150974@fpt.edu.vn>
+ * @author Admin
  */
-@WebServlet(name = "ApproveRequestController", urlPatterns = {"/ApproveRequestController"})
-public class ApproveRequestController extends HttpServlet {
-
+@WebServlet(name = "StartUpController", urlPatterns = {"/StartUpController"})
+public class StartUpController extends HttpServlet {
+    private final String LOGIN_PAGE = "LoginPage";
+    private final String LOGIN_CONTROLLER = "Login";
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,38 +35,38 @@ public class ApproveRequestController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String redirect = request.getParameter("redirect");
-        String url = redirect;
+        Cookie[] cookies = null;
+        String msg = "";
+        String url = LOGIN_PAGE;
         
         try {
-            String requestID = request.getParameter("requestID");
-            if (!requestID.isEmpty()) {
-                RequestsDAO dao = new RequestsDAO();
-                boolean iApprove = dao.approveRequest(requestID);
-                
-                if (iApprove) {
-                    url = redirect;
+            cookies = request.getCookies();
+            if (cookies != null) {
+                msg = "Cookies file was found. ";
+                Cookie lastCookie = cookies[cookies.length-1];
+                String username = lastCookie.getName();
+                String password = lastCookie.getValue();
+
+                if (!username.equals("") && !password.equals("")) {
+                    msg += "Redirect to [LoginController]. ";
+                    url = LOGIN_CONTROLLER + "?"
+                                + "txtUsername=" + username + "&"
+                                + "txtPassword=" + password;
                 } else {
-                    request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-                    url = redirect;
+                    msg += "Wrong cookie or logged out. ";
                 }
             }
-        } catch (SQLException ex) {
-            log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = redirect;
-        } catch (NamingException ex) {
-            log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("APPROVE_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = redirect;
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
-            out.close();
+        }
+        finally {
+            response.sendRedirect(url);
+            if (cookies != null)
+                System.out.println("[StartUpController] " + msg);
+            if (out != null)
+                out.close();
         }
     }
 
@@ -80,7 +81,7 @@ public class ApproveRequestController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -94,7 +95,7 @@ public class ApproveRequestController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
         processRequest(request, response);
     }
 

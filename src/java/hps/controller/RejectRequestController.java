@@ -23,9 +23,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "RejectRequestController", urlPatterns = {"/RejectRequestController"})
 public class RejectRequestController extends HttpServlet {
-    
-    private static final String VIEW_CONTROLLER = "FollowingRequest";
-    private static final String ERROR = "FollowingRequest";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,29 +38,30 @@ public class RejectRequestController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = VIEW_CONTROLLER;
+        String redirect = request.getParameter("redirect");
+        String url = redirect;
         
         try {
             String requestID = request.getParameter("requestID");
-            if (!requestID.isBlank()) {
+            if (!requestID.isEmpty()) {
                 RequestsDAO dao = new RequestsDAO();
                 boolean iReject = dao.rejectRequest(requestID);
                 
                 if (iReject) {
-                    url = VIEW_CONTROLLER;
+                    url = redirect;
                 } else {
                     request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
-                    url = ERROR;
+                    url = redirect;
                 }
             }
         } catch (SQLException ex) {
             log("Error at RejectRequestController: " + ex.getMessage());
             request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = ERROR;
+            url = redirect;
         } catch (NamingException ex) {
             log("Error at RejectRequestController: " + ex.getMessage());
             request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
-            url = ERROR;
+            url = redirect;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
