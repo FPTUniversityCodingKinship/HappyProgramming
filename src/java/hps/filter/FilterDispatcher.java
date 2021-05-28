@@ -121,6 +121,10 @@ public class FilterDispatcher implements Filter {
             int lastIndex = uri.lastIndexOf("/");
             String resource = uri.substring(lastIndex + 1);
             String url = siteMap.get(resource);
+//            int markParams = uri.lastIndexOf("?");
+//            String params = "";
+//            if (markParams > 0)
+//                params = uri.substring(lastIndex);
             
             System.out.print("[FilterDispatcher] passed, URI:[" + uri + "]"); 
             System.out.println(";URL:[" + url + "]");
@@ -128,8 +132,12 @@ public class FilterDispatcher implements Filter {
             //3. Check if url != null
             if (url != null) {
                 if (url.lastIndexOf(".html") > 0
-                        || resource.lastIndexOf(".css") > 0) {
-                    httpServletResponse.sendRedirect(url);
+                        || resource.lastIndexOf(".css") > 0
+                            || resource.lastIndexOf(".js") > 0) {
+//                    if (params.length() > 0)
+//                        httpServletResponse.sendRedirect(url + params);
+//                    else
+                        httpServletResponse.sendRedirect(url);
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
@@ -137,11 +145,10 @@ public class FilterDispatcher implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Throwable t) {
-            problem = t;
-            t.printStackTrace();
+        } catch (IOException | ServletException ex) {
+            problem = ex;
+            ex.printStackTrace();
         }
-//        doAfterProcessing(request, response);
         
         if (problem != null) {
             if (problem instanceof ServletException) {
