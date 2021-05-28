@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 
 /**
@@ -712,5 +714,41 @@ public class RequestsDAO implements Serializable {
             }
         }
         return request;
+    }
+    
+    public Map<String,String> loadRequestForRating(String menteeID) 
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Map<String,String> reqInfo = new HashMap<>();
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select requestID, title, mentorID " 
+                        + "From requests " 
+                        + "Where closedTime is not null AND mentorID is not null "
+                        + "AND menteeID like ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                while(rs.next()){
+                    reqInfo.put(rs.getString("requestID"), rs.getString("title") 
+                            + "," + rs.getString("mentorID"));
+                }
+            }
+        }finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return reqInfo;
     }
 }

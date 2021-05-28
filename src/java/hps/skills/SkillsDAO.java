@@ -128,7 +128,7 @@ public class SkillsDAO implements Serializable {
         return null;
     }
     
-    public static String getSkillsName(String skillID)
+    public String getSkillsName(String skillID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -178,7 +178,7 @@ public class SkillsDAO implements Serializable {
         return null;
     }
     
-    public static List<SkillsDTO> loadSkills() 
+    public List<SkillsDTO> loadSkills() 
             throws NamingException, SQLException{
         Connection con = null;
         PreparedStatement stm = null;

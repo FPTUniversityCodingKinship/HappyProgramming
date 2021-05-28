@@ -51,15 +51,13 @@
                         <font color="red">${error.contentLengthError}</font><br/>
                     </c:if>
                     Select skill (1-3): <br/>
-                    <%
-                        ArrayList<SkillsDTO> skillList = (ArrayList)hps.skills.SkillsDAO.loadSkills();
-                        for(SkillsDTO skill : skillList){
-                            %>
-                    <input type="checkbox" name="ckb" value="<%= skill.getSkillName() %>" 
-                           onclick="return chkControl()"/><%= skill.getSkillName() %><br/>
-                    <%
-                        }
-                    %>
+                    <c:if test="${not empty sessionScope.SKILL_LIST}">
+                        <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
+                        <c:forEach var="skill" items="${skillList}">
+                            <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                                   onclick="return chkControl()"/>${skill.skillName}<br/>
+                        </c:forEach>
+                    </c:if>
                     <c:if test="${not empty error.ckbError}" >
                         <font color="red">${error.ckbError}</font><br/>
                     </c:if>
@@ -73,7 +71,7 @@
             </c:if>
         </c:if>
         <c:if test="${empty requestScope.LIST_REQUEST}">
-            No request yet!
+            No request yet!<br/>
         </c:if>
         <a href="MenteeHomePage">Back to homepage</a>    
         <script>
