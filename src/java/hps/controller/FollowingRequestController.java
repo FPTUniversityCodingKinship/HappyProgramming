@@ -63,8 +63,12 @@ public class FollowingRequestController extends HttpServlet {
         }
         catch (SQLException ex) {
             log("Error at FollowingRequestController: " + ex.getMessage());
+            request.setAttribute("FOLLOWING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at FollowingRequestController: " + ex.getMessage());
+            request.setAttribute("FOLLOWING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = VIEW_PAGE;
         }
         finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

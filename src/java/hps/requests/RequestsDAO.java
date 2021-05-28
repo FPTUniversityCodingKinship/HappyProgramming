@@ -118,14 +118,15 @@ public class RequestsDAO implements Serializable {
 
             if (con != null) {
                 String sql = "SELECT requestID, menteeID, mentorID, skillsID, "
-                        + "deadline, title, content, status, openedTime, "
+                        + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
-                        + "WHERE mentorID = ? AND status = ?";
+                        + "WHERE mentorID = ? AND (status = ? OR status = ?)";
 
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, mentorID);
-                stmt.setString(3, "P");
+                stmt.setString(2, "P");
+                stmt.setString(3, "A");
 
                 rs = stmt.executeQuery();
                 while (rs.next()) {
@@ -321,8 +322,8 @@ public class RequestsDAO implements Serializable {
                 stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
                 stmt.setString(3, requestID);
                 
-                boolean iCheck = stmt.execute();
-                if (iCheck) {
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
                     result = true;
                 }
             }
@@ -456,8 +457,8 @@ public class RequestsDAO implements Serializable {
                 stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
                 stmt.setString(3, requestID);
                 
-                boolean iCheck = stmt.execute();
-                if (iCheck) {
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
                     result = true;
                 }
             }
@@ -583,6 +584,7 @@ public class RequestsDAO implements Serializable {
     
         return totalHours;
     }
+  
     public String getTotalMentor(String menteeID) 
             throws NamingException, SQLException{
         Connection con = null;
@@ -620,6 +622,7 @@ public class RequestsDAO implements Serializable {
         return totalMentor;
     }
     
+
     public List<RequestsDTO> loadListRequest(String menteeID) 
             throws NamingException, SQLException {
         Connection con = null;
@@ -664,8 +667,41 @@ public class RequestsDAO implements Serializable {
                 con.close();
             }
         }
-
         return listRequest;
+    }
+    public boolean closeRequest(String requestID) 
+            throws SQLException, NamingException {
+        boolean result = false;
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE requests "
+                        + "SET status = ?, closedTime = ? "
+                        + "WHERE requestID = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "C");
+                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(3, requestID);
+                
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
+                    result = true;
+                }
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
     
     public RequestsDTO getRequestByRequestID(String requestID) 

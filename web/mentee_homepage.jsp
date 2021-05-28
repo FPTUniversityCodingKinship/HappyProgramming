@@ -14,6 +14,11 @@
     </head>
     <body>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
+            <form action="Logout" method="POST" id="Logout">
+            <p id="Welcome">
+                <input type="submit" value="Logout" class="btn"/>
+            </p>
+            </form>
             <c:set var="CURRENT_USER" value="${sessionScope.CURRENT_USER}"/>
             Welcome, ${CURRENT_USER.username}<br/>
             <a href="MenteeRequestPage">Create request</a><br/>

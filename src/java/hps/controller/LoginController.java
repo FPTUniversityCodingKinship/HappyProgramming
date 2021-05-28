@@ -5,7 +5,9 @@
  */
 package hps.controller;
 
+
 import hps.users.UsersCreateError;
+
 import hps.users.UsersDAO;
 import hps.users.UsersDTO;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -26,10 +29,13 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
+
     private static final String MENTEE_PAGE = "MenteeHomePage";
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
+    private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "";
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,9 +53,11 @@ public class LoginController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
+        String remember = request.getParameter("chkCookie");
         UsersCreateError err = new UsersCreateError();
         boolean flag = false;
         String url = ERROR_PAGE;
+        String sout = "";
         
         try {
             if (username.isEmpty()) {
@@ -58,33 +66,64 @@ public class LoginController extends HttpServlet {
             }
             if (password.isEmpty()) {
                 flag = true;
-                err.setUsernameLengthErr("Password is empty");
+                err.setPasswordLengthErr("Password is empty");
             }
             if (flag == false) {
                 UsersDAO usersDao = new UsersDAO();
-                UsersDTO result = usersDao.checkLogin(username, password);
-                if (result != null) {
+                UsersDTO user = usersDao.checkLogin(username, password);
+                if (user != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("CURRENT_USER", result);
-                    url = MENTEE_PAGE;
+                    session.setAttribute("CURRENT_USER", user);
+                    if (remember != null) {
+                        Cookie cookie = new Cookie(username, password);
+                        cookie.setMaxAge(60*5);
+                        response.addCookie(cookie);
+                    }
+                    String role = user.getUserID().substring(0, 2);
+                    if (user.isStatus()) {
+                        switch (role) {
+                            case "ME":
+                                url = MENTEE_PAGE;
+                                sout = "Logged in as Mentee. ";
+                                break;
+                            case "MT":
+                                url = MENTOR_PAGE;
+                                sout = "Logged in as Mentor. ";
+                                break;
+                            case "AD":
+                                url = ADMIN_PAGE;
+                                sout = "Logged in as Admin. ";
+                                break;
+                        }
+                    }
+                    else {
+                        url = INACTIVE_PAGE;
+                        sout += "Activation Status of ["
+                                    + user.getUsername() + "] is [false]";
+                    }
                 } 
                 else {
                     flag = true;
-                    err.setLoginInfoNotMatch("Username or Password is incorrect.");
+                    err.setLoginInfoNotMatch("Username or Password is incorrect");
                 }
             }
             if (flag == true) {
                 request.setAttribute("LOGIN_ERROR", err);
+                sout = "Failed to Login. ";
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            }
+            else {
+                response.sendRedirect(url);
             }
         } catch (NamingException ex) {
             log(ex.getMessage());
+            sout = "NamingException was caught.";
         } catch (SQLException ex) {
             log(ex.getMessage());
+            sout = "SQLException was caught.";
         } finally {
-//            String uri = request.getRequestURI();
-//            System.out.println("URL:" + url);
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            System.out.println("[LoginController] " + sout);
             if (out != null) {
                 out.close();
             }
