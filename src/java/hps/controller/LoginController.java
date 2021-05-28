@@ -68,18 +68,17 @@ public class LoginController extends HttpServlet {
             }
             if (flag == false) {
                 UsersDAO usersDao = new UsersDAO();
-                UsersDTO result = usersDao.checkLogin(username, password);
-                if (result != null) {
+                UsersDTO user = usersDao.checkLogin(username, password);
+                if (user != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("CURRENT_USER", result);
-                    System.out.println(remember);
-                    if (remember.equals("ON")) {
+                    session.setAttribute("CURRENT_USER", user);
+                    if (remember != null) {
                         Cookie cookie = new Cookie(username, password);
                         cookie.setMaxAge(60 * 5);
                         response.addCookie(cookie);
                     }
-                    String role = result.getUserID().substring(0, 2);
-                    if (result.isStatus()) {
+                    String role = user.getUserID().substring(0, 2);
+                    if (user.isStatus()) {
                         switch (role) {
                             case "ME":
                                 url = MENTEE_PAGE;
@@ -97,7 +96,7 @@ public class LoginController extends HttpServlet {
                     } else {
                         url = INACTIVE_PAGE;
                         sout += "Activation Status of ["
-                                + result.getUsername() + "] is [false]";
+                                    + user.getUsername() + "] is [false]";
                     }
                 } else {
                     flag = true;
