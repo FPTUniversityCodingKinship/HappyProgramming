@@ -29,8 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
-
-    private static final String MENTEE_PAGE = "MenteeHomePage";
+    private static final String MENTEE_PAGE = "MenteeStartUp";
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
     private static final String INACTIVE_PAGE = "MailVerificationPage";

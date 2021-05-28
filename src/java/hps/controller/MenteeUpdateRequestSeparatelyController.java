@@ -7,6 +7,7 @@ package hps.controller;
 
 import hps.requests.RequestError;
 import hps.requests.RequestsDAO;
+import hps.requests.RequestsDTO;
 import hps.skills.SkillsDAO;
 import hps.users.UsersDTO;
 import hps.validation.Validation;
@@ -28,10 +29,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "MenteeRequestController", urlPatterns = {"/MenteeRequestController"})
-public class MenteeRequestController extends HttpServlet {
-private final String REQUEST_SUCCESS = "MenteeHomePage";
-private final String REQUEST_ERROR = "MenteeRequestPage";
+@WebServlet(name = "MenteeUpdateRequestSeparatelyController", urlPatterns = {"/MenteeUpdateRequestSeparatelyController"})
+public class MenteeUpdateRequestSeparatelyController extends HttpServlet {
+private final String UPDATE_REQUEST_SUCCESS_PAGE = "MenteeHomePage";
+private final String UPDATE_REQUEST_ERROR_PAGE = "MenteeUpdateRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,37 +46,30 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String url = UPDATE_REQUEST_ERROR_PAGE;
+        
+        HttpSession session = request.getSession();
+        RequestsDTO requestInfo = (RequestsDTO)session.getAttribute("REQUEST_INFO");
+        String requestID = requestInfo.getRequestID();
         
         String title = request.getParameter("title");
+        String deadlineDate = request.getParameter("deadlineDate");
+        String deadlineHour = request.getParameter("deadlineHour");
+        String deadline = deadlineDate + " " + deadlineHour ;
         String reqContent = request.getParameter("reqContent");
         String mentorID = request.getParameter("mentorID");
         if(mentorID.trim().length() == 0){
             mentorID = null;
         }
         String[] skillsName = request.getParameterValues("ckb");
-        String status = "P";
-        
-        String deadlineDate = request.getParameter("deadlineDate");
-        String deadlineHour = request.getParameter("deadlineHour");
-        String deadline = deadlineDate + " " + deadlineHour ;
-        
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        String openedTime = dtf.format(now);
         boolean isError = false;
         RequestError errors = new RequestError();
-        
-        String url = REQUEST_ERROR;
+
         try{
-            HttpSession session = request.getSession();
-            UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String menteeID = user.getUserID();
             RequestsDAO requestsDAO = new RequestsDAO();
             SkillsDAO skillsDAO = new SkillsDAO();
             
             String skillsID = skillsDAO.getSkillsID(skillsName);
-            String requestID = requestsDAO.generateRequestID(skillsName);
-            
             if(reqContent.trim().length()<2 || reqContent.trim().length()>500){
                 isError = true;
                 errors.setContentLengthError("Content must be 2-500 characters");
@@ -88,21 +82,23 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
             Validation.validTime(deadlineHour);
             
             if(isError){
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }else{
-                boolean result = requestsDAO.menteeCreateRequest(requestID , menteeID, 
-                    mentorID, skillsID, deadline, title, reqContent, status, openedTime);
+                boolean result = requestsDAO.menteeUpdateRequestSeparately(requestID, 
+                        title, deadline, reqContent, skillsID, mentorID);
                 if(result){
-                    url = REQUEST_SUCCESS;
+                    url = UPDATE_REQUEST_SUCCESS_PAGE;
+                    session.removeAttribute("REQUEST_INFO");
                 }
             }
+            
         } catch (NamingException ex) {
             log("MenteeRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
             log("MenteeRequestController SQLException: " + ex.getMessage());
             if(ex.getMessage().contains("conflicted")){
                 errors.setMentorIDConflictError("Not a valid mentor");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
         } catch (Exception ex){
             log("MenteeRequestController Exception: " + ex.getMessage());

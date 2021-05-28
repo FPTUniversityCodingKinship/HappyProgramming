@@ -16,6 +16,11 @@ MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
+MenteeLoadRequest = MenteeLoadRequestController
+MenteeShowRequest = MenteeShowRequestController
+MenteeUpdateRequestSeparately = MenteeUpdateRequestSeparatelyController
+MenteeRate = MenteeRateController
+MenteeStartUp = MenteeStartUpController
 Close = CloseRequestController
 # End of Controller
 # -----------------------------------------------
@@ -27,7 +32,9 @@ UpdateProfilePage = user_profile.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp
+MenteeUpdateRequestPage = mentee_updateRequest.jsp
 MenteeStatisticRequestPage = mentee_statisticRequest.jsp
+MenteeRatePage = mentee_rate.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp

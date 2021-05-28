@@ -81,6 +81,7 @@
                     </c:forEach>
                 </tbody>
             </table>
+        <a href="MenteeHomePage">Back to homepage</a>
         </c:if>
         <c:set var="error" value="${requestScope.UPDATE_REQUEST_ERROR}"/>
         <c:if test="${not empty error.titleLengthError}" >
