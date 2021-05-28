@@ -36,5 +36,6 @@
         <c:if test="${not empty requestScope.TOTAL_MENTOR}" >
             Total mentor: ${requestScope.TOTAL_MENTOR}
         </c:if><br/>
+        <a href="MenteeHomePage">Back to homepage</a>
     </body>
 </html>

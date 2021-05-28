@@ -177,4 +177,39 @@ public class SkillsDAO implements Serializable {
         }
         return null;
     }
+    
+    public List<SkillsDTO> loadSkills() 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<SkillsDTO> skillList = new ArrayList<>();
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select skillID, skillName, status "
+                        + "From skills "
+                        + "Where status = '1' ";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    skillList.add(new SkillsDTO(rs.getString("skillID"), 
+                            rs.getString("skillName"), rs.getBoolean("status")));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return skillList;
+    }
 }

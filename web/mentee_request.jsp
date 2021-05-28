@@ -4,6 +4,8 @@
     Author     : ADMIN
 --%>
 
+<%@page import="hps.skills.SkillsDTO"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -32,11 +34,13 @@
                 <font color="red">${error.contentLengthError}</font><br/>
             </c:if>
             Select skill (1-3): <br/>
-            <input type="checkbox" name="ckb" value="Java" onclick="return chkControl()" />Java <br/>
-            <input type="checkbox" name="ckb" value="CSharp" onclick="return chkControl()"/>CSharp<br/>
-            <input type="checkbox" name="ckb" value="PHP" onclick="return chkControl()"/>PHP<br/>
-            <input type="checkbox" name="ckb" value="Perl" onclick="return chkControl()"/>Perl<br/>
-            <input type="checkbox" name="ckb" value="Ruby" onclick="return chkControl()"/>Ruby<br/>
+            <c:if test="${not empty sessionScope.SKILL_LIST}">
+                <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
+                <c:forEach var="skill" items="${skillList}">
+                    <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                           onclick="return chkControl()"/>${skill.skillName}<br/>
+                </c:forEach>
+            </c:if>
             <c:if test="${not empty error.ckbError}" >
                 <font color="red">${error.ckbError}</font><br/>
             </c:if>
@@ -47,7 +51,7 @@
 
             <input type="submit" value="OK" name="btnAction" onclick="valCkb()"/>
         </form>
-
+        <a href="MenteeHomePage">Back to homepage</a>
         <script>
             function chkControl() {
                 var a = document.getElementsByName("ckb");
