@@ -750,7 +750,7 @@ public class RequestsDAO implements Serializable {
                 con.close();
             }
         }
-        return request;
+        return result;
     }
     
     public Map<String,String> loadRequestForRating(String menteeID) 
