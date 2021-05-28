@@ -5,6 +5,7 @@
  */
 package hps.controller;
 
+
 import hps.users.UsersCreateError;
 
 import hps.users.UsersDAO;
@@ -33,7 +34,8 @@ public class LoginController extends HttpServlet {
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
     private static final String INACTIVE_PAGE = "MailVerificationPage";
-    private static final String ERROR_PAGE = "";
+    private static final String ERROR_PAGE = "LoginPage";
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +58,7 @@ public class LoginController extends HttpServlet {
         boolean flag = false;
         String url = ERROR_PAGE;
         String sout = "";
-
+        
         try {
             if (username.isEmpty()) {
                 flag = true;
@@ -68,18 +70,17 @@ public class LoginController extends HttpServlet {
             }
             if (flag == false) {
                 UsersDAO usersDao = new UsersDAO();
-                UsersDTO result = usersDao.checkLogin(username, password);
-                if (result != null) {
+                UsersDTO user = usersDao.checkLogin(username, password);
+                if (user != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("CURRENT_USER", result);
-                    System.out.println(remember);
-                    if (remember.equals("ON")) {
+                    session.setAttribute("CURRENT_USER", user);
+                    if (remember != null) {
                         Cookie cookie = new Cookie(username, password);
-                        cookie.setMaxAge(60 * 5);
+                        cookie.setMaxAge(60*5);
                         response.addCookie(cookie);
                     }
-                    String role = result.getUserID().substring(0, 2);
-                    if (result.isStatus()) {
+                    String role = user.getUserID().substring(0, 2);
+                    if (user.isStatus()) {
                         switch (role) {
                             case "ME":
                                 url = MENTEE_PAGE;
@@ -94,12 +95,14 @@ public class LoginController extends HttpServlet {
                                 sout = "Logged in as Admin. ";
                                 break;
                         }
-                    } else {
+                    }
+                    else {
                         url = INACTIVE_PAGE;
                         sout += "Activation Status of ["
-                                + result.getUsername() + "] is [false]";
+                                    + user.getUsername() + "] is [false]";
                     }
-                } else {
+                } 
+                else {
                     flag = true;
                     err.setLoginInfoNotMatch("Username or Password is incorrect");
                 }
@@ -109,7 +112,8 @@ public class LoginController extends HttpServlet {
                 sout = "Failed to Login. ";
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
-            } else {
+            }
+            else {
                 response.sendRedirect(url);
             }
         } catch (NamingException ex) {
@@ -123,7 +127,7 @@ public class LoginController extends HttpServlet {
             if (out != null) {
                 out.close();
             }
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

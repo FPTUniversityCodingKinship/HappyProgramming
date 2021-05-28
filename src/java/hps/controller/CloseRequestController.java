@@ -5,24 +5,25 @@
  */
 package hps.controller;
 
+import hps.requests.RequestsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
-    private final String LOGIN_PAGE = "";
-    
+@WebServlet(name = "CloseRequestController", urlPatterns = {"/CloseRequestController"})
+public class CloseRequestController extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,25 +34,38 @@ public class LogoutController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession(false);
-        String url = LOGIN_PAGE;
+        
+        String redirect = request.getParameter("redirect");
+        String url = redirect;
         
         try {
-            Cookie[] cookies = request.getCookies();
-            
-            for (Cookie cookie : cookies) {
-                cookie.setValue("");
-                response.addCookie(cookie);
+            String requestID = request.getParameter("requestID");
+            if (!requestID.isEmpty()) {
+                RequestsDAO dao = new RequestsDAO();
+                boolean iClose = dao.closeRequest(requestID);
+                
+                if (iClose) {
+                    url = redirect;
+                } else {
+                    request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+                    url = redirect;
+                }
             }
-            session.invalidate();
+        } catch (SQLException ex) {
+            log("Error at ApproveRequestController: " + ex.getMessage());
+            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = redirect;
+        } catch (NamingException ex) {
+            log("Error at ApproveRequestController: " + ex.getMessage());
+            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = redirect;
         } finally {
-            response.sendRedirect(url);
-            if (out != null) {
-                out.close();
-            }
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+            out.close();
         }
     }
 
@@ -66,7 +80,7 @@ public class LogoutController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -80,7 +94,7 @@ public class LogoutController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-                throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

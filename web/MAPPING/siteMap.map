@@ -1,8 +1,10 @@
 # Created by FPTUniversityCodingKinship
 # -----------------------------------------------
 # Start of Controller
+ = StartUpController
 Login = LoginController
 Logout = LogoutController
+SignUp = SignUpController
 UpdateProfileController = UpdateProfileServlet
 FollowingRequest = FollowingRequestController
 Approve = ApproveRequestController
@@ -14,18 +16,20 @@ MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
+Close = CloseRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.jsp
+LoginPage = login.jsp
 MailVerificationPage = userVerification.jsp
+SignUpPage = signup.jsp
 UpdateProfilePage = user_profile.jsp
 MenteeHomePage = mentee_homepage.jsp
 MenteeRequestPage = mentee_request.jsp
 MenteeListRequestPage = mentee_listRequest.jsp
 MenteeStatisticRequestPage = mentee_statisticRequest.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
-ViewInvitingRequestPage = viewInvitingRequest.jsp
+ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp
 AdminHomePage = admin_homepage.jsp
 # End of Page
