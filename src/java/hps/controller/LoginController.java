@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
     private static final String MENTOR_PAGE = "MentorHomePage";
     private static final String ADMIN_PAGE = "AdminHomePage";
     private static final String INACTIVE_PAGE = "MailVerificationPage";
-    private static final String ERROR_PAGE = "";
+    private static final String ERROR_PAGE = "LoginPage";
 
 
     /**

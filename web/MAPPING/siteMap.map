@@ -1,6 +1,7 @@
 # Created by FPTUniversityCodingKinship
 # -----------------------------------------------
 # Start of Controller
+ = StartUpController
 Login = LoginController
 Logout = LogoutController
 SignUp = SignUpController
@@ -22,8 +23,7 @@ Close = CloseRequestController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
- = login.jsp
-LoginSuccess = loginsuccess_placeholder.html
+LoginPage = login.jsp
 MailVerificationPage = userVerification.jsp
 SignUpPage = signup.jsp
 UpdateProfilePage = user_profile.jsp

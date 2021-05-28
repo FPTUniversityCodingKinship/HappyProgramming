@@ -7,21 +7,23 @@ package hps.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
-    private final String LOGIN_PAGE = "";
+@WebServlet(name = "StartUpController", urlPatterns = {"/StartUpController"})
+public class StartUpController extends HttpServlet {
+    private final String LOGIN_PAGE = "LoginPage";
+    private final String LOGIN_CONTROLLER = "Login";
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,22 +38,35 @@ public class LogoutController extends HttpServlet {
                 throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession(false);
+        
+        Cookie[] cookies = null;
+        String msg = "";
         String url = LOGIN_PAGE;
         
         try {
-            Cookie[] cookies = request.getCookies();
-            
-            for (Cookie cookie : cookies) {
-                cookie.setValue("");
-                response.addCookie(cookie);
+            cookies = request.getCookies();
+            if (cookies != null) {
+                msg = "Cookies file was found. ";
+                Cookie lastCookie = cookies[cookies.length-1];
+                String username = lastCookie.getName();
+                String password = lastCookie.getValue();
+
+                if (!username.equals("") && !password.equals("")) {
+                    msg += "Redirect to [LoginController]. ";
+                    url = LOGIN_CONTROLLER + "?"
+                                + "txtUsername=" + username + "&"
+                                + "txtPassword=" + password;
+                } else {
+                    msg += "Wrong cookie or logged out. ";
+                }
             }
-            session.invalidate();
-        } finally {
+        }
+        finally {
             response.sendRedirect(url);
-            if (out != null) {
+            if (cookies != null)
+                System.out.println("[StartUpController] " + msg);
+            if (out != null)
                 out.close();
-            }
         }
     }
 
