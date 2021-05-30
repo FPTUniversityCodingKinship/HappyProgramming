@@ -8,6 +8,8 @@ package hps.users;
 import hps.utilities.DBHelper;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -226,5 +228,39 @@ public class UsersDAO implements Serializable {
     }
     public UsersDTO newUser(String username, String password) {
         return null;
+    }
+    
+    public List<String> loadAllMentorsID()
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<String> mentorsID = new ArrayList<>();
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select userID "
+                        + "From users "
+                        + "Where userID like 'MT%'";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    mentorsID.add(rs.getString("userID"));
+                }
+            }
+        } finally {
+            if (rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return mentorsID;
     }
 }

@@ -24,6 +24,7 @@ MenteeStartUp = MenteeStartUpController
 MenteeListSuggestion = MenteeListSuggestionController
 ShowMentorDetails = ShowMentorDetailsController
 Close = CloseRequestController
+AdminViewAllMentor = AdminViewAllMentorController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -42,5 +43,6 @@ ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp
 AdminHomePage = admin_homepage.jsp
+AdminViewAllMentorPage = admin_viewAllMentor.jsp
 # End of Page
 # -----------------------------------------------
