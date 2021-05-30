@@ -104,39 +104,39 @@ private final String UPDATE_REQUEST_ERROR_PAGE = "MenteeUpdateRequestPage";
             log("MenteeRequestController Exception: " + ex.getMessage());
             if(ex.getMessage().contains("For input string")){
                 errors.setDeadlineDateError("Date: year-month-day, Time: hour:minute");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Exceed 3")){
                 errors.setDeadlineDateError("Date must follow: year-month-day");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Not valid date")){
                 errors.setDeadlineDateError("Not a valid date");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Overdue deadline year")){
                 errors.setDeadlineDateError("Overdue deadline year");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Overdue deadline month")){
                 errors.setDeadlineDateError("Overdue deadline month");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Overdue deadline day")){
                 errors.setDeadlineDateError("Overdue deadline day");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Exceed 2")){
                 errors.setDeadlineTimeError("Time must follow: hour:minute");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Not valid hour")){
                 errors.setDeadlineTimeError("Not valid hour");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
             if(ex.getMessage().contains("Not valid minute")){
                 errors.setDeadlineTimeError("Not valid minute");
-                request.setAttribute("REQUEST_ERROR", errors);
+                request.setAttribute("UPDATE_REQUEST_ERROR", errors);
             }
         }
         finally{

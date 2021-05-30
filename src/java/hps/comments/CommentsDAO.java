@@ -9,6 +9,7 @@ import hps.utilities.DBHelper;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.naming.NamingException;
@@ -50,5 +51,39 @@ public class CommentsDAO implements Serializable{
             }
         }
         return false;
+    }
+    
+    public float getAvgStar(String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        float avg = -1;
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+                String sql = "Select AVG(CAST(rate as float)) as avgStar "
+                        + "From comments "
+                        + "Where mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    avg = Float.parseFloat(rs.getString("avgStar"));
+                }
+            }
+        } finally{
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return avg;
     }
 }
