@@ -16,10 +16,11 @@
         <title>Update request</title>
     </head>
     <body>
-        <c:if test="${not empty requestScope.LIST_REQUEST}">
+        <c:if test="${not empty sessionScope.LIST_REQUEST}">
             Choose request for updating: <br/>
-            <c:forEach var="request" items="${requestScope.LIST_REQUEST}">
+            <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                 <c:url var="url" value="MenteeShowRequest">
+                    <c:param name="action" value="Update"/>
                     <c:param name="requestID" value="${request.requestID}"/>
                 </c:url>
                 <a href="${url}">${request.title}</a>
@@ -70,7 +71,7 @@
                 </form>
             </c:if>
         </c:if>
-        <c:if test="${empty requestScope.LIST_REQUEST}">
+        <c:if test="${empty sessionScope.LIST_REQUEST}">
             No request yet!<br/>
         </c:if>
         <a href="MenteeHomePage">Back to homepage</a>    

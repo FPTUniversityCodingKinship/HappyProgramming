@@ -5,13 +5,14 @@
  */
 package hps.controller;
 
-import hps.mentorSkills.MentorSkillsDAO;
+import hps.comments.CommentsDAO;
+import hps.mentorDetails.MentorDetailsDAO;
+import hps.mentorDetails.MentorDetailsDTO;
 import hps.requests.RequestsDAO;
-import hps.requests.RequestsDTO;
+import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,9 +26,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "MenteeShowRequestController", urlPatterns = {"/MenteeShowRequestController"})
-public class MenteeShowRequestController extends HttpServlet {
-private final String SUCCESS_PAGE = "MenteeLoadRequest";
+@WebServlet(name = "ShowMentorDetailsController", urlPatterns = {"/ShowMentorDetailsController"})
+public class ShowMentorDetailsController extends HttpServlet {
+private final String LIST_SUGGESTION_PAGE = "MenteeListSuggestionPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,24 +43,31 @@ private final String SUCCESS_PAGE = "MenteeLoadRequest";
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = "";
-        String requestID = request.getParameter("requestID");
-        
+        String url = LIST_SUGGESTION_PAGE;
+        String mentorID = request.getParameter("mentorID");
         try{
-            RequestsDAO dao = new RequestsDAO();
-            RequestsDTO requestInfo = dao.getRequestByRequestID(requestID);
+            UsersDAO userDAO = new UsersDAO();
+            String fullname = userDAO.getProfile(mentorID).getFullname();
+            String username = userDAO.getProfile(mentorID).getUsername();
+            CommentsDAO cDAO = new CommentsDAO();
+            float avgStar = cDAO.getAvgStar(mentorID);
+            String star = "";
+            if(avgStar != -1){
+                star = String.valueOf(avgStar);
+            }else{
+                star = "Have not been rated yet";
+            }
+            RequestsDAO rDAO = new RequestsDAO();
+            String numReq = String.valueOf(rDAO.getNumberOfRequest(mentorID));
+            String mentorInfo = fullname + "," + username + "," + star + "," + numReq ;
             HttpSession session = request.getSession();
-            session.setAttribute("REQUEST_INFO", requestInfo);
-            String skillsID = requestInfo.getSkillsID();
-            MentorSkillsDAO msDAO = new MentorSkillsDAO();
-            List<String> mappingMentorsID = msDAO.getMappingMentorId(skillsID);
-            session.setAttribute("MAPPING_MENTORS_ID", mappingMentorsID);
-            url = SUCCESS_PAGE;
+            session.setAttribute("MENTOR_INFO", mentorInfo);
+            session.setAttribute("CHOSEN_MENTOR_ID", mentorID);
         } catch (NamingException ex) {
-            log("MenteeShowRequestController NamingException: " + ex.getMessage());
+            log("ShowMentorDetailsController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("MenteeShowRequestController SQLException: " + ex.getMessage());
-        }
+            log("ShowMentorDetailsController SQLException: " + ex.getMessage());
+        } 
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

@@ -788,4 +788,72 @@ public class RequestsDAO implements Serializable {
         }
         return reqInfo;
     }
+    
+    public int getNumberOfRequest(String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int num = 0;
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+                String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    num = Integer.parseInt(rs.getString("numReq"));
+                }
+            }
+        } finally{
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return num;
+    }
+    
+    public boolean inviteMentor(String requestID, String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+                String sql = "Update requests "
+                        + "Set mentorID = ? "
+                        + "Where requestID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                stm.setString(2, requestID);
+                int row = stm.executeUpdate();
+                if(row > 0){
+                    return true;
+                }
+            }
+        } finally{
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return false;
+    }
 }

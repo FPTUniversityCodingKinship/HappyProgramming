@@ -25,8 +25,9 @@
             <a href="MenteeRequestPage">Create request</a><br/>
             <a href="MenteeListRequest">List my requests</a><br/>
             <a href="MenteeStatisticRequest">Statistic of requests</a><br/>
-            <a href="MenteeLoadRequest">Update request</a><br/>
+            <a href="MenteeLoadRequest?action=Update">Update request</a><br/>
             <a href="MenteeRate">Rate & Comment mentor</a><br/>
+            <a href="MenteeLoadRequest?action=Suggest">List mentor suggestion</a><br/>
         </c:if>
     </body>
 </html>

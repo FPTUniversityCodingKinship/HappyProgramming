@@ -21,6 +21,8 @@ MenteeShowRequest = MenteeShowRequestController
 MenteeUpdateRequestSeparately = MenteeUpdateRequestSeparatelyController
 MenteeRate = MenteeRateController
 MenteeStartUp = MenteeStartUpController
+MenteeListSuggestion = MenteeListSuggestionController
+ShowMentorDetails = ShowMentorDetailsController
 Close = CloseRequestController
 # End of Controller
 # -----------------------------------------------
@@ -35,6 +37,7 @@ MenteeListRequestPage = mentee_listRequest.jsp
 MenteeUpdateRequestPage = mentee_updateRequest.jsp
 MenteeStatisticRequestPage = mentee_statisticRequest.jsp
 MenteeRatePage = mentee_rate.jsp
+MenteeListSuggestionPage = mentee_listSuggestion.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp

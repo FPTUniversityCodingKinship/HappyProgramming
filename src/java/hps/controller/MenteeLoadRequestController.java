@@ -28,7 +28,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeLoadRequestController", urlPatterns = {"/MenteeLoadRequestController"})
 public class MenteeLoadRequestController extends HttpServlet {
-private final String LOAD_REQUEST_SUCCESS_PAGE = "MenteeUpdateRequestPage";
+private final String UPDATE_PAGE = "MenteeUpdateRequestPage";
+private final String LIST_SUGGESTION_PAGE = "MenteeListSuggestionPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,14 +45,19 @@ private final String LOAD_REQUEST_SUCCESS_PAGE = "MenteeUpdateRequestPage";
         PrintWriter out = response.getWriter();
         
         String url = "";
+        String action = request.getParameter("action");
         try{
             HttpSession session = request.getSession();
             UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
             String menteeID = user.getUserID();
             RequestsDAO dao = new RequestsDAO();
             List<RequestsDTO> listRequest = (List<RequestsDTO>)dao.loadListRequest(menteeID);
-            request.setAttribute("LIST_REQUEST", listRequest);
-            url = LOAD_REQUEST_SUCCESS_PAGE;
+            session.setAttribute("LIST_REQUEST", listRequest);
+            if(action.equals("Update")){
+                url = UPDATE_PAGE;
+            }else if(action.equals("Suggest")){
+                url = LIST_SUGGESTION_PAGE;
+            }
         }catch (NamingException ex) {
             log("MenteeLoadRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
