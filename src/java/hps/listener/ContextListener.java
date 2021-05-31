@@ -23,14 +23,15 @@ import javax.servlet.ServletContextListener;
  * @author Admin
  */
 public class ContextListener implements ServletContextListener {
+
     private final String SITE_MAP = "/MAPPING/siteMap.map";
-    
+
     private static Map<String, String> getSiteMap(String urlPatterns)
-                throws IOException {
+            throws IOException {
         File file = new File(urlPatterns);
         FileReader f = null;
         BufferedReader br = null;
-        
+
         Map<String, String> siteMap;
         try {
             if (file.exists()) {
@@ -38,11 +39,11 @@ public class ContextListener implements ServletContextListener {
                 f = new FileReader(urlPatterns);
                 br = new BufferedReader(f);
                 siteMap = new HashMap<>();
-                
-                while(br.ready()) {
+
+                while (br.ready()) {
                     String line = br.readLine();
                     if (line != null) {
-                        
+
                         if (line.charAt(0) != '#') {
                             String[] entry = line.split("=", 2);
                             siteMap.put(entry[0].trim(), entry[1].trim());
@@ -52,12 +53,14 @@ public class ContextListener implements ServletContextListener {
                 return siteMap;
             }
         } finally {
-            if (br != null)
+            if (br != null) {
                 br.close();
-            if (f != null)
+            }
+            if (f != null) {
                 f.close();
+            }
         }
-        
+
         return null;
     }
 
@@ -67,7 +70,7 @@ public class ContextListener implements ServletContextListener {
         Map<String, String> siteMap = null;
         ServletContext application = sce.getServletContext();
         String filepath = null;
-        
+
         try {
             if (application != null) {
                 filepath = application.getRealPath(SITE_MAP);
@@ -84,9 +87,32 @@ public class ContextListener implements ServletContextListener {
             }
             ServletContext context = sce.getServletContext();
             context.setAttribute("SITE_MAP", siteMap);
+
+            //Handle file uploading
+            //Return the path of the server
+            //Return the path relative to the Project's folder?
+            String rootPath = context.getRealPath("");
+            String relativePath = context.getInitParameter("ImageFolder");
+            File file = new File(rootPath + File.separator + relativePath);
+            
+            //Configure to run directly from the Project's folder with NetBeans
+            if (rootPath.contains("build")) {
+                File backup = new File(rootPath + File.separator + ".." + 
+                        File.separator + ".." + File.separator + "web" + 
+                        File.separator + relativePath);
+                if (!backup.exists()) {
+                    backup.mkdirs();
+                }//end if !backup
+                context.setAttribute("BAK_FILE", backup);
+            }//end if rootPath
+            if (!file.exists()) {
+                file.mkdirs();
+            }//end if !file
+            context.setAttribute("DIR_FILE", file);
+
         } catch (IOException ex) {
             Logger.getLogger(ContextListener.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     @Override
