@@ -12,12 +12,20 @@
         <title>Create Account</title>
     </head>
     <body>
-        <center>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="registerAction" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
             <table border="0">
+                <tr>
+                    <td>
+                        Email*
+                    </td>
+                    <td>
+                        <input type="text" name="txtEmail" 
+                               value="${param.txtEmail}"/>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         Username*
@@ -35,6 +43,11 @@
                         </font>
                     </td>
                 </tr>
+                </c:if>
+                <c:if test="${not empty errors.usernameIsExisted}">
+                    <font color="red">
+                        ${errors.usernameIsExisted}
+                    </font><br/>
                 </c:if>
                 <tr>
                     <td>
@@ -90,16 +103,8 @@
                 </tr>
                 </c:if>
             </table>
-            <br/>
             <input type="submit" value="Create New Account" name="btnAction"/>
             <input type="reset" value="Reset"/>
         </form>
-        <br/>
-        <c:if test="${not empty errors.usernameIsExisted}">
-            <font color="red">
-                ${errors.usernameIsExisted}
-            </font><br/>
-        </c:if>
-    </center>
     </body>
 </html>
