@@ -22,7 +22,7 @@
                         Email*
                     </td>
                     <td>
-                        <input type="text" name="txtEmail" 
+                        <input type="email" name="txtEmail" 
                                value="${param.txtEmail}"/>
                     </td>
                 </tr>
