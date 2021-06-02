@@ -12,12 +12,20 @@
         <title>Create Account</title>
     </head>
     <body>
-        <center>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="registerAction" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
             <table border="0">
+                <tr>
+                    <td>
+                        Email*
+                    </td>
+                    <td>
+                        <input type="email" name="txtEmail" 
+                               value="${param.txtEmail}"/>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         Username*
@@ -35,6 +43,11 @@
                         </font>
                     </td>
                 </tr>
+                </c:if>
+                <c:if test="${not empty errors.usernameIsExisted}">
+                    <font color="red">
+                        ${errors.usernameIsExisted}
+                    </font><br/>
                 </c:if>
                 <tr>
                     <td>
@@ -89,17 +102,63 @@
                     </td>
                 </tr>
                 </c:if>
+                <tr>
+                    <td>
+                        Birthday*
+                    </td>
+                    <td>
+                        <input type="date" name="txtDob" 
+                                   value="${param.txtDob}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.dobInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.dobInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
+                <tr>
+                    <td>
+                        Address*
+                    </td>
+                    <td>
+                        <input type="date" name="txtAddress" 
+                                   value="${param.txtAddress}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.addressInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.addressInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
+                        <tr>
+                    <td>
+                        Phone Number*
+                    </td>
+                    <td>
+                        <input type="date" name="txtPhone" 
+                                   value="${param.txtPhone}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.phoneInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.phoneInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
             </table>
-            <br/>
             <input type="submit" value="Create New Account" name="btnAction"/>
             <input type="reset" value="Reset"/>
         </form>
-        <br/>
-        <c:if test="${not empty errors.usernameIsExisted}">
-            <font color="red">
-                ${errors.usernameIsExisted}
-            </font><br/>
-        </c:if>
-    </center>
     </body>
 </html>
