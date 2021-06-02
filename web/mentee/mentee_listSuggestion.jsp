@@ -29,8 +29,8 @@
             <br/><br/>
             <c:if test="${not empty sessionScope.REQUEST_INFO}">
                 <c:set var="request" value="${sessionScope.REQUEST_INFO}"/>
-                <c:set var="skillsName" value="${fn:substring(request.requestID,6,request.requestID.length())}"/>
-                Skill(s): ${fn:replace(skillsName, '_', ' and ')}
+                <c:set var="skillsName" value="${sessionScope.SKILLS_NAME}"/>
+                Skill(s): ${skillsName}
                 is/are selected for ${request.title} <br/>
                 <c:if test="${not empty sessionScope.MAPPING_MENTORS_ID}">
                     <c:set var="listMentorsID" value="${sessionScope.MAPPING_MENTORS_ID}"/>

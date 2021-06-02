@@ -67,8 +67,10 @@
                                     ${dto.status}
                                 </td>
                                 <td>
+                                <c:if test="${dto.status eq 'P'}">
                                     <input type="submit" value="Delete" name="btnAction" 
                                            onclick="return confirm('Are you sure that you want to DELETE this request?')"/>
+                                </c:if> 
                                 </td>
                                 <c:if test="${dto.status eq 'P'}">
                                 <td>

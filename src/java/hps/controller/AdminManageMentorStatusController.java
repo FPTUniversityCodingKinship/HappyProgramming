@@ -1,15 +1,18 @@
-package hps.controller;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package hps.controller;
 
 import hps.requests.RequestsDAO;
+import hps.requests.RequestsDTO;
+import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,10 +26,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(urlPatterns = {"/MenteeListSuggestionController"})
-public class MenteeListSuggestionController extends HttpServlet {
-private final String SUCCESS_PAGE = "MenteeHomePage";
-private final String ERROR_PAGE = "MenteeListSuggestionPage";
+@WebServlet(name = "AdminManageMentorStatusController", urlPatterns = {"/AdminManageMentorStatusController"})
+public class AdminManageMentorStatusController extends HttpServlet {
+private final String VIEW_MENTOR = "AdminViewMentor";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,26 +43,21 @@ private final String ERROR_PAGE = "MenteeListSuggestionPage";
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = ERROR_PAGE;
-        String requestID = request.getParameter("chosenRequestID");
-        String mentorID = request.getParameter("chosenMentorID");
-        
+        String url = "";
+        String mentorID = request.getParameter("mentorID");
+        String status = request.getParameter("status");
+        String searchValue = request.getParameter("searchValue");
         try{
-            RequestsDAO dao = new RequestsDAO();
-            boolean result = dao.inviteMentor(requestID, mentorID);
+            UsersDAO dao = new UsersDAO();
+            boolean result = dao.setStatus(mentorID, Integer.parseInt(status));
             if(result){
-                url = SUCCESS_PAGE;
-                HttpSession session = request.getSession();
-                session.removeAttribute("REQUEST_INFO");
-                session.removeAttribute("MAPPING_MENTORS_ID");
-                session.removeAttribute("MENTOR_INFO");
-                session.removeAttribute("CHOSEN_MENTOR_ID");
-                session.removeAttribute("SKILLS_NAME");
+                url = VIEW_MENTOR;
+                request.setAttribute("SEARCH_VALUE", searchValue);
             }
         } catch (NamingException ex) {
-            log("MenteeListSuggestionController NamingException: " + ex.getMessage());
+            log("MenteeListRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("MenteeListSuggestionController SQLException: " + ex.getMessage());
+            log("MenteeListRequestController SQLException: " + ex.getMessage());
         }        
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

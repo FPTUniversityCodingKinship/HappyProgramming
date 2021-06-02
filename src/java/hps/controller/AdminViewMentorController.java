@@ -9,8 +9,10 @@ import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,9 +26,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "AdminViewAllMentorController", urlPatterns = {"/AdminViewAllMentorController"})
-public class AdminViewAllMentorController extends HttpServlet {
-private final String VIEW_PAGE = "AdminViewAllMentorPage";
+@WebServlet(name = "AdminViewMentorController", urlPatterns = {"/AdminViewMentorController"})
+public class AdminViewMentorController extends HttpServlet {
+private final String VIEW = "AdminViewMentorPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,30 +42,52 @@ private final String VIEW_PAGE = "AdminViewAllMentorPage";
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = VIEW_PAGE;
         
-        String searchValue = request.getParameter("searchValue");
+        String url = VIEW;
         try{
-            UsersDAO dao = new UsersDAO();
-            List<String> mentorsID = dao.loadAllMentorsID();
+            String searchValue = request.getParameter("searchValue");
+            String pageID = request.getParameter("pageID");
             if(searchValue == null){
-                request.setAttribute("LIST_MENTORS_ID", mentorsID);
-            }else{
-                Iterator<String> it = mentorsID.iterator();
-                while(it.hasNext()){
-                    String mentorID = it.next();
-                    if(!mentorID.contains(searchValue.toUpperCase())){
-                        it.remove();
-                    }
-                }
-                request.setAttribute("LIST_MENTORS_ID", mentorsID);
+                searchValue = (String)request.getAttribute("SEARCH_VALUE");
+                if(searchValue == null)
+                    searchValue = "";
             }
+            if(pageID == null){
+                pageID = "1";
+            }
+            HttpSession session = request.getSession();
+            //total rows of one page
+            int total = 5;
+            UsersDAO dao = new UsersDAO();
+            List<String> listMentorIDs = dao.getMentorIDs(searchValue, Integer.parseInt(pageID), total);
+            int totalRow = dao.countTotalRows(searchValue);
+            int numOfPages = (int)Math.ceil((double)totalRow/total);
+            session.setAttribute("NUM_OF_PAGES", numOfPages);
+            
+            
+            List<String> mentorIDs = new ArrayList<>();
+            for(String mentor : listMentorIDs){
+                mentorIDs.add(mentor.split(",")[0]);
+            }
+            Map<String,String> map = new HashMap<>();
+            for(String mentorID : mentorIDs){
+                map.put(mentorID, dao.getMentorFullname(mentorID) 
+                        + "," + dao.getMentorUsername(mentorID) 
+                        + "," + dao.getProfession(mentorID) 
+                        + "," + String.valueOf(dao.getNumOfApprovedReq(mentorID)) 
+                        + "," + String.valueOf(dao.getNumOfApprovedReq(mentorID) == 0 
+                                ? "No request accepted yet" 
+                                : ((double)dao.getNumOfCompletedReq(mentorID)/dao.getNumOfApprovedReq(mentorID))*100) 
+                        + "," + String.valueOf(dao.getRateStar(mentorID) == 0 ? "Not rated yet" : dao.getRateStar(mentorID)) 
+                        + "," + dao.getStatus(mentorID)
+                );
+            }
+            session.setAttribute("MENTOR_INFO", map);
         } catch (NamingException ex) {
-            log("AdminViewAllMentorController NamingException: " + ex.getMessage());
+            log("AdminViewMentorController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("AdminViewAllMentorController SQLException: " + ex.getMessage());
-        } 
-        finally{
+            log("AdminViewMentorController SQLException: " + ex.getMessage());
+        }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if(out != null){

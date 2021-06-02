@@ -1,6 +1,6 @@
 <%-- 
-    Document   : admin_homepage
-    Created on : May 30, 2021, 6:16:15 PM
+    Document   : admin_homepage.jsp
+    Created on : May 31, 2021, 3:38:31 PM
     Author     : ADMIN
 --%>
 
@@ -16,6 +16,6 @@
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             Welcome, ${sessionScope.CURRENT_USER.fullname}<br/>
         </c:if>
-        <a href="AdminViewAllMentor">View list of all mentor</a><br/>
+            <a href="AdminViewMentor">View list of all mentor</a><br/>
     </body>
 </html>
