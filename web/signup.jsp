@@ -102,6 +102,60 @@
                     </td>
                 </tr>
                 </c:if>
+                <tr>
+                    <td>
+                        Birthday*
+                    </td>
+                    <td>
+                        <input type="date" name="txtDob" 
+                                   value="${param.txtDob}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.dobInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.dobInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
+                <tr>
+                    <td>
+                        Address*
+                    </td>
+                    <td>
+                        <input type="date" name="txtAddress" 
+                                   value="${param.txtAddress}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.addressInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.addressInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
+                        <tr>
+                    <td>
+                        Phone Number*
+                    </td>
+                    <td>
+                        <input type="date" name="txtPhone" 
+                                   value="${param.txtPhone}"/>
+                    </td>
+                </tr>
+                <c:if test="${not empty errors.phoneInvalid}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.phoneInvalid}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
             </table>
             <input type="submit" value="Create New Account" name="btnAction"/>
             <input type="reset" value="Reset"/>
