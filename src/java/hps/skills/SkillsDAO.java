@@ -212,4 +212,106 @@ public class SkillsDAO implements Serializable {
         }
         return skillList;
     }
+    
+    public String generateSkillID(String skillType) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String skillID = "";
+        int digit = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select MAX(f.skillID) as maxSkillID " +
+                            "From (Select * From skills Where skillID like ? ) as f ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, skillType + "%");
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    digit = Integer.parseInt(rs.getString("maxSkillID").substring(2,rs.getString("maxSkillID").length()));
+                }
+                digit++;
+                skillID = skillType + String.format("%06d", digit);
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return skillID;
+    }
+    
+    public boolean checkSkillNameExisted(String skillName)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select * "
+                        + "From skills "
+                        + "Where skillName = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, skillName);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    return true;
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    public boolean addNewSkill(String skillID, String skillName, int status)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Insert into skills "
+                        + "Values(?,?,?) ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, skillID);
+                stm.setString(2, skillName);
+                stm.setInt(3, status);
+                
+                int row = stm.executeUpdate();
+                if(row > 0){
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

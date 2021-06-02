@@ -17,5 +17,6 @@
             Welcome, ${sessionScope.CURRENT_USER.fullname}<br/>
         </c:if>
             <a href="AdminViewMentor">View list of all mentor</a><br/>
+            <a href="AdminCreateSkillPage">Create skill</a><br/>
     </body>
 </html>
