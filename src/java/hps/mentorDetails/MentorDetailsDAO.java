@@ -55,14 +55,15 @@ public class MentorDetailsDAO implements Serializable {
         }
         
         return result;
+    }
 /**
  *
  * @author ADMIN
  */
-public class MentorDetailsDAO implements Serializable{
     
+
     public MentorDetailsDTO getMentorDetails(String mentorID) 
-            throws NamingException, SQLException{
+            throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;

@@ -119,9 +119,9 @@ public class MentorSkillsDAO implements Serializable {
                 con.close();
             }
         }
+        return result;
         
     }
-public class MentorSkillsDAO implements Serializable{
     
     public List<String> getMappingMentorId(String skillsID) 
             throws NamingException, SQLException{
