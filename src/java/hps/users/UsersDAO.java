@@ -101,9 +101,8 @@ public class UsersDAO implements Serializable {
         }
         return null;
     }
-    
-    
-    public boolean checkUsername(String username)
+
+    public boolean checkUsername(String username, String userID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -116,9 +115,10 @@ public class UsersDAO implements Serializable {
                 //2. Prepare sql string
                 String sql = "SELECT * "
                         + "FROM users "
-                        + "WHERE username = ?";
+                        + "WHERE username = ? AND userID != ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, username);
+                stm.setString(2, userID);
                 //3. Store in ResultSet
                 rs = stm.executeQuery();
                 if (rs.next()) {
@@ -135,9 +135,6 @@ public class UsersDAO implements Serializable {
         }
         return false;
     }
-    
-    
-    
 
     public UsersDTO getProfile(String userID) throws NamingException, SQLException {
 

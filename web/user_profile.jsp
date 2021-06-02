@@ -11,14 +11,15 @@
     <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
     <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
            scope="page"/>
+    <c:set var="err" value="${requestScope.ERR}" scope="page"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Profile Management</title>
         <style>
             *{
-               box-sizing: border-box;
-               padding: 1%;
-               border-radius: 25px;
+                box-sizing: border-box;
+                padding: 1%;
+                border-radius: 25px;
             }
 
         </style>
@@ -32,12 +33,27 @@
             Update your avatar here: <input type="file" name="imageFile"/><br />
             User ID: ${user.userID}<br />
             <input type="hidden" name="txtUserID" value="${user.userID}" />
+            <font color="red">
+            ${err.usernameLengthErr}
+            </font>
+            <font color="red">
+            ${err.usernameIsExisted}
+            </font><br />
             Username: <input type="text" name="txtUsername" value="${user.username}" /><br />
+            <font color="red">
+            ${err.passwordLengthErr}
+            </font><br />
             Password: <input type="password" name="txtPassword" value="${user.password}" /><br />
             Email: ${user.email}<br />
+            <font color="red">
+            ${err.fullnameLengthErr}
+            </font><br />
             Full name: <input type="text" name="txtFullname" value="${user.fullname}" /><br />
             Phone: <input type="text" name="txtPhone" value="${user.phone}" /><br />
             Address: <input type="text" name="txtAddress" value="${user.address}" /><br />
+            <font color="red">
+            ${err.dateOfBirthInvalidError}
+            </font><br />
             Date of Birth: <input type="text" name="txtDob" value="${user.dob}" /><br />
             Sex: <select name="txtSex">
                 <c:if test="${user.sex eq 'M'}">

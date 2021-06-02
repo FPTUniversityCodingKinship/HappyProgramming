@@ -21,6 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -31,7 +36,7 @@ import javax.servlet.ServletContext;
  */
 @WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/UpdateProfileServlet"})
 public class UpdateProfileServlet extends HttpServlet {
-    
+
     private static final String PROFILE_PAGE = "UpdateProfilePage";
 
     /**
@@ -51,36 +56,49 @@ public class UpdateProfileServlet extends HttpServlet {
         String url = PROFILE_PAGE;
         try {
             String userID = request.getParameter("txtUserID");
-            
+
             String username = request.getParameter("txtUsername");
             String password = request.getParameter("txtPassword");
             String fullname = request.getParameter("txtFullname");
             String phone = request.getParameter("txtPhone");
             String address = request.getParameter("txtAddress");
             String dob = request.getParameter("txtDob");
+
             String sex = request.getParameter("txtSex");
             UsersDAO dao = new UsersDAO();
             boolean foundErr = false;
             UserUpdateError err = new UserUpdateError();
-            
+
             request.setAttribute("ERR", err);
             if (username.trim().length() < 6 || username.trim().length() > 30) {
                 foundErr = true;
-                err.setUsernameLengthError("Username must be between 6 and 30 characters only!");
+                err.setUsernameLengthErr("Username must be between 6 and 30 characters only!");
             }
             if (password.trim().length() < 6 || password.trim().length() > 30) {
                 foundErr = true;
-                err.setPasswordLengthError("Password must be between 6 and 30 characters only!");
+                err.setPasswordLengthErr("Password must be between 6 and 30 characters only!");
             }
             if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
                 foundErr = true;
-                err.setPasswordLengthError("Please provide input ranging from 2 to 50 characters only\n "
+                err.setFullnameLengthErr("Please provide input ranging from 2 to 50 characters only\n "
                         + "If that was your real name, please contact an Administrator for further help!");
             }
-            if (dao.checkUsername(username) != true) {
+            if (dao.checkUsername(username, userID) == true) {
                 foundErr = true;
-                err.setUsernameAlreadyExistError("This username has been taken! "
+                err.setUsernameIsExisted("This username has been taken! "
                         + "Please try another one!");
+            }
+
+            SimpleDateFormat sDobFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //Prevent values out of range
+            sDobFormat.setLenient(false);
+            try {
+                sDobFormat.parse(dob);
+            } catch (ParseException ex) {
+                log(ex.getMessage());
+                foundErr = true;
+                err.setDateOfBirthInvalidError("Invalid date! "
+                        + "Please submit a real date!");
             }
 
             //Update if the parameters are not null
@@ -92,7 +110,6 @@ public class UpdateProfileServlet extends HttpServlet {
                     && !address.trim().isEmpty()
                     && !dob.trim().isEmpty()) {
                 Date dob_date = Date.valueOf(dob);
-
                 //User's avatar sent as comparmentalised data
                 Part filePart = request.getPart("imageFile");
                 //Retrive the uploading directory
@@ -138,7 +155,7 @@ public class UpdateProfileServlet extends HttpServlet {
                     request.setAttribute("UPDATE_STATUS", "Profile Updated");
                 }
             }
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         } catch (SQLException ex) {
@@ -151,7 +168,7 @@ public class UpdateProfileServlet extends HttpServlet {
             if (out != null) {
                 out.close();
             }
-            
+
         }
     }
 
