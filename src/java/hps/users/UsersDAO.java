@@ -8,6 +8,8 @@ package hps.users;
 import hps.utilities.DBHelper;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -228,6 +230,342 @@ public class UsersDAO implements Serializable {
         return null;
     }
     
+
+    public int countTotalRows(String searchValue)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int count = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+               String sql = "Select count(*) as totalRows "
+                       + "From (Select * From users Where userID like 'MT%') as f "
+                       + "Where userID like ?";
+               stm = con.prepareStatement(sql);
+               stm.setString(1, "%" + searchValue + "%");
+               rs = stm.executeQuery();
+               
+               if(rs.next()){
+                   count = Integer.parseInt(rs.getString("totalRows"));
+               }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
+    
+    public List<String> getMentorIDs(String searchValue, int pageID, int total) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<String> mentorIDs = new ArrayList<>();
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select userID From (\n" +
+                            "	Select *, ROW_NUMBER() over (order by userID) as numRow\n" +
+                            "	From (Select * From users Where userID like 'MT%') as mentor\n" +
+                            "	Where userID like ?\n" +
+                            ") as m  \n" +
+                            "Where ? <= m.numRow  and m.numRow < ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, "%" + searchValue + "%");
+                stm.setInt(2, (pageID - 1)*total + 1);
+                stm.setInt(3, pageID*total + 1);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    mentorIDs.add(rs.getString("userID"));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return mentorIDs;
+    }
+    
+    public String getMentorFullname(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String fullname = "";
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+               String sql = "Select fullname "
+                       + "From users "
+                       + "Where userID = ?";
+               stm = con.prepareStatement(sql);
+               stm.setString(1, mentorID);
+               rs = stm.executeQuery();
+               
+               if(rs.next()){
+                   fullname = rs.getString("fullname");
+               }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return fullname;
+    }
+    public String getMentorUsername(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String username = "";
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+               String sql = "Select username "
+                       + "From users "
+                       + "Where userID = ?";
+               stm = con.prepareStatement(sql);
+               stm.setString(1, mentorID);
+               rs = stm.executeQuery();
+               
+               if(rs.next()){
+                   username = rs.getString("username");
+               }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return username;
+    }
+    public String getProfession(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String profession = "";
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select profession "
+                        + "From mentorDetails "
+                        + "Where mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if(rs.next()){
+                    profession = rs.getString("profession");
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return profession;
+    }
+    public int getNumOfApprovedReq(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int aReq = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where approvedTime is not null AND mentorID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if(rs.next()){
+                    aReq = Integer.parseInt(rs.getString("numReq"));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return aReq;
+    }
+    public int getNumOfCompletedReq(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int cReq = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where approvedTime is not null AND "
+                        + "closedTime is not null AND mentorID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if(rs.next()){
+                    cReq = Integer.parseInt(rs.getString("numReq"));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return cReq;
+    }
+    public int getRateStar(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int rate = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select Ceiling(Avg(rate)) as star "
+                        + "From comments "
+                        + "Where mentorID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if(rs.next()){
+                    if(rs.getString("star") != null){
+                        rate = Integer.parseInt(rs.getString("star"));
+                    }
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return rate;
+    }
+    public int getStatus(String mentorID)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int status = 0;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select status "
+                        + "From users "
+                        + "Where userID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if(rs.next()){
+                    status = Integer.parseInt(rs.getString("status"));
+                    
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return status;
+    }
+    public boolean setStatus(String mentorID, int status)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Update users "
+                        + "Set status = ? "
+                        + "Where userID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, status);
+                stm.setString(2, mentorID);
+                int row = stm.executeUpdate();
+                
+                if(row > 0){
+
     public boolean updateProfile(String userID, String fullname, String address, 
             Date dob, String sex)
             throws SQLException, NamingException {
@@ -251,6 +589,7 @@ public class UsersDAO implements Serializable {
                 stm.setString(5, userID);
                 int result = stm.executeUpdate();
                 if (result > 0) {
+
                     return true;
                 }
             }

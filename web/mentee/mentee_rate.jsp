@@ -53,7 +53,7 @@
             </c:if>
         </c:if>
         <c:if test="${empty sessionScope.REQ_INFO_FOR_RATING}">
-            No request yet for rating!<br/>
+            No concluded request yet for rating!<br/>
         </c:if>
         <br/>
         

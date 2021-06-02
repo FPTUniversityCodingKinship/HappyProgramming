@@ -27,7 +27,9 @@ MenteeStartUp = MenteeStartUpController
 MenteeListSuggestion = MenteeListSuggestionController
 ShowMentorDetails = ShowMentorDetailsController
 Close = CloseRequestController
-
+AdminViewMentor = AdminViewMentorController
+AdminManageMentorStatus = AdminManageMentorStatusController
+AdminCreateSkill = AdminCreateSkillController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -35,16 +37,19 @@ LoginPage = login.jsp
 MailVerificationPage = userVerification.jsp
 SignUpPage = signup.jsp
 UpdateProfilePage = user_profile.jsp
-MenteeHomePage = mentee_homepage.jsp
-MenteeRequestPage = mentee_request.jsp
-MenteeListRequestPage = mentee_listRequest.jsp
-MenteeUpdateRequestPage = mentee_updateRequest.jsp
-MenteeStatisticRequestPage = mentee_statisticRequest.jsp
-MenteeRatePage = mentee_rate.jsp
-MenteeListSuggestionPage = mentee_listSuggestion.jsp
+MenteeHomePage = mentee/mentee_homepage.jsp
+MenteeRequestPage = mentee/mentee_request.jsp
+MenteeListRequestPage = mentee/mentee_listRequest.jsp
+MenteeUpdateRequestPage = mentee/mentee_updateRequest.jsp
+MenteeStatisticRequestPage = mentee/mentee_statisticRequest.jsp
+MenteeRatePage = mentee/mentee_rate.jsp
+MenteeListSuggestionPage = mentee/mentee_listSuggestion.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp
+AdminHomePage = admin/admin_homepage.jsp
+AdminViewMentorPage = admin/admin_viewMentor.jsp
+AdminCreateSkillPage = admin/admin_createSkill.jsp
 AdminHomePage = admin_homepage.jsp
 CreateCVPage = mentor/createCV.jsp
 # End of Page

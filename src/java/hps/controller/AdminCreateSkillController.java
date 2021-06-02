@@ -1,15 +1,19 @@
-package hps.controller;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package hps.controller;
 
 import hps.requests.RequestsDAO;
+import hps.requests.RequestsDTO;
+import hps.skills.SkillsDAO;
+import hps.skills.SkillsError;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,10 +27,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(urlPatterns = {"/MenteeListSuggestionController"})
-public class MenteeListSuggestionController extends HttpServlet {
-private final String SUCCESS_PAGE = "MenteeHomePage";
-private final String ERROR_PAGE = "MenteeListSuggestionPage";
+@WebServlet(name = "AdminCreateSkillController", urlPatterns = {"/AdminCreateSkillController"})
+public class AdminCreateSkillController extends HttpServlet {
+private final String ERROR_PAGE = "AdminCreateSkillPage";
+private final String SUCCESS_PAGE = "AdminHomePage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,25 +46,32 @@ private final String ERROR_PAGE = "MenteeListSuggestionPage";
         PrintWriter out = response.getWriter();
         
         String url = ERROR_PAGE;
-        String requestID = request.getParameter("chosenRequestID");
-        String mentorID = request.getParameter("chosenMentorID");
-        
         try{
-            RequestsDAO dao = new RequestsDAO();
-            boolean result = dao.inviteMentor(requestID, mentorID);
-            if(result){
-                url = SUCCESS_PAGE;
-                HttpSession session = request.getSession();
-                session.removeAttribute("REQUEST_INFO");
-                session.removeAttribute("MAPPING_MENTORS_ID");
-                session.removeAttribute("MENTOR_INFO");
-                session.removeAttribute("CHOSEN_MENTOR_ID");
-                session.removeAttribute("SKILLS_NAME");
+            String skillName = request.getParameter("skillName");
+            String skillType = request.getParameter("skillType");
+            SkillsDAO dao = new SkillsDAO();
+            boolean isError = false;
+            SkillsError error = new SkillsError();
+            
+            boolean existedSkillName = dao.checkSkillNameExisted(skillName);
+            if(existedSkillName){
+                isError = true;
+                error.setSkillNameExisted("Skill name existed");
+            }
+            
+            if(isError){
+                request.setAttribute("SKILL_NAME_ERROR", error);
+            }else{
+                String skillID = dao.generateSkillID(skillType);
+                boolean result = dao.addNewSkill(skillID, skillName, 1);
+                if(result){
+                    url = SUCCESS_PAGE;
+                }
             }
         } catch (NamingException ex) {
-            log("MenteeListSuggestionController NamingException: " + ex.getMessage());
+            log("AdminCreateSkillController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("MenteeListSuggestionController SQLException: " + ex.getMessage());
+            log("AdminCreateSkillController SQLException: " + ex.getMessage());
         }        
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
