@@ -6,16 +6,17 @@
 package hps.controller;
 
 import com.google.gson.Gson;
-import hps.mentorDetails.MentorDetailsDAO;
-import hps.mentorDetails.MentorDetailsDTO;
+import com.google.gson.reflect.TypeToken;
 import hps.mentorDetails.ReturnResultDTO;
-import hps.users.UsersDAO;
+import hps.mentorSkills.MentorSkillsDAO;
+import hps.mentorSkills.MentorSkillsDTO;
+import hps.skills.SkillsJSONDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +28,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
-@WebServlet(name = "CreateCVController", urlPatterns = {"/CreateCVController"})
-public class CreateCVController extends HttpServlet {
+@WebServlet(name = "AddMentorSkillsController", urlPatterns = {"/AddMentorSkillsController"})
+public class AddMentorSkillsController extends HttpServlet {
 
-//    private static final String CREATE_CV_PAGE = "CreateCVPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,73 +44,66 @@ public class CreateCVController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
 
-//        String url = CREATE_CV_PAGE;
+        List<SkillsJSONDTO> skillsList = new ArrayList<>();
+        
         ReturnResultDTO returnResult = new ReturnResultDTO();
 
         try {
-            // Get Parameter
-            String userID = request.getParameter("userID");
-            String fullname = request.getParameter("fullname");
-            String dob = request.getParameter("dob");
-//            String email = request.getParameter("email");
-            String sex = request.getParameter("sex");
-            String address = request.getParameter("address");
-            String facebook = request.getParameter("facebook");
-            String github = request.getParameter("github");
-            String language = request.getParameter("language");
-            String profession = request.getParameter("profession");
-            String proDescription = request.getParameter("proDescription");
-            String serDescription = request.getParameter("serDescription");
-            String achDescription = request.getParameter("achDescription");
+            String mentorID = request.getParameter("mentorID");
+            String skillsListJSON = request.getParameter("skillsList");
+            
+            Type type = new TypeToken<List<SkillsJSONDTO>>(){}.getType();
+            skillsList = gson.fromJson(skillsListJSON, type);
+            
+            boolean isAdded = false;
 
-            // Update user Profile
-            UsersDAO usersDAO = new UsersDAO();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-            Date dobDate = new Date(dateFormat.parse(dob).getTime());
-            boolean isUpdated = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
-            if (isUpdated) {
-                MentorDetailsDAO mentorDAO = new MentorDetailsDAO();
-                MentorDetailsDTO dto = new MentorDetailsDTO(userID, facebook, github, profession, language, proDescription, serDescription, achDescription);
-                boolean isCreated = mentorDAO.createCV(dto);
-                if (isCreated) {
+            if (skillsList != null && !skillsList.isEmpty()) {
+                MentorSkillsDAO mentorSkillsDAO = new MentorSkillsDAO();
+
+                for (SkillsJSONDTO skill : skillsList) {
+                    String mentorSkillID = mentorSkillsDAO.generateMentorSkillID();
+                    MentorSkillsDTO skillsDTO = new MentorSkillsDTO(
+                                                        mentorSkillID,
+                                                        mentorID,
+                                                        skill.getSkillID(),
+                                                        skill.getYearsExperience(),
+                                                        skill.getRate()
+                                                );
+                    isAdded = mentorSkillsDAO.addMentorSkills(skillsDTO);
+                    if (!isAdded) {
+                        break;
+                    }
+                }
+                if (isAdded) {
                     returnResult.setSuccess(true);
-                    returnResult.setMessage("CV is created successfully!!");
-                } else {
+                    returnResult.setMessage("Skills are added successfully!!");
+                }
+                else {
                     returnResult.setSuccess(false);
                     returnResult.setMessage("There has been an error while we are "
-                            + "trying to create your CV! Please contact the web owners "
+                            + "trying to add your skills! Please contact the web owners "
                             + "for more details.");
                 }
-            } else {
-                returnResult.setSuccess(false);
-                returnResult.setMessage("There has been an error while we are "
-                        + "trying to update your profile! Please contact the web owners "
-                        + "for more details.");
+                
             }
-        } catch (ParseException ex) {
-            log("Error at CreateCVController: " + ex.getMessage());
-            returnResult.setSuccess(false);
-            returnResult.setMessage("Your Date of Birth is in wrong format!!");
         } catch (SQLException ex) {
-            log("Error at CreateCVController: " + ex.getMessage());
-            returnResult.setSuccess(false);
-            if (ex.getMessage().contains("duplicate")) {
-                returnResult.setMessage("Your CV has been already created before! "
-                        + "If you want to update your Profile, <a href='UpdateCVPage'>click here</a>");
-            } else {
-                returnResult.setMessage("There has been an error while we are "
-                        + "trying to create your profile! Please contact the web owners "
-                        + "for more details.");
-            }
-        } catch (NamingException ex) {
-            log("Error at CreateCVController: " + ex.getMessage());
+            log("Error at AddMentorSkillsController: " + ex.getMessage());
             returnResult.setSuccess(false);
             returnResult.setMessage("There has been an error while we are "
                     + "trying to create your profile! Please contact the web owners "
                     + "for more details.");
-        } finally {
-            Gson gson = new Gson();
+        } catch (NamingException ex) {
+            log("Error at AddMentorSkillsController: " + ex.getMessage());
+            returnResult.setSuccess(false);
+            returnResult.setMessage("There has been an error while we are "
+                    + "trying to create your profile! Please contact the web owners "
+                    + "for more details.");
+        } catch (NumberFormatException ex) {
+            log("Error at AddMentorSkillsController: " + ex.getMessage());
+        } 
+        finally {
             String resultStr = gson.toJson(returnResult);
             out.print(resultStr);
             out.flush();
