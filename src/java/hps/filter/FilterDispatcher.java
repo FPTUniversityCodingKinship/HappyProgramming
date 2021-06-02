@@ -125,10 +125,10 @@ public class FilterDispatcher implements Filter {
             System.out.print("[FilterDispatcher] passed, URI:[" + uri + "]"); 
             System.out.println(";URL:[" + url + "]");
             
-            //3. Check if url != null
             if (url != null) {
                 if (url.lastIndexOf(".html") > 0
-                        || resource.lastIndexOf(".css") > 0) {
+                        || resource.lastIndexOf(".css") > 0
+                            || resource.lastIndexOf(".js") > 0) {
                     httpServletResponse.sendRedirect(url);
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -137,11 +137,10 @@ public class FilterDispatcher implements Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Throwable t) {
-            problem = t;
-            t.printStackTrace();
+        } catch (IOException | ServletException ex) {
+            problem = ex;
+            ex.printStackTrace();
         }
-//        doAfterProcessing(request, response);
         
         if (problem != null) {
             if (problem instanceof ServletException) {

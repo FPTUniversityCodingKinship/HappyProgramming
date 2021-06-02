@@ -14,13 +14,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Profile Management</title>
+        <style>
+            *{
+               box-sizing: border-box;
+               padding: 1%;
+               border-radius: 25px;
+            }
+
+        </style>
     </head>
     <body>
         <h1>Welcome, ${user.username}</h1>
         ${requestScope.UPDATE_STATUS}
         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
             Avatar: <img src="./images/${user.image}" alt="The user's avatar" 
-                         style="width:250x;height:300px;"><br />
+                         style="width:250x;height:300px; float: left;"><br />
             Update your avatar here: <input type="file" name="imageFile"/><br />
             User ID: ${user.userID}<br />
             <input type="hidden" name="txtUserID" value="${user.userID}" />

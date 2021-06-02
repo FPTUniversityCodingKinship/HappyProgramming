@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.naming.NamingException;
 
 /**
@@ -118,14 +120,15 @@ public class RequestsDAO implements Serializable {
 
             if (con != null) {
                 String sql = "SELECT requestID, menteeID, mentorID, skillsID, "
-                        + "deadline, title, content, status, openedTime, "
+                        + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
-                        + "WHERE mentorID = ? AND status = ?";
+                        + "WHERE mentorID = ? AND (status = ? OR status = ?)";
 
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, mentorID);
-                stmt.setString(3, "P");
+                stmt.setString(2, "P");
+                stmt.setString(3, "A");
 
                 rs = stmt.executeQuery();
                 while (rs.next()) {
@@ -321,8 +324,8 @@ public class RequestsDAO implements Serializable {
                 stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
                 stmt.setString(3, requestID);
                 
-                boolean iCheck = stmt.execute();
-                if (iCheck) {
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
                     result = true;
                 }
             }
@@ -401,6 +404,43 @@ public class RequestsDAO implements Serializable {
         return false;
     }
     
+    public boolean menteeUpdateRequestSeparately(String requestID, String title, String deadline,
+            String reqContent, String skillsID, String mentorID)throws SQLException, NamingException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Update requests "
+                        + "Set title = ? , deadline = ? , "
+                        + "reqContent = ? , skillsID = ?, mentorID = ? "
+                        + "Where requestID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, title);
+                stm.setString(2, deadline);
+                stm.setString(3, reqContent);
+                stm.setString(4, skillsID);
+                stm.setString(5, mentorID);
+                stm.setString(6, requestID);
+                int row = stm.executeUpdate();
+                if(row > 0){
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return false;
+    }
+    
     public boolean rejectRequest(String requestID) 
             throws SQLException, NamingException {
         boolean result = false;
@@ -419,8 +459,8 @@ public class RequestsDAO implements Serializable {
                 stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
                 stmt.setString(3, requestID);
                 
-                boolean iCheck = stmt.execute();
-                if (iCheck) {
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
                     result = true;
                 }
             }
@@ -526,7 +566,8 @@ public class RequestsDAO implements Serializable {
                 rs = stm.executeQuery();
                 
                 while(rs.next()){
-                    total += Integer.parseInt(rs.getString("hours"));
+                    if(rs.getString("hours") != null)
+                        total += Integer.parseInt(rs.getString("hours"));
                 }
                 totalHours = String.valueOf(total);
             }
@@ -581,5 +622,238 @@ public class RequestsDAO implements Serializable {
             }
         }
         return totalMentor;
+    }
+   
+    public List<RequestsDTO> loadListRequest(String menteeID) 
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<RequestsDTO> listRequest = new ArrayList<>();
+        try {
+            //1.Establish Connection
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                String sql = "Select requestID, menteeID, mentorID, skillsID, "
+                        + "deadline, title, reqContent, status, openedTime, "
+                        + "approvedTime, canceledTime, closedTime "
+                        + "From requests "
+                        + "Where menteeID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                
+                //3. Store in ResultSet
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    listRequest.add(new RequestsDTO(rs.getString("requestID"), 
+                            rs.getString("menteeID"), rs.getString("mentorID"), 
+                            rs.getString("skillsID"), rs.getTimestamp("deadline"),
+                            rs.getString("title"), rs.getString("reqContent"),
+                            rs.getString("status"), rs.getTimestamp("openedTime"), 
+                            rs.getTimestamp("approvedTime"), rs.getTimestamp("canceledTime"), 
+                            rs.getTimestamp("closedTime")));
+                }
+                
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return listRequest;
+    }
+    
+    public RequestsDTO getRequestByRequestID(String requestID) 
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        RequestsDTO request = null;
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare sql string
+                String sql = "Select requestID, menteeID, mentorID, skillsID, "
+                        + "deadline, title, reqContent, status, openedTime, "
+                        + "approvedTime, canceledTime, closedTime "
+                        + "From requests "
+                        + "Where requestID like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, requestID);
+                
+                //3. Store in ResultSet
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    request = new RequestsDTO(rs.getString("requestID"), 
+                            rs.getString("menteeID"), rs.getString("mentorID"), 
+                            rs.getString("skillsID"), rs.getTimestamp("deadline"),
+                            rs.getString("title"), rs.getString("reqContent"),
+                            rs.getString("status"), rs.getTimestamp("openedTime"), 
+                            rs.getTimestamp("approvedTime"), rs.getTimestamp("canceledTime"), 
+                            rs.getTimestamp("closedTime"));
+                }
+            }
+        } finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return request;
+    }
+
+    public boolean closeRequest(String requestID) 
+            throws SQLException, NamingException {
+        boolean result = false;
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE requests "
+                        + "SET status = ?, closedTime = ? "
+                        + "WHERE requestID = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "C");
+                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(3, requestID);
+                
+                int iCheck = stmt.executeUpdate();
+                if (iCheck > 0) {
+                    result = true;
+                }
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+    
+    public Map<String,String> loadRequestForRating(String menteeID) 
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Map<String,String> reqInfo = new HashMap<>();
+        
+        try{
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select requestID, title, mentorID " 
+                        + "From requests " 
+                        + "Where closedTime is not null AND mentorID is not null "
+                        + "AND menteeID like ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                while(rs.next()){
+                    reqInfo.put(rs.getString("requestID"), rs.getString("title") 
+                            + "," + rs.getString("mentorID"));
+                }
+            }
+        }finally {
+            if(rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return reqInfo;
+    }
+    
+    public int getNumberOfRequest(String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int num = 0;
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+                String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    num = Integer.parseInt(rs.getString("numReq"));
+                }
+            }
+        } finally{
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return num;
+    }
+    
+    public boolean inviteMentor(String requestID, String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+                String sql = "Update requests "
+                        + "Set mentorID = ? "
+                        + "Where requestID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                stm.setString(2, requestID);
+                int row = stm.executeUpdate();
+                if(row > 0){
+                    return true;
+                }
+            }
+        } finally{
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        return false;
     }
 }

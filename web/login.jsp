@@ -14,15 +14,16 @@
     </head>
     <body>
         <h1>LOG IN HERE!!!</h1>
+        <c:set var="errors" value="${requestScope.LOGIN_ERROR}"/>
         <form method="POST" action="Login">
-            <c:set var="errors" value="${requestScope.LOGIN_ERROR}"/>
             <table border="0">
                 <tr>
                     <td>
                         Username
                     </td>
                     <td>
-                        <input type="text" name="txtUsername" value="${param.txtUsername}"/>
+                        <input type="text" name="txtUsername" 
+                               value="${param.txtUsername}"/>
                     </td>
                 </tr>
                 <c:if test="${not empty errors.usernameLengthErr}">
@@ -70,5 +71,6 @@
             <input type="submit" value="LOG IN" class="btn">
             <input type="reset" value="RESET" class="btn">
         </form>
+        <a href="SignUpPage">Create new account</a>
     </body>
 </html>

@@ -77,10 +77,12 @@
                                 <td>
                                     <c:url var="approveURL" value="Approve">
                                         <c:param name="requestID" value="${request.requestID}" />
+                                        <c:param name="redirect" value="FollowingRequest" />
                                     </c:url>
                                     <a href="${approveURL}">Approve</a>
                                     <c:url var="rejectURL" value="Reject">
                                         <c:param name="requestID" value="${request.requestID}" />
+                                        <c:param name="redirect" value="FollowingRequest" />
                                     </c:url>
                                     <a href="${rejectURL}">Reject</a>
                                 </td>
@@ -90,7 +92,11 @@
                                     <font color="purple">Approved - Processing</font>
                                 </td>
                                 <td>
-                                    <a href="Close">Close</a>
+                                    <c:url var="closeURL" value="Close">
+                                        <c:param name="requestID" value="${request.requestID}" />
+                                        <c:param name="redirect" value="FollowingRequest" />
+                                    </c:url>
+                                    <a href="${closeURL}">Close</a>
                                 </td>
                             </c:if>
 
@@ -100,6 +106,19 @@
                 </tbody>
             </table>
         </c:if>
-
+        <font color="red">
+        <c:if test="${not empty requestScope.REJECT_ERROR}">
+            There has been an error during your Rejecting operation... Please try again 
+            or contact the web owner for more details!
+        </c:if>
+        <c:if test="${not empty requestScope.APPROVE_ERROR}">
+            There has been an error during your Approving operation... Please try again 
+            or contact the web owner for more details!
+        </c:if>
+        <c:if test="${not empty requestScope.FOLLOWING_ERROR}">
+            There has been an error... Please try again 
+            or contact the web owner for more details!
+        </c:if>
+        </font>
     </body>
 </html>
