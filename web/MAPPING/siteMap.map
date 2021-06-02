@@ -15,6 +15,8 @@ MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
 CreateCV = CreateCVController
+GetSkillsList = GetSkillsListJSONController
+AddMentorSkills = AddMentorSkillsController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
