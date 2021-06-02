@@ -70,7 +70,9 @@ public class CommentsDAO implements Serializable{
                 rs = stm.executeQuery();
                 
                 if(rs.next()){
-                    avg = Float.parseFloat(rs.getString("avgStar"));
+                    if(rs.getString("avgStar") != null){
+                        avg = Float.parseFloat(rs.getString("avgStar"));
+                    }
                 }
             }
         } finally{
