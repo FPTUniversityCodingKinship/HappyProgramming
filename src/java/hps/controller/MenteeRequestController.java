@@ -49,6 +49,9 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
         String title = request.getParameter("title");
         String reqContent = request.getParameter("reqContent");
         String mentorID = request.getParameter("mentorID");
+        if(mentorID.trim().length() == 0){
+            mentorID = null;
+        }
         String[] skillsName = request.getParameterValues("ckb");
         String status = "P";
         

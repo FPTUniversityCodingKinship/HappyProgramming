@@ -178,43 +178,34 @@ public class SkillsDAO implements Serializable {
         }
         return null;
     }
-
-    public List<SkillsDTO> loadSkills()
-            throws SQLException, NamingException {
-        List<SkillsDTO> skillList = new ArrayList<>();
-
+    
+    public List<SkillsDTO> loadSkills() 
+            throws NamingException, SQLException{
         Connection con = null;
-        PreparedStatement stmt = null;
+        PreparedStatement stm = null;
         ResultSet rs = null;
-
+        List<SkillsDTO> skillList = new ArrayList<>();
+        
         try {
             con = DBHelper.makeConnection();
-
             if (con != null) {
-                String sql = "SELECT skillID, skillName "
-                        + "FROM skills "
-                        + "WHERE status = ?";
-                stmt = con.prepareStatement(sql);
-                stmt.setBoolean(1, true);
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-//                        String id = rs.getString("skillID");
-//                        String name = rs.getNString("skillName");
-//                        boolean stt = rs.getBoolean("status");
-                    SkillsDTO skill = new SkillsDTO(
-                            rs.getString("skillID"),
-                            rs.getNString("skillName"),
-                            true
-                    );
-                    skillList.add(skill);
+                String sql = "Select skillID, skillName, status "
+                        + "From skills "
+                        + "Where status = '1' ";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    skillList.add(new SkillsDTO(rs.getString("skillID"), 
+                            rs.getString("skillName"), rs.getBoolean("status")));
                 }
             }
         } finally {
-            if (rs != null) {
+            if(rs != null){
                 rs.close();
             }
-            if (stmt != null) {
-                stmt.close();
+            if (stm != null) {
+                stm.close();
             }
             if (con != null) {
                 con.close();

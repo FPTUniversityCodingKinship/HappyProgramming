@@ -16,6 +16,50 @@ import javax.naming.NamingException;
  */
 public class UsersDAO implements Serializable {
 
+    public UsersDTO newMentee(String username, String email, String password, 
+                                String fullname, boolean role)
+        throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            //1. Make connection.
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2.Create SQL String.
+                String sql = "Insert Into "
+                            + "users(username, email, password, fullname, status) "
+                            + "Values( ?, ?, ?, ?)";
+                
+                //3. Create Statement and assign Parameter(s) if any.
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                stm.setString(2, email);
+                stm.setString(3, password);
+                stm.setString(4, fullname);
+                stm.setBoolean(5, role);
+                //4. Execute Query.
+                ResultSet rs = stm.executeQuery();
+                
+                //5. Process resultSet.
+                if (rs != null) {
+                    UsersDTO newUser = new UsersDTO();
+                    newUser.setUsername(username);
+                    newUser.setEmail(email);
+                    newUser.setPassword(password);
+                    return newUser;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
   
     public UsersDTO checkLogin(String username, String password)
             throws NamingException, SQLException {
@@ -54,7 +98,6 @@ public class UsersDAO implements Serializable {
                 con.close();
             }
         }
-
         return null;
     }
 
@@ -89,9 +132,7 @@ public class UsersDAO implements Serializable {
                     );
                     return dto;
                 }
-
             }
-
         } finally {
             if (stm != null) {
                 stm.close();

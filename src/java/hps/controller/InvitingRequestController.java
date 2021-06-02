@@ -47,10 +47,10 @@ public class InvitingRequestController extends HttpServlet {
         
         try {
             // Get current mentor
-            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-            
-            String mentorID = curMentor.getUserID();
-            
+//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
+//            
+//            String mentorID = curMentor.getUserID();
+            String mentorID = "MT000001";
             RequestsDAO requestsDAO = new RequestsDAO();
             List<RequestsDTO> listInvitingRequets = requestsDAO.getInvitingRequestsList(mentorID);
             
@@ -58,9 +58,13 @@ public class InvitingRequestController extends HttpServlet {
             url = VIEW_PAGE;
         }
         catch (SQLException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
+            log("Error at InvitingRequestController: " + ex.getMessage());
+            request.setAttribute("INVITING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = VIEW_PAGE;
         } catch (NamingException ex) {
-            log("Error at FollowingRequestController: " + ex.getMessage());
+            log("Error at InvitingRequestController: " + ex.getMessage());
+            request.setAttribute("INVITING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            url = VIEW_PAGE;
         }
         finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
