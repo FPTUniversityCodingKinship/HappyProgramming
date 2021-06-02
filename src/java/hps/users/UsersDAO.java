@@ -230,6 +230,7 @@ public class UsersDAO implements Serializable {
         return null;
     }
     
+
     public int countTotalRows(String searchValue)
             throws NamingException, SQLException{
         Connection con = null;
@@ -564,6 +565,31 @@ public class UsersDAO implements Serializable {
                 int row = stm.executeUpdate();
                 
                 if(row > 0){
+
+    public boolean updateProfile(String userID, String fullname, String address, 
+            Date dob, String sex)
+            throws SQLException, NamingException {
+
+        //1. Establish DB connection
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                //2. Prepare SQL string
+                String sql = "UPDATE users "
+                        + "SET fullname = ?, address = ?, "
+                        + "dob = ? , sex = ? "
+                        + "WHERE userID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, fullname);
+                stm.setString(2, address);
+                stm.setDate(3, dob);
+                stm.setString(4, sex);
+                stm.setString(5, userID);
+                int result = stm.executeUpdate();
+                if (result > 0) {
+
                     return true;
                 }
             }
