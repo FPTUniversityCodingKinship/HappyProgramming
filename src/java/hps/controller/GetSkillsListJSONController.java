@@ -43,7 +43,7 @@ public class GetSkillsListJSONController extends HttpServlet {
         try {
             Gson gson = new Gson();
             SkillsDAO dao = new SkillsDAO();
-            List<SkillsDTO> skillsList = dao.getSkillsList();
+            List<SkillsDTO> skillsList = dao.loadSkills();
             String JsonString = gson.toJson(skillsList);
 //            System.out.println(JsonString);
             

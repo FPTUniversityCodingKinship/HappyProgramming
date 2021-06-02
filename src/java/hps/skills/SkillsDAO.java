@@ -179,9 +179,9 @@ public class SkillsDAO implements Serializable {
         return null;
     }
 
-    public List<SkillsDTO> getSkillsList()
+    public List<SkillsDTO> loadSkills()
             throws SQLException, NamingException {
-        List<SkillsDTO> listSkills = new ArrayList<>();
+        List<SkillsDTO> skillList = new ArrayList<>();
 
         Connection con = null;
         PreparedStatement stmt = null;
@@ -206,7 +206,7 @@ public class SkillsDAO implements Serializable {
                             rs.getNString("skillName"),
                             true
                     );
-                    listSkills.add(skill);
+                    skillList.add(skill);
                 }
             }
         } finally {
@@ -221,6 +221,6 @@ public class SkillsDAO implements Serializable {
             }
         }
 
-        return listSkills;
+        return skillList;
     }
 }
