@@ -16,6 +16,9 @@ MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
+CreateCV = CreateCVController
+GetSkillsList = GetSkillsListJSONController
+AddMentorSkills = AddMentorSkillsController
 MenteeLoadRequest = MenteeLoadRequestController
 MenteeShowRequest = MenteeShowRequestController
 MenteeUpdateRequestSeparately = MenteeUpdateRequestSeparatelyController
@@ -24,6 +27,7 @@ MenteeStartUp = MenteeStartUpController
 MenteeListSuggestion = MenteeListSuggestionController
 ShowMentorDetails = ShowMentorDetailsController
 Close = CloseRequestController
+
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -42,5 +46,6 @@ ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
 MentorHomePage = mentor_homepage.jsp
 AdminHomePage = admin_homepage.jsp
+CreateCVPage = mentor/createCV.jsp
 # End of Page
 # -----------------------------------------------
