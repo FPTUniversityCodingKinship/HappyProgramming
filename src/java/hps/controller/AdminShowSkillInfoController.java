@@ -5,11 +5,8 @@
  */
 package hps.controller;
 
-import hps.requests.RequestsDAO;
-import hps.requests.RequestsDTO;
 import hps.skills.SkillsDAO;
-import hps.skills.SkillsError;
-import hps.users.UsersDTO;
+import hps.skills.SkillsDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -27,10 +24,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "AdminCreateSkillController", urlPatterns = {"/AdminCreateSkillController"})
-public class AdminCreateSkillController extends HttpServlet {
-private final String ERROR_PAGE = "AdminCreateSkillPage";
-private final String SUCCESS_PAGE = "AdminHomePage";
+@WebServlet(name = "AdminShowSkillInfoController", urlPatterns = {"/AdminShowSkillInfoController"})
+public class AdminShowSkillInfoController extends HttpServlet {
+private final String UPDATE_SKILL_PAGE = "AdminUpdateSkillPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,37 +41,17 @@ private final String SUCCESS_PAGE = "AdminHomePage";
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String url = ERROR_PAGE;
+        String url = UPDATE_SKILL_PAGE;
+        String skillName = request.getParameter("skillName");
         try{
-            String skillName = request.getParameter("skillName");
-            String skillType = request.getParameter("skillType");
             SkillsDAO dao = new SkillsDAO();
-            boolean isError = false;
-            SkillsError error = new SkillsError();
-            
-            boolean existedSkillName = dao.checkSkillNameExisted(skillName);
-            if(existedSkillName){
-                isError = true;
-                error.setSkillNameExisted("Skill name existed");
-            }
-            
-            if(skillName.isEmpty()){
-                isError = true;
-                error.setSkillNameLengthErr("Skill name must be at least 1 character");
-            }
-            if(isError){
-                request.setAttribute("SKILL_NAME_ERROR", error);
-            }else{
-                String skillID = dao.generateSkillID(skillType);
-                boolean result = dao.addNewSkill(skillID, skillName, 1);
-                if(result){
-                    url = SUCCESS_PAGE;
-                }
-            }
+            SkillsDTO skillInfo = dao.getSkillInfo(skillName);
+            HttpSession session = request.getSession();
+            session.setAttribute("SKILL_INFO", skillInfo);
         } catch (NamingException ex) {
-            log("AdminCreateSkillController NamingException: " + ex.getMessage());
+            log("AdminLoadSkillsController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("AdminCreateSkillController SQLException: " + ex.getMessage());
+            log("AdminLoadSkillsController SQLException: " + ex.getMessage());
         }        
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

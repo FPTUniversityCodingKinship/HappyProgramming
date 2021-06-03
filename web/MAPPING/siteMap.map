@@ -27,6 +27,9 @@ Close = CloseRequestController
 AdminViewMentor = AdminViewMentorController
 AdminManageMentorStatus = AdminManageMentorStatusController
 AdminCreateSkill = AdminCreateSkillController
+AdminLoadSkills = AdminLoadSkillsController
+AdminShowSkillInfo = AdminShowSkillInfoController
+AdminUpdateSkill = AdminUpdateSkillController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -47,5 +50,6 @@ MentorHomePage = mentor_homepage.jsp
 AdminHomePage = admin/admin_homepage.jsp
 AdminViewMentorPage = admin/admin_viewMentor.jsp
 AdminCreateSkillPage = admin/admin_createSkill.jsp
+AdminUpdateSkillPage = admin/admin_updateSkill.jsp
 # End of Page
 # -----------------------------------------------

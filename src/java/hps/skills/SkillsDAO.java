@@ -213,6 +213,39 @@ public class SkillsDAO implements Serializable {
         return skillList;
     }
     
+    public List<SkillsDTO> loadAllSkills() 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<SkillsDTO> skillList = new ArrayList<>();
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select skillID, skillName, status "
+                        + "From skills ";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                
+                while(rs.next()){
+                    skillList.add(new SkillsDTO(rs.getString("skillID"), 
+                            rs.getString("skillName"), rs.getBoolean("status")));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return skillList;
+    }
     public String generateSkillID(String skillType) 
             throws NamingException, SQLException{
         Connection con = null;
@@ -298,6 +331,74 @@ public class SkillsDAO implements Serializable {
                 stm.setString(1, skillID);
                 stm.setString(2, skillName);
                 stm.setInt(3, status);
+                
+                int row = stm.executeUpdate();
+                if(row > 0){
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    public SkillsDTO getSkillInfo(String skillName)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        SkillsDTO skillInfo = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select skillID, skillName, status "
+                        + "From skills "
+                        + "Where skillName = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, skillName);
+                rs = stm.executeQuery();
+                
+                if(rs.next()){
+                    skillInfo = new SkillsDTO(rs.getString("skillID"), 
+                            rs.getString("skillName"), rs.getBoolean("status"));
+                }
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return skillInfo;
+    }
+    
+    public boolean updateSkill(String skillID, String skillName, int status)
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Update skills "
+                        + "Set skillName = ?, status = ? "
+                        + "Where skillID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, skillName);
+                stm.setInt(2, status);
+                stm.setString(3, skillID);
                 
                 int row = stm.executeUpdate();
                 if(row > 0){
