@@ -16,6 +16,9 @@ MenteeDeleteUpdateDispatcher = MenteeDeleteUpdateDispatcherController
 MenteeDeleteRequest = MenteeDeleteRequestController
 MenteeUpdateRequest = MenteeUpdateRequestController
 MenteeStatisticRequest = MenteeStatisticRequestController
+CreateCV = CreateCVController
+GetSkillsList = GetSkillsListJSONController
+AddMentorSkills = AddMentorSkillsController
 MenteeLoadRequest = MenteeLoadRequestController
 MenteeShowRequest = MenteeShowRequestController
 MenteeUpdateRequestSeparately = MenteeUpdateRequestSeparatelyController
@@ -51,5 +54,7 @@ AdminHomePage = admin/admin_homepage.jsp
 AdminViewMentorPage = admin/admin_viewMentor.jsp
 AdminCreateSkillPage = admin/admin_createSkill.jsp
 AdminUpdateSkillPage = admin/admin_updateSkill.jsp
+AdminHomePage = admin_homepage.jsp
+CreateCVPage = mentor/createCV.jsp
 # End of Page
 # -----------------------------------------------

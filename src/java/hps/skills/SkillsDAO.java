@@ -23,22 +23,23 @@ public class SkillsDAO implements Serializable {
 
     /**
      * Get a list of skills name based on a String containing some skills ID.
+     *
      * @param skillsID
      * @return an Array List of skills
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    public List<SkillsDTO> getSkillsList(String skillsID) 
-        throws SQLException, NamingException {
+    public List<SkillsDTO> getSkillsList(String skillsID)
+            throws SQLException, NamingException {
         List<SkillsDTO> listSkills = new ArrayList<>();
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             con = DBHelper.makeConnection();
-            
+
             if (con != null) {
                 String[] arrSkillsID = skillsID.split(",");
                 String sql = "SELECT skillID, skillName "
@@ -53,8 +54,8 @@ public class SkillsDAO implements Serializable {
 //                        String name = rs.getNString("skillName");
 //                        boolean stt = rs.getBoolean("status");
                         SkillsDTO skill = new SkillsDTO(
-                                rs.getString("skillID"), 
-                                rs.getNString("skillName"), 
+                                rs.getString("skillID"),
+                                rs.getNString("skillName"),
                                 true
                         );
                         listSkills.add(skill);
@@ -64,8 +65,7 @@ public class SkillsDAO implements Serializable {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             if (rs != null) {
                 rs.close();
             }
@@ -76,9 +76,10 @@ public class SkillsDAO implements Serializable {
                 con.close();
             }
         }
-        
+
         return listSkills;
     }
+
     public String getSkillsID(String[] skillsName)
             throws NamingException, SQLException {
         Connection con = null;
@@ -127,14 +128,14 @@ public class SkillsDAO implements Serializable {
         }
         return null;
     }
-    
+
     public String getSkillsName(String skillID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         String skillsName = "";
-        String[] skillsID = skillID.replace(" ","").split(",");
+        String[] skillsID = skillID.replace(" ", "").split(",");
         try {
             //1.Establish Connection
             con = DBHelper.makeConnection();
@@ -210,6 +211,7 @@ public class SkillsDAO implements Serializable {
                 con.close();
             }
         }
+
         return skillList;
     }
     
