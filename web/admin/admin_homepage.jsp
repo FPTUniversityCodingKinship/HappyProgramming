@@ -18,5 +18,6 @@
         </c:if>
             <a href="AdminViewMentor">View list of all mentor</a><br/>
             <a href="AdminCreateSkillPage">Create skill</a><br/>
+            <a href="AdminLoadSkills">Update skill</a><br/>
     </body>
 </html>

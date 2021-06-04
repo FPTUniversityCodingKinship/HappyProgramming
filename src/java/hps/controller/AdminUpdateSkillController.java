@@ -5,15 +5,11 @@
  */
 package hps.controller;
 
-import hps.requests.RequestsDAO;
-import hps.requests.RequestsDTO;
 import hps.skills.SkillsDAO;
 import hps.skills.SkillsError;
-import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,9 +23,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "AdminCreateSkillController", urlPatterns = {"/AdminCreateSkillController"})
-public class AdminCreateSkillController extends HttpServlet {
-private final String ERROR_PAGE = "AdminCreateSkillPage";
+@WebServlet(name = "AdminUpdateSkillController", urlPatterns = {"/AdminUpdateSkillController"})
+public class AdminUpdateSkillController extends HttpServlet {
+private final String ERROR_PAGE = "AdminUpdateSkillPage";
 private final String SUCCESS_PAGE = "AdminHomePage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,14 +43,18 @@ private final String SUCCESS_PAGE = "AdminHomePage";
         
         String url = ERROR_PAGE;
         try{
-            String skillName = request.getParameter("skillName");
-            String skillType = request.getParameter("skillType");
-            SkillsDAO dao = new SkillsDAO();
-            boolean isError = false;
+            String skillID = request.getParameter("skillID");
+            String skillName = request.getParameter("txtSkillName");
+            String strStatus = request.getParameter("status");
+            String currentSkillName = request.getParameter("currentSkillName");
+            int status = strStatus.equals("Active")? 1 : 0;
             SkillsError error = new SkillsError();
+            boolean isError = false;
+            SkillsDAO dao = new SkillsDAO();
             
-            boolean existedSkillName = dao.checkSkillNameExisted(skillName);
-            if(existedSkillName){
+            if(skillName.equalsIgnoreCase(currentSkillName)){
+                
+            }else if(dao.checkSkillNameExisted(skillName)){
                 isError = true;
                 error.setSkillNameExisted("Skill name existed");
             }
@@ -63,19 +63,23 @@ private final String SUCCESS_PAGE = "AdminHomePage";
                 isError = true;
                 error.setSkillNameLengthErr("Skill name must be at least 1 character");
             }
+            
             if(isError){
-                request.setAttribute("SKILL_NAME_ERROR", error);
+                request.setAttribute("UPDATE_SKILL_ERROR", error);
             }else{
-                String skillID = dao.generateSkillID(skillType);
-                boolean result = dao.addNewSkill(skillID, skillName, 1);
+                boolean result = dao.updateSkill(skillID, skillName, status);
                 if(result){
                     url = SUCCESS_PAGE;
+                    HttpSession session = request.getSession();
+                    session.removeAttribute("LIST_ALL_SKILLS");
+                    session.removeAttribute("SKILL_INFO");
                 }
             }
+            
         } catch (NamingException ex) {
-            log("AdminCreateSkillController NamingException: " + ex.getMessage());
+            log("AdminUpdateSkillController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("AdminCreateSkillController SQLException: " + ex.getMessage());
+            log("AdminUpdateSkillController SQLException: " + ex.getMessage());
         }        
         finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

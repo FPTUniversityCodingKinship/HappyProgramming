@@ -15,6 +15,7 @@ public class SkillsError implements Serializable{
     private String skillNameNotFound;
     private String skillQuantityError;
     private String skillNameExisted;
+    private String skillNameLengthErr;
 
     public SkillsError() {
     }
@@ -59,6 +60,20 @@ public class SkillsError implements Serializable{
      */
     public void setSkillNameExisted(String skillNameExisted) {
         this.skillNameExisted = skillNameExisted;
+    }
+
+    /**
+     * @return the skillNameLengthErr
+     */
+    public String getSkillNameLengthErr() {
+        return skillNameLengthErr;
+    }
+
+    /**
+     * @param skillNameLengthErr the skillNameLengthErr to set
+     */
+    public void setSkillNameLengthErr(String skillNameLengthErr) {
+        this.skillNameLengthErr = skillNameLengthErr;
     }
     
     

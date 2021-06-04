@@ -15,8 +15,11 @@
     <body>
         <form action="AdminCreateSkill" method="POST">
             Skill name: <input type="text" name="skillName" value="${param.skillName}" /><br/>
-            <c:if test="${not empty requestScope.SKILL_NAME_ERROR}">
+            <c:if test="${not empty requestScope.SKILL_NAME_ERROR.skillNameExisted}">
                 <font color="red">${requestScope.SKILL_NAME_ERROR.skillNameExisted}</font><br/>
+            </c:if>
+            <c:if test="${not empty requestScope.SKILL_NAME_ERROR.skillNameLengthErr}">
+                <font color="red">${requestScope.SKILL_NAME_ERROR.skillNameLengthErr}</font><br/>
             </c:if>
                 It is a: <input type="radio" name="skillType" value="PL" required="required"/>
                     <label for="PL">Programming Language</label>
