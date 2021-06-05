@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 rate: skillRate
             });
         }
-        console.log(JSON.stringify(skillsList));
+//        console.log(JSON.stringify(skillsList));
 //        console.log(skillsList);
         var isError = false;
 
