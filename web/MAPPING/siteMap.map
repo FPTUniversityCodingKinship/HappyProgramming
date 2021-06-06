@@ -33,6 +33,7 @@ AdminCreateSkill = AdminCreateSkillController
 AdminLoadSkills = AdminLoadSkillsController
 AdminShowSkillInfo = AdminShowSkillInfoController
 AdminUpdateSkill = AdminUpdateSkillController
+RequestsStatistics = RequestsStatisticsController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -49,12 +50,13 @@ MenteeRatePage = mentee/mentee_rate.jsp
 MenteeListSuggestionPage = mentee/mentee_listSuggestion.jsp
 ViewFollowingRequestPage = mentor/viewFollowingRequest.jsp
 ViewInvitingRequestPage = mentor/viewInvitingRequest.jsp
-MentorHomePage = mentor_homepage.jsp
+MentorHomePage = mentor/mentor_homepage.jsp
 AdminHomePage = admin/admin_homepage.jsp
 AdminViewMentorPage = admin/admin_viewMentor.jsp
 AdminCreateSkillPage = admin/admin_createSkill.jsp
 AdminUpdateSkillPage = admin/admin_updateSkill.jsp
 AdminHomePage = admin_homepage.jsp
 CreateCVPage = mentor/createCV.jsp
+RequestsStatisticsPage = mentor/viewStatisticsRequests.jsp
 # End of Page
 # -----------------------------------------------
