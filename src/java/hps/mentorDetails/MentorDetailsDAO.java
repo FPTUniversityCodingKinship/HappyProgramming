@@ -104,4 +104,43 @@ public class MentorDetailsDAO implements Serializable {
         }
         return detail;
     }
+    
+    public boolean updateCV(MentorDetailsDTO mentorDetails) 
+            throws NamingException, SQLException {
+        boolean result = false;
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE mentorDetails "
+                        + "SET facebook = ?, github = ?, profession = ?, language = ?, "
+                        + "introduction = ?, serviceDescription = ?, achievementDescription = ? "
+                        + "WHERE mentorID = ?";
+                stmt = con.prepareStatement(sql);
+                
+                stmt.setNString(1, mentorDetails.getFacebook());
+                stmt.setNString(2, mentorDetails.getGithub());
+                stmt.setNString(3, mentorDetails.getProfession());
+                stmt.setNString(4, mentorDetails.getLanguage());
+                stmt.setNString(5, mentorDetails.getIntroduction());
+                stmt.setNString(6, mentorDetails.getServiceDescription());
+                stmt.setNString(7, mentorDetails.getAchievementDescription());
+                stmt.setString(8, mentorDetails.getMentorID());
+                
+                result = stmt.executeUpdate() > 0;
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return result;
+    }
 }
