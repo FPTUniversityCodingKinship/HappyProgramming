@@ -74,8 +74,9 @@ public class LoginController extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
                     if (remember != null) {
-                        Cookie cookie = new Cookie(username, password);
-                        cookie.setMaxAge(60*5);
+                        String key = "HPSWA-" + username;
+                        Cookie cookie = new Cookie(key, password);
+                        cookie.setMaxAge(60*60*24);
                         response.addCookie(cookie);
                     }
                     String role = user.getUserID().substring(0, 2);

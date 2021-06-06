@@ -7,7 +7,6 @@ package hps.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -47,9 +46,15 @@ public class StartUpController extends HttpServlet {
             cookies = request.getCookies();
             if (cookies != null) {
                 msg = "Cookies file was found. ";
-                Cookie lastCookie = cookies[cookies.length-1];
-                String username = lastCookie.getName();
-                String password = lastCookie.getValue();
+                String username = "";
+                String password = "";
+                for (Cookie info : cookies) {
+                    String[] key = info.getName().split("-", 2);
+                    if (key[0].equals("HPSWA")) {
+                        username = key[1];
+                        password = info.getValue();
+                    }
+                }
 
                 if (!username.equals("") && !password.equals("")) {
                     msg += "Redirect to [LoginController]. ";
