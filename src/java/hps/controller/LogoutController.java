@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
 public class LogoutController extends HttpServlet {
-    private final String LOGIN_PAGE = "";
+    private final String LOGIN_PAGE = "LoginPage";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +41,12 @@ public class LogoutController extends HttpServlet {
         
         try {
             Cookie[] cookies = request.getCookies();
-            
-            for (Cookie cookie : cookies) {
-                cookie.setValue("");
-                response.addCookie(cookie);
+            for (Cookie info : cookies) {
+                String[] key = info.getName().split("-", 2);
+                if (key[0].equals("HPSWA")) {
+                    info.setValue("");
+                    response.addCookie(info);
+                }
             }
             session.invalidate();
         } finally {

@@ -59,7 +59,7 @@ public class UpdateCVController extends HttpServlet {
         try {
             // Get Parameter
             String userID = request.getParameter("userID");
-            if (userID != null && !userID.isBlank()) {
+            if (userID != null && !userID.isEmpty()) {
 
                 String fullname = request.getParameter("fullname");
                 String dob = request.getParameter("dob");
@@ -130,7 +130,7 @@ public class UpdateCVController extends HttpServlet {
                 Date dobDate = Date.valueOf(dob);
 
                 boolean isUpdatedProfile = false;
-                if (image.isBlank()) {
+                if (image.isEmpty()) {
                     isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
                 } else {
                     isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex, image);
