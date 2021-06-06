@@ -34,6 +34,8 @@ AdminLoadSkills = AdminLoadSkillsController
 AdminShowSkillInfo = AdminShowSkillInfoController
 AdminUpdateSkill = AdminUpdateSkillController
 RequestsStatistics = RequestsStatisticsController
+UpdateCV = UpdateCVController
+
 # End of Controller
 # -----------------------------------------------
 # Start of Page
@@ -58,5 +60,7 @@ AdminUpdateSkillPage = admin/admin_updateSkill.jsp
 AdminHomePage = admin_homepage.jsp
 CreateCVPage = mentor/createCV.jsp
 RequestsStatisticsPage = mentor/viewStatisticsRequests.jsp
+UpdateCVPage = mentor/updateCV.jsp
+
 # End of Page
 # -----------------------------------------------

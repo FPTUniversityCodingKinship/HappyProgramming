@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var skillsList;
-var numSkill = 1;
+var numSkill = parseInt($("#numSkills").val(), 10) ;
 function displayError(id, name, min, max) {
     var selector = ".error[id='err" + id + "']";
     var htmlStr = '<font color="red">' + name + ' requires input from ' + min + ' to ' + max + ' characters!!</font>';
@@ -59,10 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Fill DropDown
-    $.each(skillsList, function (i, skill) {
-        $('select[data-filled="skillsList"]').append($('<option/>').attr("value", skill.skillID).text(skill.skillName));
-//        console.log(skill.skillID + ": " + skill.skillName);
-    });
+//    $.each(skillsList, function (i, skill) {
+//        $('select[data-filled="skillsList"]').append($('<option/>').attr("value", skill.skillID).text(skill.skillName));
+////        console.log(skill.skillID + ": " + skill.skillName);
+//    });
 
     $("#btnAddSkill").click(function () {
         var idDivSkill = "skill" + numSkill;
@@ -72,12 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
 //        console.log(selector);
 //        console.log(nextIdDivSkill);
         $(selector).clone().insertAfter(selector).attr("id", nextIdDivSkill);
+        
 //        numSkill++;
 //        console.log(numSkill);
         $("#numSkills").val(nextNumSkill);
 
         var nextYearId = "years" + nextNumSkill;
         var nextRateId = "rate" + nextNumSkill;
+        var nextErrorId = "errSkill" + nextNumSkill;
 
         selector = "select[name='skill" + numSkill + "']";
         $(selector).last().attr("name", nextIdDivSkill);
@@ -99,6 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         selector = "input[id='rate" + numSkill + "']";
         $(selector).last().attr("id", nextRateId);
+        
+        selector = "div[id='errSkill" + numSkill + "']";
+        $(selector).last().attr("id", nextErrorId);
 
         numSkill = nextNumSkill;
 
@@ -112,6 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Get Parameter
         var userID = $("input[name='userID']").val();
+        var image = $("#imageFile").val();
+        console.log(image);
         var fullname = $("#fullname").val();
         var dobInput = $("#dob").val();
         var dobDate = new Date(dobInput);
@@ -146,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var skillRate = $(selector).val();
 
             skillsList.push({
+                num: i,
                 skillID: skillID,
                 yearsExperience: skillYear,
                 rate: skillRate
@@ -199,63 +207,21 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("AchDescription", "Achievement Description", 2, 50);
             isError = true;
         }
+        skillsList.forEach(function(skill) {
+            if (skill.rate < 1 || skill.rate > 5) {
+                var selector = "Skill" + skill.num;
+                displayError(selector, "Skill's rate", 1, 5);
+                isError = true;
+            }
+        });
 
         if (!isError) {
+            var form = $('#updateInformation');
+            form.submit();
+//            form.submit();
+            
+            
 
-            // AJAX to Servlet
-            $.ajax({
-                type: 'POST',
-                url: 'CreateCV',
-                data: {
-                    'userID': userID,
-                    'fullname': fullname,
-                    'dob': dob,
-                    'sex': sex,
-                    'address': address,
-                    'facebook': facebook,
-                    'github': github,
-                    'language': language,
-                    'profession': profession,
-                    'proDescription': proDescription,
-                    'serDescription': serDescription,
-                    'achDescription': achDescription
-                },
-                success: function (data) {
-                    var strData = JSON.parse(data);
-//                    console.log(strData);
-//                    console.log(strData.success);
-                    if (strData.success) {
-                        
-                        // AJAX to addSkills
-                        $.ajax({
-                            type: 'POST',
-                            url: 'AddMentorSkills',
-                            data: {
-                                'skillsList': JSON.stringify(skillsList),
-                                'mentorID': userID
-                            },
-                            success: function (data) {
-                                var strData = JSON.parse(data);
-//                                console.log(strData);
-//                                console.log(strData.success);
-                                if (strData.success) {
-                                    $("#noti").html("Your CV has been created successfully!!");
-                                } else {
-                                    $("#noti").html(strData.message);
-                                }
-                            },
-                            error: function (data) {
-                                console.log(data);
-                            }
-                        });
-                    } else {
-                        $("#noti").html(strData.message);
-                    }
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
         }
     });
 

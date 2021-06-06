@@ -161,4 +161,46 @@ public class MentorSkillsDAO implements Serializable {
         }
         return mentorsID;
     }
+    
+    public List<MentorSkillsDTO> getMentorSkills(String mentorID) 
+            throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<MentorSkillsDTO> mentorSkills = new ArrayList<>();
+        
+        try{
+            con = DBHelper.makeConnection();
+            if(con != null){
+               
+                    String sql = "SELECT mentorSkillID, mentorID, skillID, yearsExperience, rate "
+                        + "FROM mentorSkills "
+                        + "WHERE mentorID = ?";
+                    stm = con.prepareStatement(sql);
+                    stm.setString(1, mentorID);
+                    rs = stm.executeQuery();
+                    while(rs.next()) {
+                        MentorSkillsDTO dto = new MentorSkillsDTO(
+                                rs.getString("mentorSkillID"), 
+                                rs.getString("mentorID"), 
+                                rs.getString("skillID"), 
+                                rs.getInt("yearsExperience"), 
+                                rs.getInt("rate")
+                        );
+                        mentorSkills.add(dto);
+                    }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return mentorSkills;
+    }
 }
