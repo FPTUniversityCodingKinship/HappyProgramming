@@ -278,7 +278,7 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "From requests "
-                        + "Where menteeID like ?";
+                        + "Where menteeID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, userID);
                 rs = stm.executeQuery();
@@ -357,7 +357,7 @@ public class RequestsDAO implements Serializable {
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "Delete From requests Where requestID like ?";
+                String sql = "Delete From requests Where requestID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, requestID);
                 int row = stm.executeUpdate();
@@ -387,7 +387,7 @@ public class RequestsDAO implements Serializable {
                 String sql = "Update requests "
                         + "Set title = ? , deadline = ? , "
                         + "reqContent = ? , skillsID = ? "
-                        + "Where requestID like ?";
+                        + "Where requestID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, title);
                 stm.setString(2, deadline);
@@ -423,7 +423,7 @@ public class RequestsDAO implements Serializable {
                 String sql = "Update requests "
                         + "Set title = ? , deadline = ? , "
                         + "reqContent = ? , skillsID = ?, mentorID = ? "
-                        + "Where requestID like ?";
+                        + "Where requestID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, title);
                 stm.setString(2, deadline);
@@ -497,7 +497,7 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 String sql = "Select title "
                         + "From requests "
-                        + "Where menteeID like ?";
+                        + "Where menteeID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, menteeID);
                 rs = stm.executeQuery();
@@ -532,7 +532,7 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 String sql = "Select count(*) as totalRequest "
                         + "From requests "
-                        + "Where menteeID like ?";
+                        + "Where menteeID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, menteeID);
                 rs = stm.executeQuery();
@@ -568,7 +568,7 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 String sql = "Select DATEDIFF(second,approvedTime,closedTime)/(60*60) as hours "
                         + "From requests "
-                        + "Where menteeID like ?";
+                        + "Where menteeID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, menteeID);
                 rs = stm.executeQuery();
@@ -648,7 +648,7 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "From requests "
-                        + "Where menteeID like ?";
+                        + "Where menteeID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, menteeID);
 
@@ -696,7 +696,7 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "From requests "
-                        + "Where requestID like ?";
+                        + "Where requestID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, requestID);
 
@@ -775,7 +775,7 @@ public class RequestsDAO implements Serializable {
                 String sql = "Select requestID, title, mentorID "
                         + "From requests "
                         + "Where closedTime is not null AND mentorID is not null "
-                        + "AND menteeID like ? ";
+                        + "AND menteeID = ? ";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, menteeID);
                 rs = stm.executeQuery();
@@ -919,13 +919,11 @@ public class RequestsDAO implements Serializable {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-
-        Set<String> skillSet = new HashSet<>();
-
-        try {
+ try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "SELECT skillsID "
+        Set<String> skillSet = new HashSet<>();
+  String sql = "SELECT skillsID "
                         + "FROM requests "
                         + "WHERE menteeID = ?";
                 stm = con.prepareStatement(sql);
@@ -943,13 +941,13 @@ public class RequestsDAO implements Serializable {
             }
             if (stm != null) {
                 stm.close();
-            }
+               }
             if (con != null) {
                 con.close();
             }
-        }
-        return totalSkills;
+          return totalSkills;
     }
+
 
     private static float findDifference(String start_date, String end_date) {
 
@@ -1020,11 +1018,10 @@ public class RequestsDAO implements Serializable {
 
         float total = 0;
         String strTotal = "";
-
-        try {
+      try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "SELECT approvedTime, closedTime "
+  String sql = "SELECT approvedTime, closedTime "
                         + "FROM requests "
                         + "WHERE menteeID = ? AND status = ?";
                 stm = con.prepareStatement(sql);
@@ -1041,6 +1038,41 @@ public class RequestsDAO implements Serializable {
                         strTotal = String.format("%.2f", total);
                     }
                 }
+               }
+            }
+         finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+               }
+            if (con != null) {
+                con.close();
+            }
+        } 
+      return strTotal;
+    }
+  
+    public int getNumOfApprovedReq(String mentorID)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int aReq = 0;
+  try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+  String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where approvedTime is not null AND mentorID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+                    aReq = Integer.parseInt(rs.getString("numReq"));
+                }
             }
         } finally {
             if (rs != null) {
@@ -1048,14 +1080,48 @@ public class RequestsDAO implements Serializable {
             }
             if (stm != null) {
                 stm.close();
-
             }
             if (con != null) {
                 con.close();
             }
-        }
-
-        return strTotal;
+        return aReq;
     }
+  
 
-}
+    public int getNumOfCompletedReq(String mentorID)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int cReq = 0;
+          try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                  String sql = "Select count(*) as numReq "
+                        + "From requests "
+                        + "Where approvedTime is not null AND "
+                        + "closedTime is not null AND mentorID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    cReq = Integer.parseInt(rs.getString("numReq"));
+            }
+        }
+          }
+       finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            }
+             return cReq;
+    }
+  }
+    
+
