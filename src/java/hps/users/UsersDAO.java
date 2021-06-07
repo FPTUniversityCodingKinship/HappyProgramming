@@ -700,4 +700,58 @@ public class UsersDAO implements Serializable {
         }
         return false;
     }
+    
+    public List<UsersDTO> getMenteeList() 
+            throws SQLException, NamingException {
+        List<UsersDTO> menteeList = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT userID, username, email, password, fullname, "
+                        + "phone, address, dob, sex, image, status, emailStatus "
+                        + "FROM users "
+                        + "WHERE userID LIKE ? "
+//                        + "GROUP BY fullname "
+                        + "ORDER BY fullname";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "ME%");
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    UsersDTO mentee = new UsersDTO(
+                            rs.getString("userID"), 
+                            rs.getString("username"),
+                            rs.getString("email"), 
+                            rs.getString("password"),
+                            rs.getString("fullname"), 
+                            rs.getString("phone"),
+                            rs.getString("address"), 
+                            rs.getDate("dob"),
+                            rs.getString("sex"), 
+                            rs.getString("image"),
+                            rs.getBoolean("status"),
+                            rs.getBoolean("emailStatus")
+                    );
+                    menteeList.add(mentee);
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return menteeList;
+    }
 }
