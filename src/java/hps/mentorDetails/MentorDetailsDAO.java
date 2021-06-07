@@ -143,4 +143,38 @@ public class MentorDetailsDAO implements Serializable {
         
         return result;
     }
+    public String getProfession(String mentorID)
+            throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String profession = "";
+
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select profession "
+                        + "From mentorDetails "
+                        + "Where mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+
+                if (rs.next()) {
+                    profession = rs.getString("profession");
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return profession;
+    }
 }
