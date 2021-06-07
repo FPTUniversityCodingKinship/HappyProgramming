@@ -278,8 +278,8 @@ public class UsersDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 String sql = "Select count(*) as totalRows "
-                        + "From (Select * From users Where userID like 'MT%') as f "
-                        + "Where userID like ?";
+                        + "From (Select * From users Where userID = 'MT%') as f "
+                        + "Where userID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, "%" + searchValue + "%");
                 rs = stm.executeQuery();
@@ -314,8 +314,8 @@ public class UsersDAO implements Serializable {
             if (con != null) {
                 String sql = "Select userID From (\n"
                         + "	Select *, ROW_NUMBER() over (order by userID) as numRow\n"
-                        + "	From (Select * From users Where userID like 'MT%') as mentor\n"
-                        + "	Where userID like ?\n"
+                        + "	From (Select * From users Where userID = 'MT%') as mentor\n"
+                        + "	Where userID = ?\n"
                         + ") as m  \n"
                         + "Where ? <= m.numRow  and m.numRow < ?";
                 stm = con.prepareStatement(sql);
@@ -410,149 +410,6 @@ public class UsersDAO implements Serializable {
             }
         }
         return username;
-    }
-
-    public String getProfession(String mentorID)
-            throws NamingException, SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String profession = "";
-
-        try {
-            con = DBHelper.makeConnection();
-            if (con != null) {
-                String sql = "Select profession "
-                        + "From mentorDetails "
-                        + "Where mentorID = ?";
-                stm = con.prepareStatement(sql);
-                stm.setString(1, mentorID);
-                rs = stm.executeQuery();
-
-                if (rs.next()) {
-                    profession = rs.getString("profession");
-                }
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return profession;
-    }
-
-    public int getNumOfApprovedReq(String mentorID)
-            throws NamingException, SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        int aReq = 0;
-
-        try {
-            con = DBHelper.makeConnection();
-            if (con != null) {
-                String sql = "Select count(*) as numReq "
-                        + "From requests "
-                        + "Where approvedTime is not null AND mentorID = ? ";
-                stm = con.prepareStatement(sql);
-                stm.setString(1, mentorID);
-                rs = stm.executeQuery();
-
-                if (rs.next()) {
-                    aReq = Integer.parseInt(rs.getString("numReq"));
-                }
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return aReq;
-    }
-
-    public int getNumOfCompletedReq(String mentorID)
-            throws NamingException, SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        int cReq = 0;
-
-        try {
-            con = DBHelper.makeConnection();
-            if (con != null) {
-                String sql = "Select count(*) as numReq "
-                        + "From requests "
-                        + "Where approvedTime is not null AND "
-                        + "closedTime is not null AND mentorID = ? ";
-                stm = con.prepareStatement(sql);
-                stm.setString(1, mentorID);
-                rs = stm.executeQuery();
-
-                if (rs.next()) {
-                    cReq = Integer.parseInt(rs.getString("numReq"));
-                }
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return cReq;
-    }
-
-    public int getRateStar(String mentorID)
-            throws NamingException, SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        int rate = 0;
-
-        try {
-            con = DBHelper.makeConnection();
-            if (con != null) {
-                String sql = "Select Ceiling(Avg(rate)) as star "
-                        + "From comments "
-                        + "Where mentorID = ? ";
-                stm = con.prepareStatement(sql);
-                stm.setString(1, mentorID);
-                rs = stm.executeQuery();
-
-                if (rs.next()) {
-                    if (rs.getString("star") != null) {
-                        rate = Integer.parseInt(rs.getString("star"));
-                    }
-                }
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return rate;
     }
 
     public int getStatus(String mentorID)
@@ -699,5 +556,59 @@ public class UsersDAO implements Serializable {
             }
         }
         return false;
+    }
+    
+    public List<UsersDTO> getMenteeList() 
+            throws SQLException, NamingException {
+        List<UsersDTO> menteeList = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT userID, username, email, password, fullname, "
+                        + "phone, address, dob, sex, image, status, emailStatus "
+                        + "FROM users "
+                        + "WHERE userID LIKE ? "
+//                        + "GROUP BY fullname "
+                        + "ORDER BY fullname";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "ME%");
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    UsersDTO mentee = new UsersDTO(
+                            rs.getString("userID"), 
+                            rs.getString("username"),
+                            rs.getString("email"), 
+                            rs.getString("password"),
+                            rs.getString("fullname"), 
+                            rs.getString("phone"),
+                            rs.getString("address"), 
+                            rs.getDate("dob"),
+                            rs.getString("sex"), 
+                            rs.getString("image"),
+                            rs.getBoolean("status"),
+                            rs.getBoolean("emailStatus")
+                    );
+                    menteeList.add(mentee);
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        
+        return menteeList;
     }
 }
