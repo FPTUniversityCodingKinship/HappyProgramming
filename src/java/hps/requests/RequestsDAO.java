@@ -8,14 +8,21 @@ package hps.requests;
 import hps.utilities.DBHelper;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.naming.NamingException;
 
 /**
@@ -859,7 +866,7 @@ public class RequestsDAO implements Serializable {
         return false;
     }
 
-    public int getNumberOfRequest(String mentorID, String status) 
+    public int getNumberOfRequest(String mentorID, String status)
             throws NamingException, SQLException {
 
         int totalRequest = 0;
@@ -903,17 +910,160 @@ public class RequestsDAO implements Serializable {
 
         return totalRequest;
     }
+
+    public int getTotalSkills(String menteeID)
+            throws NamingException, SQLException {
+
+        int totalSkills = 0;
+
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+ try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+        Set<String> skillSet = new HashSet<>();
+  String sql = "SELECT skillsID "
+                        + "FROM requests "
+                        + "WHERE menteeID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String[] skillArr = rs.getString("skillsID").split(",");
+                    skillSet.addAll(Arrays.asList(skillArr));
+                }
+                totalSkills = skillSet.size();
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+               }
+            if (con != null) {
+                con.close();
+            }
+          return totalSkills;
+    }
+
+
+    private static float findDifference(String start_date, String end_date) {
+
+        // SimpleDateFormat converts the
+        // string format to date object
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        float result = 0;
+        // Try Block
+        try {
+            // parse method is used to parse
+            // the text from a string to
+            // produce the date
+            java.util.Date d1 = sdf.parse(start_date);
+            java.util.Date d2 = sdf.parse(end_date);
+
+            // Calucalte time difference
+            // in milliseconds
+            long difference_In_Time
+                    = d2.getTime() - d1.getTime();
+
+            // Calucalte time difference in
+            // seconds, minutes, hours, years,
+            // and days
+            long difference_In_Seconds
+                    = (difference_In_Time
+                    / 1000)
+                    % 60;
+
+            long difference_In_Minutes
+                    = (difference_In_Time
+                    / (1000 * 60))
+                    % 60;
+
+            long difference_In_Hours
+                    = (difference_In_Time
+                    / (1000 * 60 * 60))
+                    % 24;
+
+            long difference_In_Years
+                    = (difference_In_Time
+                    / (1000l * 60 * 60 * 24 * 365));
+
+            long difference_In_Days
+                    = (difference_In_Time
+                    / (1000 * 60 * 60 * 24))
+                    % 365;
+
+            // Print the date difference in
+            // years, in days, in hours, in
+            // minutes, and in seconds
+            result = (float)(difference_In_Seconds + difference_In_Minutes*60 + 
+                    difference_In_Hours*60*60 + difference_In_Days*24*60*60 + 
+                    difference_In_Years*365*24*60*60)/3600;
+            
+        } // Catch the Exception
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public String getRequestsTotalHours(String menteeID)
+            throws NamingException, SQLException {
+
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        float total = 0;
+        String strTotal = "";
+      try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+  String sql = "SELECT approvedTime, closedTime "
+                        + "FROM requests "
+                        + "WHERE menteeID = ? AND status = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                stm.setString(2, STATUS_CLOSED);
+
+                rs = stm.executeQuery();
+
+                while (rs.next()) {
+                    if (rs.getString("closedTime") != null) {
+                        Timestamp approvedTime = rs.getTimestamp("approvedTime");
+                        Timestamp closedTime = rs.getTimestamp("closedTime");
+                        total = findDifference(approvedTime.toString(), closedTime.toString());
+                        strTotal = String.format("%.2f", total);
+                    }
+                }
+               }
+            }
+         finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+               }
+            if (con != null) {
+                con.close();
+            }
+        } 
+      return strTotal;
+    }
+  
     public int getNumOfApprovedReq(String mentorID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         int aReq = 0;
-
-        try {
+  try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "Select count(*) as numReq "
+  String sql = "Select count(*) as numReq "
                         + "From requests "
                         + "Where approvedTime is not null AND mentorID = ? ";
                 stm = con.prepareStatement(sql);
@@ -934,9 +1084,9 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 con.close();
             }
-        }
         return aReq;
     }
+  
 
     public int getNumOfCompletedReq(String mentorID)
             throws NamingException, SQLException {
@@ -944,23 +1094,22 @@ public class RequestsDAO implements Serializable {
         PreparedStatement stm = null;
         ResultSet rs = null;
         int cReq = 0;
-
-        try {
+          try {
             con = DBHelper.makeConnection();
             if (con != null) {
-                String sql = "Select count(*) as numReq "
+                  String sql = "Select count(*) as numReq "
                         + "From requests "
                         + "Where approvedTime is not null AND "
                         + "closedTime is not null AND mentorID = ? ";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mentorID);
                 rs = stm.executeQuery();
-
                 if (rs.next()) {
                     cReq = Integer.parseInt(rs.getString("numReq"));
-                }
             }
-        } finally {
+        }
+          }
+       finally {
             if (rs != null) {
                 rs.close();
             }
@@ -970,7 +1119,9 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 con.close();
             }
-        }
-        return cReq;
+            }
+             return cReq;
     }
-}
+  }
+    
+
