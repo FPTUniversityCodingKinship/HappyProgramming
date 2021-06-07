@@ -16,6 +16,18 @@
         <title>Update request</title>
     </head>
     <body>
+        <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+        <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+               scope="page"/>
+        <header>
+            <nav>
+                <form action="Login">
+                    <input type="hidden" name="txtUsername" value="${user.username}" />
+                    <input type="hidden" name="txtPassword" value="${user.password}" />
+                    <input type="submit" value="Back" name="btAction"/>
+                </form><br/>
+            </nav>
+        </header>
         <c:if test="${not empty sessionScope.LIST_REQUEST}">
             Choose request for updating: <br/>
             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">

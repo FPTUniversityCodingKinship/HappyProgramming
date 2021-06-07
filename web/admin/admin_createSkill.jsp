@@ -13,6 +13,18 @@
         <title>Create skill</title>
     </head>
     <body>
+        <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+        <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+               scope="page"/>
+        <header>
+            <nav>
+                <form action="Login">
+                    <input type="hidden" name="txtUsername" value="${user.username}" />
+                    <input type="hidden" name="txtPassword" value="${user.password}" />
+                    <input type="submit" value="Back" name="btAction"/>
+                </form><br/>
+            </nav>
+        </header>
         <form action="AdminCreateSkill" method="POST">
             Skill name: <input type="text" name="skillName" value="${param.skillName}" /><br/>
             <c:if test="${not empty requestScope.SKILL_NAME_ERROR.skillNameExisted}">
