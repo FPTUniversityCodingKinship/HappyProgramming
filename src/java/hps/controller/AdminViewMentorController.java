@@ -5,6 +5,9 @@
  */
 package hps.controller;
 
+import hps.comments.CommentsDAO;
+import hps.mentorDetails.MentorDetailsDAO;
+import hps.requests.RequestsDAO;
 import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,9 +61,12 @@ private final String VIEW = "AdminViewMentorPage";
             HttpSession session = request.getSession();
             //total rows of one page
             int total = 5;
-            UsersDAO dao = new UsersDAO();
-            List<String> listMentorIDs = dao.getMentorIDs(searchValue, Integer.parseInt(pageID), total);
-            int totalRow = dao.countTotalRows(searchValue);
+            UsersDAO uDao = new UsersDAO();
+            CommentsDAO cDao = new CommentsDAO();
+            RequestsDAO rDao = new RequestsDAO();
+            MentorDetailsDAO mDao = new MentorDetailsDAO();
+            List<String> listMentorIDs = uDao.getMentorIDs(searchValue, Integer.parseInt(pageID), total);
+            int totalRow = uDao.countTotalRows(searchValue);
             int numOfPages = (int)Math.ceil((double)totalRow/total);
             session.setAttribute("NUM_OF_PAGES", numOfPages);
             
@@ -71,15 +77,15 @@ private final String VIEW = "AdminViewMentorPage";
             }
             Map<String,String> map = new HashMap<>();
             for(String mentorID : mentorIDs){
-                map.put(mentorID, dao.getMentorFullname(mentorID) 
-                        + "," + dao.getMentorUsername(mentorID) 
-                        + "," + dao.getProfession(mentorID) 
-                        + "," + String.valueOf(dao.getNumOfApprovedReq(mentorID)) 
-                        + "," + String.valueOf(dao.getNumOfApprovedReq(mentorID) == 0 
+                map.put(mentorID, uDao.getMentorFullname(mentorID) 
+                        + "," + uDao.getMentorUsername(mentorID) 
+                        + "," + mDao.getProfession(mentorID) 
+                        + "," + String.valueOf(rDao.getNumOfApprovedReq(mentorID)) 
+                        + "," + String.valueOf(rDao.getNumOfApprovedReq(mentorID) == 0 
                                 ? "No request accepted yet" 
-                                : ((double)dao.getNumOfCompletedReq(mentorID)/dao.getNumOfApprovedReq(mentorID))*100) 
-                        + "," + String.valueOf(dao.getRateStar(mentorID) == 0 ? "Not rated yet" : dao.getRateStar(mentorID)) 
-                        + "," + dao.getStatus(mentorID)
+                                : ((double)rDao.getNumOfCompletedReq(mentorID)/rDao.getNumOfApprovedReq(mentorID))*100) 
+                        + "," + String.valueOf(cDao.getRateStar(mentorID) == 0 ? "Not rated yet" : cDao.getRateStar(mentorID)) 
+                        + "," + uDao.getStatus(mentorID)
                 );
             }
             session.setAttribute("MENTOR_INFO", map);
