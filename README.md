@@ -17,10 +17,10 @@ TobeContinue...
 ### Team Profile: [Github](https://github.com/FPTUniversityCodingKinship)
 
 ### Our Team's members:
-#### [AnhNT](#)
-#### [PhongNT](#)
-#### [PhucVVT](#)
-#### [GiangNT](#)
+#### [AnhNT](https://github.com/yukiakira269)
+#### [PhongNT](https://github.com/ntrphongse)
+#### [PhucVVT](https://github.com/funnything811)
+#### [GiangNT](https://github.com/giangntse150746)
 
 ### Contact us via:
 #### [Gmail](mailto:happyprogramming.swp391@gmail.com)
