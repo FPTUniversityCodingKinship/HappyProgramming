@@ -947,10 +947,8 @@ public class RequestsDAO implements Serializable {
             }
             return totalSkills;
         }
-
-
     }
-
+  
     private static float findDifference(String start_date, String end_date) {
 
         // SimpleDateFormat converts the
