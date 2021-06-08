@@ -27,6 +27,7 @@
             <a href="AdminCreateSkillPage">Create skill</a><br/>
             <a href="AdminLoadSkills">Update skill</a><br/>
             <a href="AdminMenteeStatistics">View Mentee's Statistics</a><br/>
+            <a href="AdminViewSkillsList">View List of all Skills</a><br/>
             
     </body>
 </html>
