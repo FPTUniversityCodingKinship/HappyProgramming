@@ -14,6 +14,18 @@
         <title>View all mentor</title>
     </head>
     <body>
+        <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+        <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+               scope="page"/>
+        <header>
+            <nav>
+                <form action="Login">
+                    <input type="hidden" name="txtUsername" value="${user.username}" />
+                    <input type="hidden" name="txtPassword" value="${user.password}" />
+                    <input type="submit" value="Back" name="btAction"/>
+                </form><br/>
+            </nav>
+        </header>
         <form action="AdminViewMentor" method="POST">
             <input type="text" name="searchValue" value="${param.searchValue}" />
             <input type="submit" value="Search" /><br/>

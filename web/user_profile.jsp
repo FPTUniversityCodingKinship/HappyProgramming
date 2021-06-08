@@ -8,9 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
-    <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
-           scope="page"/>
+
     <c:set var="err" value="${requestScope.ERR}" scope="page"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -25,6 +23,18 @@
         </style>
     </head>
     <body>
+        <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+        <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+               scope="page"/>
+        <header>
+            <nav>
+                <form action="Login">
+                    <input type="hidden" name="txtUsername" value="${user.username}" />
+                    <input type="hidden" name="txtPassword" value="${user.password}" />
+                    <input type="submit" value="Back" name="btAction"/>
+                </form><br/>
+            </nav>
+        </header>
         <h1>Welcome, ${user.username}</h1>
         ${requestScope.UPDATE_STATUS}
         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
@@ -73,6 +83,8 @@
                 </c:if>
             </select><br />
             <input type="submit" value="Update" name="btAction"/>
+
+
         </form>
     </body>
 </html>
