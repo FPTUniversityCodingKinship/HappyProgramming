@@ -13,6 +13,18 @@
         <title>Update skill</title>
     </head>
     <body>
+        <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+        <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+               scope="page"/>
+        <header>
+            <nav>
+                <form action="Login">
+                    <input type="hidden" name="txtUsername" value="${user.username}" />
+                    <input type="hidden" name="txtPassword" value="${user.password}" />
+                    <input type="submit" value="Back" name="btAction"/>
+                </form><br/>
+            </nav>
+        </header>
         <c:if test="${not empty sessionScope.LIST_ALL_SKILLS}">
             <c:set var="listSkills" value="${sessionScope.LIST_ALL_SKILLS}"/>
             <form id="form1" action="AdminShowSkillInfo" method="POST">
