@@ -28,6 +28,7 @@
             <a href="AdminLoadSkills">Update skill</a><br/>
             <a href="AdminMenteeStatistics">View Mentee's Statistics</a><br/>
             <a href="AdminViewSkillsList">View List of all Skills</a><br/>
+            <a href="AdminViewRequestsListPage">View List of all Requests</a><br/>
             
     </body>
 </html>
