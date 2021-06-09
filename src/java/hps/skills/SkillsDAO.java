@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.skills;
 
 import hps.utilities.DBHelper;
@@ -60,9 +56,6 @@ public class SkillsDAO implements Serializable {
                         );
                         listSkills.add(skill);
                     }
-                    if (stmt != null) {
-                        stmt.close();
-                    }
                 }
             }
         } finally {
@@ -76,7 +69,6 @@ public class SkillsDAO implements Serializable {
                 con.close();
             }
         }
-
         return listSkills;
     }
 
@@ -211,7 +203,6 @@ public class SkillsDAO implements Serializable {
                 con.close();
             }
         }
-
         return skillList;
     }
     

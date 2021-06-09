@@ -945,8 +945,8 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 con.close();
             }
-            return totalSkills;
         }
+        return totalSkills;
     }
   
     private static float findDifference(String start_date, String end_date) {
@@ -1083,8 +1083,8 @@ public class RequestsDAO implements Serializable {
             if (con != null) {
                 con.close();
             }
-            return aReq;
         }
+        return aReq;
     }
 
     public int getNumOfCompletedReq(String mentorID)
