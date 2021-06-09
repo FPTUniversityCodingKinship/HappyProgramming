@@ -7,11 +7,16 @@ TobeContinue...
 
 * .gitignore file
 * README.md file
-* Security.md file
+* SECURITY.md file
 * HappyProgramming.sql file
 * Webpage files
 * Controller files
-* Filter files
+* Filter file
+* Listener file
+* DAO files
+* DTO files
+* Utility files
+* Validation files
 * ...
 
 ### Team Profile: [Github](https://github.com/FPTUniversityCodingKinship)
