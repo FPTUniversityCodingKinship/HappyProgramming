@@ -18,7 +18,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Web application lifecycle listener.
+ * Web application life-cycle listener.
  *
  * @author Admin
  */

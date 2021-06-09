@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.mentorDetails;
 
 import hps.utilities.DBHelper;
@@ -53,15 +49,9 @@ public class MentorDetailsDAO implements Serializable {
                 con.close();
             }
         }
-        
         return result;
     }
-/**
- *
- * @author ADMIN
- */
     
-
     public MentorDetailsDTO getMentorDetails(String mentorID) 
             throws NamingException, SQLException {
         Connection con = null;
@@ -140,7 +130,6 @@ public class MentorDetailsDAO implements Serializable {
                 con.close();
             }
         }
-        
         return result;
     }
     public String getProfession(String mentorID)

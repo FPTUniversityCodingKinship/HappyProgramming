@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.mentorSkills;
 
 import hps.utilities.DBHelper;
@@ -56,7 +52,6 @@ public class MentorSkillsDAO implements Serializable {
                 con.close();
             }
         }
-        
         return mentorSkillID;
     }
      
@@ -90,7 +85,6 @@ public class MentorSkillsDAO implements Serializable {
                 con.close();
             }
         }
-        
         return result;
     }
     
@@ -120,7 +114,6 @@ public class MentorSkillsDAO implements Serializable {
             }
         }
         return result;
-        
     }
     
     public List<String> getMappingMentorId(String skillsID) 
