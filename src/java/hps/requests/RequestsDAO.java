@@ -948,7 +948,7 @@ public class RequestsDAO implements Serializable {
         }
         return totalSkills;
     }
-  
+
     private static float findDifference(String start_date, String end_date) {
 
         // SimpleDateFormat converts the
@@ -1119,5 +1119,93 @@ public class RequestsDAO implements Serializable {
             }
         }
         return cReq;
+    }
+
+    public List<RequestsDTO> getRequestsList(String searchValue, String[] status,
+            Date startDate, Date endDate)
+            throws SQLException, NamingException {
+
+        List<RequestsDTO> requestsList = new ArrayList<>();
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT requestID, menteeID, title, status "
+                        + "FROM requests "
+                        + "WHERE ";
+                if (!searchValue.trim().isEmpty()) {
+                    sql += "reqContent LIKE '%" + searchValue + "%' ";
+                }
+                if (status != null && status.length > 0) {
+                    if (!searchValue.trim().isEmpty()) {
+                        sql += "AND ";
+                    }
+                    sql += "(";
+                    for (int i = 0; i < status.length; i++) {
+                        String checkStatus = status[i];
+                        if (i == status.length - 1) {
+                            sql += "status = '" + checkStatus + "' ";
+                        } else {
+                            sql += "status = '" + checkStatus + "' OR ";
+                        }
+                    }
+                    sql += ") ";
+                }
+                if (startDate != null) {
+                    if (!searchValue.trim().isEmpty() || (status != null && status.length > 0)) {
+                        sql += "AND ";
+                    }
+                    if (endDate != null) {
+                        sql += "openedTime >= '" + startDate + "' AND (closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
+                    } else {
+                        sql += "openedTime >= '" + startDate + "'";
+                    }
+                } else {
+                    if (endDate != null) {
+                        if (!searchValue.trim().isEmpty() || (status != null && status.length > 0)) {
+                            sql += "AND ";
+                        }
+                        sql += "(closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
+                    }
+                }
+
+                stmt = con.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    RequestsDTO dto = new RequestsDTO(
+                            rs.getString("requestID"),
+                            rs.getString("menteeID"),
+                            "",
+                            "",
+                            null,
+                            rs.getNString("title"),
+                            "",
+                            rs.getString("status"),
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    requestsList.add(dto);
+                }
+            }
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return requestsList;
     }
 }
