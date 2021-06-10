@@ -40,6 +40,7 @@
         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
             Avatar: <img src="./images/${user.image}" alt="The user's avatar" 
                          style="width:250x;height:300px; float: left;"><br />
+            <input type="hidden" name="txtUserImg" value="${user.image}" />
             Update your avatar here: <input type="file" name="imageFile"/><br />
             User ID: ${user.userID}<br />
             <input type="hidden" name="txtUserID" value="${user.userID}" />
