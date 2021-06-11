@@ -1,4 +1,3 @@
-
 package hps.filter;
 
 import java.io.IOException;
@@ -22,30 +21,29 @@ import javax.servlet.http.HttpServletResponse;
  * @author Admin
  */
 public class FilterDispatcher implements Filter {
-    
-    private static final boolean debug = true;
-    
-//    private final String startup = "/StartUpServlet";
 
+    private static final boolean debug = true;
+
+//    private final String startup = "/StartUpServlet";
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public FilterDispatcher() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-                throws IOException, ServletException {
+            throws IOException, ServletException {
         if (debug) {
             log("FilterDispatcher:DoBeforeProcessing");
         }
 
-	// Write code here to process the request and/or response before
+        // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log items on the request object,
+        // For example, a logging filter might log items on the request object,
         // such as the parameters.
-	/*
+        /*
          for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
          String name = (String)en.nextElement();
          String values[] = request.getParameterValues(name);
@@ -61,19 +59,19 @@ public class FilterDispatcher implements Filter {
          log(buf.toString());
          }
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
-                throws IOException, ServletException {
+            throws IOException, ServletException {
         if (debug) {
             log("FilterDispatcher:DoAfterProcessing");
         }
 
-	// Write code here to process the request and/or response after
+        // Write code here to process the request and/or response after
         // the rest of the filter chain is invoked.
-	// For example, a logging filter might log the attributes on the
+        // For example, a logging filter might log the attributes on the
         // request object after the request has been processed. 
-	/*
+        /*
          for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
          String name = (String)en.nextElement();
          Object value = request.getAttribute(name);
@@ -81,8 +79,8 @@ public class FilterDispatcher implements Filter {
 
          }
          */
-	// For example, a filter might append something to the response.
-	/*
+        // For example, a filter might append something to the response.
+        /*
          PrintWriter respOut = new PrintWriter(response.getWriter());
          respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
          */
@@ -99,33 +97,38 @@ public class FilterDispatcher implements Filter {
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-                FilterChain chain)
-                throws IOException, ServletException {
+            FilterChain chain)
+            throws IOException, ServletException {
         //Filter Override code in here
         Throwable problem = null;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        
+
         //get Servlet Context to use ContextListener
         ServletContext sc = httpServletRequest.getServletContext();
         //get the siteMap
-        Map<String, String> siteMap = 
-                    (Map<String, String>) sc.getAttribute("SITE_MAP");
-        
+        Map<String, String> siteMap
+                = (Map<String, String>) sc.getAttribute("SITE_MAP");
+
         try {
             String uri = httpServletRequest.getRequestURI();
             //2.. get the elements after '/' symbol.
             int lastIndex = uri.lastIndexOf("/");
             String resource = uri.substring(lastIndex + 1);
             String url = siteMap.get(resource);
-            
-            System.out.print("[FilterDispatcher] passed, URI:[" + uri + "]"); 
+
+            System.out.print("[FilterDispatcher] passed, URI:[" + uri + "]");
             System.out.println(";URL:[" + url + "]");
-            
+            if (uri.contains("homepage")) {
+                httpServletResponse.setHeader("Cache-Control", "no-cache");
+                httpServletResponse.setHeader("Cache-Control", "no-store");
+                httpServletResponse.setHeader("Pragma", "no-cache");
+                httpServletResponse.setDateHeader("Expires", 0);
+            }
             if (url != null) {
                 if (url.lastIndexOf(".html") > 0
                         || resource.lastIndexOf(".css") > 0
-                            || resource.lastIndexOf(".js") > 0) {
+                        || resource.lastIndexOf(".js") > 0) {
                     httpServletResponse.sendRedirect(url);
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -138,7 +141,7 @@ public class FilterDispatcher implements Filter {
             problem = ex;
             ex.printStackTrace();
         }
-        
+
         if (problem != null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
@@ -152,7 +155,8 @@ public class FilterDispatcher implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
-     * @return 
+     *
+     * @return
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -170,18 +174,19 @@ public class FilterDispatcher implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
+     *
      * @param filterConfig
      */
     @Override
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("FilterDispatcher:Initializing filter");
             }
         }
@@ -200,20 +205,20 @@ public class FilterDispatcher implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -230,7 +235,7 @@ public class FilterDispatcher implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -244,9 +249,9 @@ public class FilterDispatcher implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

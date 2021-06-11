@@ -27,13 +27,13 @@
                     </td>
                 </tr>
                 <c:if test="${not empty errors.usernameLengthErr}">
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                        <font color="red">
+                    <tr>
+                        <td colspan="2" style="text-align: center">
+                            <font color="red">
                             ${errors.usernameLengthErr}
-                        </font>
-                    </td>
-                </tr>
+                            </font>
+                        </td>
+                    </tr>
                 </c:if>
                 <tr>
                     <td>
@@ -44,20 +44,20 @@
                     </td>
                 </tr>
                 <c:if test="${not empty errors.passwordLengthErr}">
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                        <font color="red">
+                    <tr>
+                        <td colspan="2" style="text-align: center">
+                            <font color="red">
                             ${errors.passwordLengthErr}
-                        </font>
-                    </td>
-                </tr>
+                            </font>
+                        </td>
+                    </tr>
                 </c:if>
                 <c:if test="${not empty errors.loginInfoNotMatch}">
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                        <font color="red">${errors.loginInfoNotMatch}</font>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center">
+                            <font color="red">${errors.loginInfoNotMatch}</font>
+                        </td>
+                    </tr>
                 </c:if>
                 <tr>
                     <td>

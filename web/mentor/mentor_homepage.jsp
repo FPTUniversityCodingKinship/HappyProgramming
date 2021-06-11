@@ -13,6 +13,9 @@
         <title>Mentor Homepage</title>
     </head>
     <body>
+        <c:if test="${empty sessionScope.CURRENT_USER}">
+            <c:redirect url="/login.jsp"/>
+        </c:if>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <form action="Logout" method="POST" id="Logout">
                 <p id="Welcome">

@@ -63,8 +63,10 @@ public class UpdateProfileServlet extends HttpServlet {
             String phone = request.getParameter("txtPhone");
             String address = request.getParameter("txtAddress");
             String dob = request.getParameter("txtDob");
-
             String sex = request.getParameter("txtSex");
+            //User's avatar sent as comparmentalised data
+            Part filePart = request.getPart("imageFile");
+            String fileName = request.getParameter("txtUserImg");
             UsersDAO dao = new UsersDAO();
             boolean foundErr = false;
             UserUpdateError err = new UserUpdateError();
@@ -102,51 +104,44 @@ public class UpdateProfileServlet extends HttpServlet {
             }
 
             //Update if the parameters are not null
-            if (!foundErr
-                    && !username.trim().isEmpty()
-                    && !password.trim().isEmpty()
-                    && !fullname.trim().isEmpty()
-                    && !phone.trim().isEmpty()
-                    && !address.trim().isEmpty()
-                    && !dob.trim().isEmpty()) {
+            if (!foundErr) {
                 Date dob_date = Date.valueOf(dob);
-                //User's avatar sent as comparmentalised data
-                Part filePart = request.getPart("imageFile");
-                //Retrive the uploading directory
-                ServletContext ctx = this.getServletContext();
-                File uploadDir = (File) ctx.getAttribute("DIR_FILE");
-                System.out.println("UPLOAD DIR:" + uploadDir);
-                //Retrieve the file sent in parts from the jsp page
-                //The new avatar's ID, set automatically
-                //Convert to .png (hard-coded in the jsp and html pages)
-                String fileName = userID + ".jpg";
-                //Write file to the predetermined server path
-                /*Set up a new File object to represent the uploading directory 
+                if (filePart.getSize() != 0) {
+                    //Retrive the uploading directory
+                    ServletContext ctx = this.getServletContext();
+                    File uploadDir = (File) ctx.getAttribute("DIR_FILE");
+                    //Retrieve the file sent in parts from the jsp page
+                    //The new avatar's ID, set automatically
+                    //Convert to .png (hard-coded in the jsp and html pages)
+                    fileName = userID + ".jpg";
+                    //Write file to the predetermined server path
+                    /*Set up a new File object to represent the uploading directory 
                     (A File object can represent both files or pathnames)*/
-                File uploads = new File(uploadDir.getAbsolutePath());
-                //Create a new File Object with the given name to contain the incoming data
-                File f = new File(fileName);
-                //Combine the pathname and the new file's name into one unified File instance
-                File file = new File(uploads, f.getName());
-                //Retrieve inputStream from the obtained data parts
-                InputStream input = filePart.getInputStream();
-                //Copy all bytes from the input stream to the specified file (path)
-                try {
-                    Files.copy(input, file.toPath(), REPLACE_EXISTING);
-                } finally {
-                    //Close the input stream
-                    input.close();
-                }
-                //Runing directly with NetBean
-                File backupDir = (File) ctx.getAttribute("BAK_FILE");
-                if (backupDir != null) {
-                    File bakUploads = new File(backupDir.getAbsolutePath());
-                    File backupFile = new File(bakUploads, f.getName());
-                    InputStream backupInput = filePart.getInputStream();
+                    File uploads = new File(uploadDir.getAbsolutePath());
+                    //Create a new File Object with the given name to contain the incoming data
+                    File f = new File(fileName);
+                    //Combine the pathname and the new file's name into one unified File instance
+                    File file = new File(uploads, f.getName());
+                    //Retrieve inputStream from the obtained data parts
+                    InputStream input = filePart.getInputStream();
+                    //Copy all bytes from the input stream to the specified file (path)
                     try {
-                        Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
+                        Files.copy(input, file.toPath(), REPLACE_EXISTING);
                     } finally {
-                        backupInput.close();
+                        //Close the input stream
+                        input.close();
+                    }
+                    //Runing directly with NetBean
+                    File backupDir = (File) ctx.getAttribute("BAK_FILE");
+                    if (backupDir != null) {
+                        File bakUploads = new File(backupDir.getAbsolutePath());
+                        File backupFile = new File(bakUploads, f.getName());
+                        InputStream backupInput = filePart.getInputStream();
+                        try {
+                            Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
+                        } finally {
+                            backupInput.close();
+                        }
                     }
                 }
                 boolean result = dao.updateProfile(userID, username, password,
