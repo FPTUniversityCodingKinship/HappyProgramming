@@ -28,10 +28,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "MenteeRequestController", urlPatterns = {"/MenteeRequestController"})
-public class MenteeRequestController extends HttpServlet {
+@WebServlet(name = "MenteeCreateRequestController", urlPatterns = {"/MenteeCreateRequestController"})
+public class MenteeCreateRequestController extends HttpServlet {
 private final String REQUEST_SUCCESS = "MenteeHomePage";
-private final String REQUEST_ERROR = "MenteeRequestPage";
+private final String REQUEST_ERROR = "MenteeCreateRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -97,15 +97,15 @@ private final String REQUEST_ERROR = "MenteeRequestPage";
                 }
             }
         } catch (NamingException ex) {
-            log("MenteeRequestController NamingException: " + ex.getMessage());
+            log("MenteeCreateRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
-            log("MenteeRequestController SQLException: " + ex.getMessage());
+            log("MenteeCreateRequestController SQLException: " + ex.getMessage());
             if(ex.getMessage().contains("conflicted")){
                 errors.setMentorIDConflictError("Not a valid mentor");
                 request.setAttribute("REQUEST_ERROR", errors);
             }
         } catch (Exception ex){
-            log("MenteeRequestController Exception: " + ex.getMessage());
+            log("MenteeCreateRequestController Exception: " + ex.getMessage());
             if(ex.getMessage().contains("For input string")){
                 errors.setDeadlineDateError("Date: year-month-day, Time: hour:minute");
                 request.setAttribute("REQUEST_ERROR", errors);
