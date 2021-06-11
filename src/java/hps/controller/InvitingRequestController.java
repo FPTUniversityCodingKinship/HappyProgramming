@@ -5,10 +5,8 @@
  */
 package hps.controller;
 
-import hps.followers.FollowersDAO;
 import hps.requests.RequestsDAO;
 import hps.requests.RequestsDTO;
-import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -59,11 +57,12 @@ public class InvitingRequestController extends HttpServlet {
         }
         catch (SQLException ex) {
             log("Error at InvitingRequestController: " + ex.getMessage());
-            request.setAttribute("INVITING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("INVITING_ERROR", "An error has occured when we try to connect to the database!"
+                    + " Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at InvitingRequestController: " + ex.getMessage());
-            request.setAttribute("INVITING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("INVITING_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         }
         finally {
