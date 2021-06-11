@@ -19,6 +19,9 @@ TobeContinue...
 * Validation files
 * ...
 
+## CHANGE LOG:
+* [date] (list changed)
+
 ### Team Profile: [Github](https://github.com/FPTUniversityCodingKinship)
 
 ### Our Team's members:
