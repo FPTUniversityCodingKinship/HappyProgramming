@@ -314,7 +314,7 @@ public class RequestsDAO implements Serializable {
         return listRequests;
     }
 
-    public boolean approveRequest(String requestID)
+    public boolean approveRequest(String requestID, String mentorID)
             throws SQLException, NamingException {
         boolean result = false;
 
@@ -325,12 +325,13 @@ public class RequestsDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 String sql = "UPDATE requests "
-                        + "SET status = ?, approvedTime = ? "
+                        + "SET mentorID = ?, status = ?, approvedTime = ? "
                         + "WHERE requestID = ?";
                 stmt = con.prepareStatement(sql);
-                stmt.setString(1, "A");
-                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                stmt.setString(3, requestID);
+                stmt.setString(1, mentorID);
+                stmt.setString(2, "A");
+                stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(4, requestID);
 
                 int iCheck = stmt.executeUpdate();
                 if (iCheck > 0) {
@@ -449,7 +450,7 @@ public class RequestsDAO implements Serializable {
         return false;
     }
 
-    public boolean rejectRequest(String requestID)
+    public boolean rejectRequest(String requestID, String mentorID)
             throws SQLException, NamingException {
         boolean result = false;
 
@@ -460,12 +461,13 @@ public class RequestsDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 String sql = "UPDATE requests "
-                        + "SET status = ?, canceledTime = ? "
+                        + "SET mentorID = ?, status = ?, canceledTime = ? "
                         + "WHERE requestID = ?";
                 stmt = con.prepareStatement(sql);
-                stmt.setString(1, "R");
-                stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                stmt.setString(3, requestID);
+                stmt.setString(1, mentorID);
+                stmt.setString(2, "R");
+                stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(4, requestID);
 
                 int iCheck = stmt.executeUpdate();
                 if (iCheck > 0) {
