@@ -27,7 +27,7 @@
                 </form><br/>
             </nav>
         </header>
-        <form action="MenteeRequest" method="POST">
+        <form action="MenteeCreateRequest" method="POST">
             <c:set var="error" value="${requestScope.REQUEST_ERROR}"/>
             Title: <input type="text" name="title" value="${param.title}"><br/>
             <c:if test="${not empty error.titleLengthError}" >

@@ -274,8 +274,8 @@ public class UsersDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 String sql = "Select count(*) as totalRows "
-                        + "From (Select * From users Where userID = 'MT%') as f "
-                        + "Where userID = ?";
+                        + "From (Select * From users Where userID like 'MT%') as f "
+                        + "Where userID like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, "%" + searchValue + "%");
                 rs = stm.executeQuery();
@@ -310,8 +310,8 @@ public class UsersDAO implements Serializable {
             if (con != null) {
                 String sql = "Select userID From (\n"
                         + "	Select *, ROW_NUMBER() over (order by userID) as numRow\n"
-                        + "	From (Select * From users Where userID = 'MT%') as mentor\n"
-                        + "	Where userID = ?\n"
+                        + "	From (Select * From users Where userID like 'MT%') as mentor\n"
+                        + "	Where userID like ?\n"
                         + ") as m  \n"
                         + "Where ? <= m.numRow  and m.numRow < ?";
                 stm = con.prepareStatement(sql);
