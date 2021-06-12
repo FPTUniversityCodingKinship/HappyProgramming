@@ -20,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -48,10 +49,11 @@ public class FollowingRequestController extends HttpServlet {
         
         try {
             // Get current mentor
-//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-//            
-//            String mentorID = curMentor.getUserID();
-            String mentorID = "MT000001";
+            HttpSession session = request.getSession(false);
+            UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+            
+            String mentorID = curMentor.getUserID();
+//            String mentorID = "MT000001";
             FollowersDAO followersDAO = new FollowersDAO();
             List<String> listFollowers = followersDAO.getListFollowers(mentorID);
             
@@ -63,11 +65,12 @@ public class FollowingRequestController extends HttpServlet {
         }
         catch (SQLException ex) {
             log("Error at FollowingRequestController: " + ex.getMessage());
-            request.setAttribute("FOLLOWING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("FOLLOWING_ERROR", "An error has occured when we try to connect to the database! "
+                    + "Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at FollowingRequestController: " + ex.getMessage());
-            request.setAttribute("FOLLOWING_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("FOLLOWING_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         }
         finally {
