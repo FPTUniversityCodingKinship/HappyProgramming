@@ -37,7 +37,7 @@ public class SkillsDAO implements Serializable {
             con = DBHelper.makeConnection();
 
             if (con != null) {
-                String[] arrSkillsID = skillsID.split(",");
+                String[] arrSkillsID = skillsID.split(", ");
                 String sql = "SELECT skillID, skillName "
                         + "FROM skills "
                         + "WHERE skillID = ?"; // TODO Code // Status ?

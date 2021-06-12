@@ -43,24 +43,27 @@ public class RejectRequestController extends HttpServlet {
         
         try {
             String requestID = request.getParameter("requestID");
+            String mentorID = request.getParameter("mentorID");
             if (!requestID.isEmpty()) {
                 RequestsDAO dao = new RequestsDAO();
-                boolean iReject = dao.rejectRequest(requestID);
+                boolean iReject = dao.rejectRequest(requestID, mentorID);
                 
                 if (iReject) {
                     url = redirect;
                 } else {
-                    request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
+                    request.setAttribute("REJECT_ERROR", "An error has occured while we try to reject the request with the ID <strong>" 
+                            + requestID + "</strong>! Please check again the request or contact the web owner for more details!!");
                     url = redirect;
                 }
             }
         } catch (SQLException ex) {
             log("Error at RejectRequestController: " + ex.getMessage());
-            request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("REJECT_ERROR", "An error has occured when we try to connect to the database!"
+                    + " Please contact the web owner for more details!!");
             url = redirect;
         } catch (NamingException ex) {
             log("Error at RejectRequestController: " + ex.getMessage());
-            request.setAttribute("REJECT_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("REJECT_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = redirect;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

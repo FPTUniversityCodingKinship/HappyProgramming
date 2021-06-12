@@ -50,17 +50,19 @@ public class CloseRequestController extends HttpServlet {
                 if (iClose) {
                     url = redirect;
                 } else {
-                    request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+                    request.setAttribute("CLOSE_ERROR", "An error has occured while we try to close the request with the ID <strong>" 
+                            + requestID + "</strong>! Please check again the request or contact the web owner for more details!!");
                     url = redirect;
                 }
             }
         } catch (SQLException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("CLOSE_ERROR", "An error has occured when we try to connect to the database!"
+                    + " Please contact the web owner for more details!!");
             url = redirect;
         } catch (NamingException ex) {
             log("Error at ApproveRequestController: " + ex.getMessage());
-            request.setAttribute("CLOSE_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("CLOSE_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = redirect;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
