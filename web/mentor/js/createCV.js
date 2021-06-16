@@ -5,6 +5,13 @@
  */
 var skillsList;
 var numSkill = 1;
+
+function removeSkill(skillId) {
+    var selector = "div[id='skill" + skillId + "']";
+    $(selector).remove();
+    numSkill--;
+}
+
 function displayError(id, name, min, max) {
     var selector = ".error[id='err" + id + "']";
     var htmlStr = '<font color="red">' + name + ' requires input from ' + min + ' to ' + max + ' characters!!</font>';
@@ -21,6 +28,7 @@ function displayError(id, name, min, max) {
  * 
  */
 
+
 // Check Facebook URL
 function validateFbURL(url) {
     var facebookReg = /^((http|https):\/\/|)(www\.|)facebook\.com\/[a-zA-Z0-9.=?\/]{1,}$/g;
@@ -33,7 +41,6 @@ function validateGithubURL(url) {
     var githubReg = /^((http|https):\/\/|)(www\.|)github\.com\/[a-zA-Z0-9.]{1,}$/g;
     return githubReg.test(url);
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -78,6 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var nextYearId = "years" + nextNumSkill;
         var nextRateId = "rate" + nextNumSkill;
+        var nextErrorYearsId = "errSkillYears" + nextNumSkill;
+        var nextErrorRateId = "errSkillRate" + nextNumSkill;
+        var nextBtnId = "btnRemoveSkill" + nextNumSkill;
 
         selector = "select[name='skill" + numSkill + "']";
         $(selector).last().attr("name", nextIdDivSkill);
@@ -100,9 +110,22 @@ document.addEventListener("DOMContentLoaded", function () {
         selector = "input[id='rate" + numSkill + "']";
         $(selector).last().attr("id", nextRateId);
 
-        numSkill = nextNumSkill;
 
+        selector = "input[id='btnRemoveSkill" + numSkill + "']";
+        $(selector).last().attr("id", nextBtnId);
+        selector = "input[id='btnRemoveSkill" + nextNumSkill + "']";
+        var event = "removeSkill(" + nextNumSkill + ")";
+        $(selector).last().css("display", "inline").attr("onclick", event);
+
+        selector = "div[id='errSkillYears" + numSkill + "']";
+        $(selector).last().attr("id", nextErrorYearsId);
+
+        selector = "div[id='errSkillRate" + numSkill + "']";
+        $(selector).last().attr("id", nextErrorRateId);
+
+        numSkill = nextNumSkill;
     });
+
 
 
     $("#btnCreate").click(function () {
@@ -114,8 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var userID = $("input[name='userID']").val();
         var fullname = $("#fullname").val();
         var dobInput = $("#dob").val();
-        var dobDate = new Date(dobInput);
-        var dob = dobDate.getDate() + "/" + dobDate.getMonth() + "/" + dobDate.getFullYear();
+
 //        var email = $("#email").val();
         var sex = $("#sex").val();
         var address = $("#address").val();
@@ -146,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var skillRate = $(selector).val();
 
             skillsList.push({
+                num: i,
                 skillID: skillID,
                 yearsExperience: skillYear,
                 rate: skillRate
@@ -159,7 +182,16 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("Fullname", "Full Name", 2, 50);
             isError = true;
         }
+        var dob, dobDate;
+        if (!dobInput || dobInput.length === 0) {
+            isError = true;
+            $(".error[id=errDob]").html("<font color='red'>Date of birth is in a wrong format! Correct format is dd/mm/yyyy</font>");
+        } else {
 
+            dobDate = new Date(dobInput);
+            var month = dobDate.getMonth() + 1;
+            dob = dobDate.getDate() + "/" + month + "/" + dobDate.getFullYear();
+        }
 //        if (!validateEmail(email)) {
 //            $(".error[id='errEmail']").html('<font color="red">Please enter a valid Email!!!</font>');
 //            isError = true;
@@ -200,7 +232,22 @@ document.addEventListener("DOMContentLoaded", function () {
             isError = true;
         }
 
+        skillsList.forEach(function (skill) {
+            if (skill.yearsExperience < 0 || skill.yearsExperience > 50) {
+                var selector = "SkillYears" + skill.num;
+                displayError(selector, "Skill's years of experience", 1, 50);
+                isError = true;
+            }
+            if (skill.rate < 1 || skill.rate > 5) {
+                var selector = "SkillRate" + skill.num;
+                displayError(selector, "Skill's rate", 1, 5);
+                isError = true;
+            }
+        });
+//        console.log(skillsList);
+//        console.log(isError);
         if (!isError) {
+            $("#noti").html("Your CV is being created... Please wait for a moment")
 
             // AJAX to Servlet
             $.ajax({
@@ -209,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 data: {
                     'userID': userID,
                     'fullname': fullname,
-                    'dob': dob,
+                    'dob': dobInput,
                     'sex': sex,
                     'address': address,
                     'facebook': facebook,
@@ -225,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //                    console.log(strData);
 //                    console.log(strData.success);
                     if (strData.success) {
-                        
+
                         // AJAX to addSkills
                         $.ajax({
                             type: 'POST',
@@ -239,9 +286,9 @@ document.addEventListener("DOMContentLoaded", function () {
 //                                console.log(strData);
 //                                console.log(strData.success);
                                 if (strData.success) {
-                                    $("#noti").html("Your CV has been created successfully!!");
+                                    $("#noti").html("<font color='green'>Your CV has been created successfully!!</font>");
                                 } else {
-                                    $("#noti").html(strData.message);
+                                    $("#noti").html("<font color='red'>" + strData.message + "</font>");
                                 }
                             },
                             error: function (data) {
@@ -249,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     } else {
-                        $("#noti").html(strData.message);
+                        $("#noti").html("<font color='red'>" + strData.message + "</font>");
                     }
                 },
                 error: function (data) {
@@ -257,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
+        isError = false;
     });
 
 });
