@@ -4,7 +4,14 @@
  * and open the template in the editor.
  */
 var skillsList;
-var numSkill = parseInt($("#numSkills").val(), 10) ;
+var numSkill = parseInt($("#numSkills").val(), 10);
+
+function removeSkill(skillId) {
+    var selector = "div[id='skill" + skillId + "']";
+    $(selector).remove();
+    numSkill--;
+}
+
 function displayError(id, name, min, max) {
     var selector = ".error[id='err" + id + "']";
     var htmlStr = '<font color="red">' + name + ' requires input from ' + min + ' to ' + max + ' characters!!</font>';
@@ -65,21 +72,28 @@ document.addEventListener("DOMContentLoaded", function () {
 //    });
 
     $("#btnAddSkill").click(function () {
+        console.log(numSkill);
         var idDivSkill = "skill" + numSkill;
         var selector = "#" + idDivSkill;
         var nextNumSkill = numSkill + 1;
         var nextIdDivSkill = "skill" + nextNumSkill;
+
 //        console.log(selector);
 //        console.log(nextIdDivSkill);
         $(selector).clone().insertAfter(selector).attr("id", nextIdDivSkill);
-        
+
+        selector = "#" + nextIdDivSkill;
+        $(selector).last().css("display", "inline");
+
 //        numSkill++;
 //        console.log(numSkill);
         $("#numSkills").val(nextNumSkill);
 
         var nextYearId = "years" + nextNumSkill;
         var nextRateId = "rate" + nextNumSkill;
-        var nextErrorId = "errSkill" + nextNumSkill;
+        var nextErrorYearsId = "errSkillYears" + nextNumSkill;
+        var nextErrorRateId = "errSkillRate" + nextNumSkill;
+        var nextBtnId = "btnRemoveSkill" + nextNumSkill;
 
         selector = "select[name='skill" + numSkill + "']";
         $(selector).last().attr("name", nextIdDivSkill);
@@ -101,16 +115,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         selector = "input[id='rate" + numSkill + "']";
         $(selector).last().attr("id", nextRateId);
-        
-        selector = "div[id='errSkill" + numSkill + "']";
-        $(selector).last().attr("id", nextErrorId);
+
+        selector = "input[id='btnRemoveSkill" + numSkill + "']";
+        $(selector).last().attr("id", nextBtnId);
+        selector = "input[id='btnRemoveSkill" + nextNumSkill + "']";
+        var event = "removeSkill(" + nextNumSkill + ")";
+        if (numSkill === 0) {
+            $(selector).last().attr("onclick", event);
+
+        } else {
+            $(selector).last().css("display", "inline").attr("onclick", event);
+        }
+
+         selector = "div[id='errSkillYears" + numSkill + "']";
+        $(selector).last().attr("id", nextErrorYearsId);
+
+        selector = "div[id='errSkillRate" + numSkill + "']";
+        $(selector).last().attr("id", nextErrorRateId);
+
 
         numSkill = nextNumSkill;
 
     });
 
 
-    $("#btnCreate").click(function () {
+    $("#btnUpdate").click(function () {
 
         // Clear all Error before
         $(".error").html("");
@@ -121,8 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(image);
         var fullname = $("#fullname").val();
         var dobInput = $("#dob").val();
-        var dobDate = new Date(dobInput);
-        var dob = dobDate.getDate() + "/" + dobDate.getMonth() + "/" + dobDate.getFullYear();
+
 //        var email = $("#email").val();
         var sex = $("#sex").val();
         var address = $("#address").val();
@@ -167,7 +195,19 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("Fullname", "Full Name", 2, 50);
             isError = true;
         }
+        
+        // Validate Date of birth
+        var dob, dobDate;
+        if (!dobInput || dobInput.length === 0) {
+            isError = true;
+            $(".error[id=errDob]").html("<font color='red'>Date of birth is in a wrong format! Correct format is dd/mm/yyyy</font>");
+        } else {
 
+            dobDate = new Date(dobInput);
+            var month = dobDate.getMonth() + 1;
+            dob = dobDate.getDate() + "/" + month + "/" + dobDate.getFullYear();
+        }
+        
 //        if (!validateEmail(email)) {
 //            $(".error[id='errEmail']").html('<font color="red">Please enter a valid Email!!!</font>');
 //            isError = true;
@@ -207,9 +247,14 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("AchDescription", "Achievement Description", 2, 50);
             isError = true;
         }
-        skillsList.forEach(function(skill) {
+        skillsList.forEach(function (skill) {
+            if (skill.yearsExperience < 0 || skill.yearsExperience > 50) {
+                var selector = "SkillYears" + skill.num;
+                displayError(selector, "Skill's years of experience", 1, 50);
+                isError = true;
+            }
             if (skill.rate < 1 || skill.rate > 5) {
-                var selector = "Skill" + skill.num;
+                var selector = "SkillRate" + skill.num;
                 displayError(selector, "Skill's rate", 1, 5);
                 isError = true;
             }
@@ -219,9 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
             var form = $('#updateInformation');
             form.submit();
 //            form.submit();
-            
-            
-
         }
     });
 

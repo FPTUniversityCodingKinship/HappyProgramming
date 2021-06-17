@@ -10,6 +10,7 @@ import hps.mentorDetails.MentorDetailsDTO;
 import hps.mentorSkills.MentorSkillsDAO;
 import hps.mentorSkills.MentorSkillsDTO;
 import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -79,7 +81,9 @@ public class UpdateCVController extends HttpServlet {
                 //User's avatar sent as comparmentalised data
                 Part filePart = request.getPart("imageFile");
                 String header = filePart.getHeader("content-disposition");
-                if (header.contains("filename")) {
+                String[] hd = header.split("; ");
+                String filename = (hd[2].split("="))[1];
+                if (header.contains("filename") && !filename.trim().isEmpty() && !filename.trim().equals("\"\"")) {
 
                     //Retrive the uploading directory
                     ServletContext ctx = this.getServletContext();
@@ -100,22 +104,24 @@ public class UpdateCVController extends HttpServlet {
                     //Retrieve inputStream from the obtained data parts
                     InputStream input = filePart.getInputStream();
                     //Copy all bytes from the input stream to the specified file (path)
-                    try {
-                        Files.copy(input, file.toPath(), REPLACE_EXISTING);
-                    } finally {
-                        //Close the input stream
-                        input.close();
-                    }
-                    //Runing directly with NetBean
-                    File backupDir = (File) ctx.getAttribute("BAK_FILE");
-                    if (backupDir != null) {
-                        File bakUploads = new File(backupDir.getAbsolutePath());
-                        File backupFile = new File(bakUploads, f.getName());
-                        InputStream backupInput = filePart.getInputStream();
+                    if (input != null) {
                         try {
-                            Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
+                            Files.copy(input, file.toPath(), REPLACE_EXISTING);
                         } finally {
-                            backupInput.close();
+                            //Close the input stream
+                            input.close();
+                        }
+                        //Runing directly with NetBean
+                        File backupDir = (File) ctx.getAttribute("BAK_FILE");
+                        if (backupDir != null) {
+                            File bakUploads = new File(backupDir.getAbsolutePath());
+                            File backupFile = new File(bakUploads, f.getName());
+                            InputStream backupInput = filePart.getInputStream();
+                            try {
+                                Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
+                            } finally {
+                                backupInput.close();
+                            }
                         }
                     }
 
@@ -130,7 +136,7 @@ public class UpdateCVController extends HttpServlet {
                 Date dobDate = Date.valueOf(dob);
 
                 boolean isUpdatedProfile = false;
-                if (image.isEmpty()) {
+                if (image.isEmpty() || filePart == null) {
                     isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
                 } else {
                     isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex, image);
@@ -159,6 +165,11 @@ public class UpdateCVController extends HttpServlet {
                             }
                         }
                         if (isAdded) {
+                            UsersDTO usersDTO = usersDAO.getProfile(userID);
+                            HttpSession session = request.getSession(false);
+                            if (session != null) {
+                                session.setAttribute("CURRENT_USER", usersDTO);
+                            }
                             request.setAttribute("UPDATE_CV_SUCCESS", "Update your CV successfully!!");
                         } else {
                             request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
