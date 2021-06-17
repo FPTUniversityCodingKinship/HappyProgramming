@@ -44,7 +44,7 @@ public class CreateCVController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        
+
         PrintWriter out = response.getWriter();
 
 //        String url = CREATE_CV_PAGE;
@@ -69,7 +69,10 @@ public class CreateCVController extends HttpServlet {
             // Update user Profile
             UsersDAO usersDAO = new UsersDAO();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date dobDate = new Date(dateFormat.parse(dob).getTime());
+            dateFormat.setLenient(false);
+            dateFormat.parse(dob);
+//            Date dobDate = new Date(dateFormat.parse(dob).getTime());
+            Date dobDate = Date.valueOf(dob);
             boolean isUpdated = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
             if (isUpdated) {
                 MentorDetailsDAO mentorDAO = new MentorDetailsDAO();

@@ -47,16 +47,17 @@ public class AddMentorSkillsController extends HttpServlet {
         Gson gson = new Gson();
 
         List<SkillsJSONDTO> skillsList = new ArrayList<>();
-        
+
         ReturnResultDTO returnResult = new ReturnResultDTO();
 
         try {
             String mentorID = request.getParameter("mentorID");
             String skillsListJSON = request.getParameter("skillsList");
-            
-            Type type = new TypeToken<List<SkillsJSONDTO>>(){}.getType();
+
+            Type type = new TypeToken<List<SkillsJSONDTO>>() {
+            }.getType();
             skillsList = gson.fromJson(skillsListJSON, type);
-            
+
             boolean isAdded = false;
 
             if (skillsList != null && !skillsList.isEmpty()) {
@@ -64,29 +65,30 @@ public class AddMentorSkillsController extends HttpServlet {
 
                 for (SkillsJSONDTO skill : skillsList) {
                     String mentorSkillID = mentorSkillsDAO.generateMentorSkillID();
-                    MentorSkillsDTO skillsDTO = new MentorSkillsDTO(
-                                                        mentorSkillID,
-                                                        mentorID,
-                                                        skill.getSkillID(),
-                                                        skill.getYearsExperience(),
-                                                        skill.getRate()
-                                                );
-                    isAdded = mentorSkillsDAO.addMentorSkills(skillsDTO);
-                    if (!isAdded) {
-                        break;
+                    if (skill.getSkillID() != null) {
+                        MentorSkillsDTO skillsDTO = new MentorSkillsDTO(
+                                mentorSkillID,
+                                mentorID,
+                                skill.getSkillID(),
+                                skill.getYearsExperience(),
+                                skill.getRate()
+                        );
+                        isAdded = mentorSkillsDAO.addMentorSkills(skillsDTO);
+                        if (!isAdded) {
+                            break;
+                        }
                     }
                 }
                 if (isAdded) {
                     returnResult.setSuccess(true);
                     returnResult.setMessage("Skills are added successfully!!");
-                }
-                else {
+                } else {
                     returnResult.setSuccess(false);
                     returnResult.setMessage("There has been an error while we are "
                             + "trying to add your skills! Please contact the web owners "
                             + "for more details.");
                 }
-                
+
             }
         } catch (SQLException ex) {
             log("Error at AddMentorSkillsController: " + ex.getMessage());
@@ -102,8 +104,7 @@ public class AddMentorSkillsController extends HttpServlet {
                     + "for more details.");
         } catch (NumberFormatException ex) {
             log("Error at AddMentorSkillsController: " + ex.getMessage());
-        } 
-        finally {
+        } finally {
             String resultStr = gson.toJson(returnResult);
             out.print(resultStr);
             out.flush();
