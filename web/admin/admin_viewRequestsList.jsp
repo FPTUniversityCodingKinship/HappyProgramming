@@ -86,7 +86,7 @@
                                     <c:param name="requestID" value="${request.requestID}"/>
                                 </c:url>
                                 <a href="${requestDetail}">${request.requestID}</a>
-                                
+
                             </td>
                             <td>
                                 ${request.menteeID}
@@ -114,6 +114,19 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <c:forEach var="i" begin="1" end="${requestScope.NUM_PAGES}">
+                <c:url var="url" value="AdminViewRequestsList">
+
+                    <c:param name="searchValue" value="${param.searchValue}"/>
+                    <c:forEach var="item" items="${paramValues.status}">
+                        <c:param name="status" value="${item}" />
+                    </c:forEach>
+                    <c:param name="startDate" value="${param.startDate}" />
+                    <c:param name="endDate" value="${param.endDate}" />
+                    <c:param name="page" value="${i}"/>
+                </c:url>
+                <a href="${url}">${i}</a>
+            </c:forEach>
         </c:if>
 
         <!-- The infor of the list of request include: 

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -44,12 +45,25 @@ public class AdminViewRequestsListController extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         String url = VIEW_REQUEST_PAGE;
+        int limit = 10;
 
         try {
             String searchValue = request.getParameter("searchValue");
             String[] status = request.getParameterValues("status");
             String startDateStr = request.getParameter("startDate");
             String endDateStr = request.getParameter("endDate");
+            
+            String strPageId = request.getParameter("page");
+            if (strPageId == null) {
+                strPageId = "1";
+            }
+            int pageId = Integer.parseInt(strPageId);
+            
+//            if (pageId > 1) {
+//                pageId = pageId - 1;
+//                pageId = pageId*limit + 1;
+//            }
+            
 
             if (((startDateStr == null && endDateStr == null) || (startDateStr.trim().isEmpty() && endDateStr.trim().isEmpty()))
                     && searchValue.trim().isEmpty() && (status == null || status.length == 0)) {
@@ -66,13 +80,22 @@ public class AdminViewRequestsListController extends HttpServlet {
                 }
 
                 RequestsDAO requestsDAO = new RequestsDAO();
-                List<RequestsDTO> requestsList = requestsDAO.getRequestsList(searchValue, status, startDate, endDate);
+                List<RequestsDTO> requestsList = requestsDAO.getRequestsList(searchValue, status, startDate, endDate, pageId, limit);
+                
+                int totalRequest = requestsDAO.getNumberOfRequests(searchValue, status, startDate, endDate);
+                int numOfPages = (int) Math.ceil((double)totalRequest/limit);
+                request.setAttribute("NUM_PAGES", numOfPages);
 
                 request.setAttribute("REQUESTS_LIST", requestsList);
                 url = VIEW_REQUEST_PAGE;
             }
 
-        } catch (SQLException ex) {
+        } catch (NumberFormatException ex) {
+            log("Error at AdminViewRequestsListController: " + ex.getMessage());
+            request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "Page number is not valid!!! Please check and try again...");
+            url = VIEW_REQUEST_PAGE;
+        } 
+        catch (SQLException ex) {
             log("Error at AdminViewRequestsListController: " + ex.getMessage());
             request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured when we try to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_REQUEST_PAGE;
