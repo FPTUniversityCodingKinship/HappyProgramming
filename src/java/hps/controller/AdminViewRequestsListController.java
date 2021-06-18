@@ -51,18 +51,17 @@ public class AdminViewRequestsListController extends HttpServlet {
             String startDateStr = request.getParameter("startDate");
             String endDateStr = request.getParameter("endDate");
 
-            if (searchValue.trim().isEmpty() && (status == null || status.length == 0)
-                    && startDateStr.trim().isEmpty() && endDateStr.trim().isEmpty()) {
+            if (((startDateStr == null && endDateStr == null) || (startDateStr.trim().isEmpty() && endDateStr.trim().isEmpty()))
+                    && searchValue.trim().isEmpty() && (status == null || status.length == 0)) {
                 request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "Please enter at least 1 criteria to filter requests!!!");
                 url = VIEW_REQUEST_PAGE;
             } else {
-
                 Date startDate = null;
                 Date endDate = null;
-                if (!startDateStr.trim().isEmpty()) {
+                if (startDate != null && !startDateStr.trim().isEmpty()) {
                     startDate = java.sql.Date.valueOf(startDateStr);
                 }
-                if (!endDateStr.trim().isEmpty()) {
+                if (endDate != null && !endDateStr.trim().isEmpty()) {
                     endDate = java.sql.Date.valueOf(endDateStr);
                 }
 
@@ -75,11 +74,11 @@ public class AdminViewRequestsListController extends HttpServlet {
 
         } catch (SQLException ex) {
             log("Error at AdminViewRequestsListController: " + ex.getMessage());
-            request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured when we try to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_REQUEST_PAGE;
         } catch (NamingException ex) {
             log("Error at AdminViewRequestsListController: " + ex.getMessage());
-            request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured with the web server! Please contact the web owner for more details!!");
             url = VIEW_REQUEST_PAGE;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
