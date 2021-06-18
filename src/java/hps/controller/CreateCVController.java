@@ -10,6 +10,7 @@ import hps.mentorDetails.MentorDetailsDAO;
 import hps.mentorDetails.MentorDetailsDTO;
 import hps.mentorDetails.ReturnResultDTO;
 import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -22,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -51,48 +53,67 @@ public class CreateCVController extends HttpServlet {
         ReturnResultDTO returnResult = new ReturnResultDTO();
 
         try {
-            // Get Parameter
-            String userID = request.getParameter("userID");
-            String fullname = request.getParameter("fullname");
-            String dob = request.getParameter("dob");
-//            String email = request.getParameter("email");
-            String sex = request.getParameter("sex");
-            String address = request.getParameter("address");
-            String facebook = request.getParameter("facebook");
-            String github = request.getParameter("github");
-            String language = request.getParameter("language");
-            String profession = request.getParameter("profession");
-            String proDescription = request.getParameter("proDescription");
-            String serDescription = request.getParameter("serDescription");
-            String achDescription = request.getParameter("achDescription");
-
-            // Update user Profile
-            UsersDAO usersDAO = new UsersDAO();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
-            dateFormat.parse(dob);
-//            Date dobDate = new Date(dateFormat.parse(dob).getTime());
-            Date dobDate = Date.valueOf(dob);
-            boolean isUpdated = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
-            if (isUpdated) {
-                MentorDetailsDAO mentorDAO = new MentorDetailsDAO();
-                MentorDetailsDTO dto = new MentorDetailsDTO(userID, facebook, github, profession, language, proDescription, serDescription, achDescription);
-                boolean isCreated = mentorDAO.createCV(dto);
-                if (isCreated) {
-                    returnResult.setSuccess(true);
-                    returnResult.setMessage("CV is created successfully!!");
-                } else {
-                    returnResult.setSuccess(false);
-                    returnResult.setMessage("There has been an error while we are "
-                            + "trying to create your CV! Please contact the web owners "
-                            + "for more details.");
-                }
-            } else {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
                 returnResult.setSuccess(false);
-                returnResult.setMessage("There has been an error while we are "
-                        + "trying to update your profile! Please contact the web owners "
-                        + "for more details.");
+                returnResult.setMessage("You hadn't logged into system! Please log in <a href='LoginPage'>at this page</a> and try again!");
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    returnResult.setSuccess(false);
+                    returnResult.setMessage("You hadn't logged into system! Please log in <a href='LoginPage'>at this page</a> and try again!");
+                } else {
+                    String mentorID = curMentor.getUserID();
+                    if (!mentorID.startsWith("MT")) {
+                        returnResult.setSuccess(false);
+                        returnResult.setMessage("You hadn't logged into system! Please log in <a href='LoginPage'>at this page</a> and try again!");
+                    } else {
+                        // Get Parameter
+                        String userID = request.getParameter("userID");
+                        String fullname = request.getParameter("fullname");
+                        String dob = request.getParameter("dob");
+//            String email = request.getParameter("email");
+                        String sex = request.getParameter("sex");
+                        String address = request.getParameter("address");
+                        String facebook = request.getParameter("facebook");
+                        String github = request.getParameter("github");
+                        String language = request.getParameter("language");
+                        String profession = request.getParameter("profession");
+                        String proDescription = request.getParameter("proDescription");
+                        String serDescription = request.getParameter("serDescription");
+                        String achDescription = request.getParameter("achDescription");
+
+                        // Update user Profile
+                        UsersDAO usersDAO = new UsersDAO();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        dateFormat.setLenient(false);
+                        dateFormat.parse(dob);
+//            Date dobDate = new Date(dateFormat.parse(dob).getTime());
+                        Date dobDate = Date.valueOf(dob);
+                        boolean isUpdated = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
+                        if (isUpdated) {
+                            MentorDetailsDAO mentorDAO = new MentorDetailsDAO();
+                            MentorDetailsDTO dto = new MentorDetailsDTO(userID, facebook, github, profession, language, proDescription, serDescription, achDescription);
+                            boolean isCreated = mentorDAO.createCV(dto);
+                            if (isCreated) {
+                                returnResult.setSuccess(true);
+                                returnResult.setMessage("CV is created successfully!!");
+                            } else {
+                                returnResult.setSuccess(false);
+                                returnResult.setMessage("There has been an error while we are "
+                                        + "trying to create your CV! Please contact the web owners "
+                                        + "for more details.");
+                            }
+                        } else {
+                            returnResult.setSuccess(false);
+                            returnResult.setMessage("There has been an error while we are "
+                                    + "trying to update your profile! Please contact the web owners "
+                                    + "for more details.");
+                        }
+                    }
+                }
             }
+
         } catch (ParseException ex) {
             log("Error at CreateCVController: " + ex.getMessage());
             returnResult.setSuccess(false);

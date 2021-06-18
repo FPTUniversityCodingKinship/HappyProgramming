@@ -40,6 +40,7 @@ import javax.servlet.http.Part;
 public class UpdateCVController extends HttpServlet {
 
     private static final String UPDATE_CV_PAGE = "UpdateCVPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,134 +60,145 @@ public class UpdateCVController extends HttpServlet {
         String url = UPDATE_CV_PAGE;
 
         try {
-            // Get Parameter
-            String userID = request.getParameter("userID");
-            if (userID != null && !userID.isEmpty()) {
-
-                String fullname = request.getParameter("fullname");
-                String dob = request.getParameter("dob");
-//            String email = request.getParameter("email");
-                String sex = request.getParameter("sex");
-                String address = request.getParameter("address");
-                String facebook = request.getParameter("facebook");
-                String github = request.getParameter("github");
-                String language = request.getParameter("language");
-                String profession = request.getParameter("profession");
-                String proDescription = request.getParameter("proDescription");
-                String serDescription = request.getParameter("serDescription");
-                String achDescription = request.getParameter("achDescription");
-                String image = "";
-                String fileImageInput = request.getParameter("imageFile");
-
-                //User's avatar sent as comparmentalised data
-                Part filePart = request.getPart("imageFile");
-                String header = filePart.getHeader("content-disposition");
-                String[] hd = header.split("; ");
-                String filename = (hd[2].split("="))[1];
-                if (header.contains("filename") && !filename.trim().isEmpty() && !filename.trim().equals("\"\"")) {
-
-                    //Retrive the uploading directory
-                    ServletContext ctx = this.getServletContext();
-                    File uploadDir = (File) ctx.getAttribute("DIR_FILE");
-                    System.out.println("UPLOAD DIR:" + uploadDir);
-                    //Retrieve the file sent in parts from the jsp page
-                    //The new avatar's ID, set automatically
-                    //Convert to .png (hard-coded in the jsp and html pages)
-                    String fileName = userID + ".jpg";
-                    //Write file to the predetermined server path
-                    /*Set up a new File object to represent the uploading directory 
-                (A File object can represent both files or pathnames)*/
-                    File uploads = new File(uploadDir.getAbsolutePath());
-                    //Create a new File Object with the given name to contain the incoming data
-                    File f = new File(fileName);
-                    //Combine the pathname and the new file's name into one unified File instance
-                    File file = new File(uploads, f.getName());
-                    //Retrieve inputStream from the obtained data parts
-                    InputStream input = filePart.getInputStream();
-                    //Copy all bytes from the input stream to the specified file (path)
-                    if (input != null) {
-                        try {
-                            Files.copy(input, file.toPath(), REPLACE_EXISTING);
-                        } finally {
-                            //Close the input stream
-                            input.close();
-                        }
-                        //Runing directly with NetBean
-                        File backupDir = (File) ctx.getAttribute("BAK_FILE");
-                        if (backupDir != null) {
-                            File bakUploads = new File(backupDir.getAbsolutePath());
-                            File backupFile = new File(bakUploads, f.getName());
-                            InputStream backupInput = filePart.getInputStream();
-                            try {
-                                Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
-                            } finally {
-                                backupInput.close();
-                            }
-                        }
-                    }
-
-                    image = fileName;
-                }
-
-                // Update user Profile
-                UsersDAO usersDAO = new UsersDAO();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                dateFormat.setLenient(false);
-                dateFormat.parse(dob);
-                Date dobDate = Date.valueOf(dob);
-
-                boolean isUpdatedProfile = false;
-                if (image.isEmpty() || filePart == null) {
-                    isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    url = LOGIN_PAGE;
                 } else {
-                    isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex, image);
-                }
-                if (isUpdatedProfile) {
-                    MentorDetailsDAO mentorDAO = new MentorDetailsDAO();
-                    MentorDetailsDTO dto = new MentorDetailsDTO(userID, facebook, github, profession, language, proDescription, serDescription, achDescription);
-                    boolean isUpdatedDetails = mentorDAO.updateCV(dto);
-                    if (isUpdatedDetails) {
-                        int numSkills = Integer.parseInt(request.getParameter("numSkills"));
-                        MentorSkillsDAO mentorSkillsDAO = new MentorSkillsDAO();
+                    // Get Parameter
 
-                        mentorSkillsDAO.deleteMentorSkills(userID);
-                        boolean isAdded = false;
+                    String userID = request.getParameter("userID");
+                    if (userID != null && !userID.isEmpty()) {
 
-                        for (int i = 1; i <= numSkills; i++) {
-                            String mentorSkillID = mentorSkillsDAO.generateMentorSkillID();
-                            String skillID = request.getParameter("skill" + i);
-                            int year = Integer.parseInt(request.getParameter("years" + i));
-                            int rate = Integer.parseInt(request.getParameter("rate" + i));
-                            MentorSkillsDTO mentorSkill = new MentorSkillsDTO(mentorSkillID, userID, skillID, year, rate);
-                            isAdded = mentorSkillsDAO.addMentorSkills(mentorSkill);
+                        String fullname = request.getParameter("fullname");
+                        String dob = request.getParameter("dob");
+//            String email = request.getParameter("email");
+                        String sex = request.getParameter("sex");
+                        String address = request.getParameter("address");
+                        String facebook = request.getParameter("facebook");
+                        String github = request.getParameter("github");
+                        String language = request.getParameter("language");
+                        String profession = request.getParameter("profession");
+                        String proDescription = request.getParameter("proDescription");
+                        String serDescription = request.getParameter("serDescription");
+                        String achDescription = request.getParameter("achDescription");
+                        String image = "";
+                        String fileImageInput = request.getParameter("imageFile");
 
-                            if (!isAdded) {
-                                break;
+                        //User's avatar sent as comparmentalised data
+                        Part filePart = request.getPart("imageFile");
+                        String header = filePart.getHeader("content-disposition");
+                        String[] hd = header.split("; ");
+                        String filename = (hd[2].split("="))[1];
+                        if (header.contains("filename") && !filename.trim().isEmpty() && !filename.trim().equals("\"\"")) {
+
+                            //Retrive the uploading directory
+                            ServletContext ctx = this.getServletContext();
+                            File uploadDir = (File) ctx.getAttribute("DIR_FILE");
+                            System.out.println("UPLOAD DIR:" + uploadDir);
+                            //Retrieve the file sent in parts from the jsp page
+                            //The new avatar's ID, set automatically
+                            //Convert to .png (hard-coded in the jsp and html pages)
+                            String fileName = userID + ".jpg";
+                            //Write file to the predetermined server path
+                            /*Set up a new File object to represent the uploading directory 
+                (A File object can represent both files or pathnames)*/
+                            File uploads = new File(uploadDir.getAbsolutePath());
+                            //Create a new File Object with the given name to contain the incoming data
+                            File f = new File(fileName);
+                            //Combine the pathname and the new file's name into one unified File instance
+                            File file = new File(uploads, f.getName());
+                            //Retrieve inputStream from the obtained data parts
+                            InputStream input = filePart.getInputStream();
+                            //Copy all bytes from the input stream to the specified file (path)
+                            if (input != null) {
+                                try {
+                                    Files.copy(input, file.toPath(), REPLACE_EXISTING);
+                                } finally {
+                                    //Close the input stream
+                                    input.close();
+                                }
+                                //Runing directly with NetBean
+                                File backupDir = (File) ctx.getAttribute("BAK_FILE");
+                                if (backupDir != null) {
+                                    File bakUploads = new File(backupDir.getAbsolutePath());
+                                    File backupFile = new File(bakUploads, f.getName());
+                                    InputStream backupInput = filePart.getInputStream();
+                                    try {
+                                        Files.copy(backupInput, backupFile.toPath(), REPLACE_EXISTING);
+                                    } finally {
+                                        backupInput.close();
+                                    }
+                                }
                             }
+
+                            image = fileName;
                         }
-                        if (isAdded) {
-                            UsersDTO usersDTO = usersDAO.getProfile(userID);
-                            HttpSession session = request.getSession(false);
-                            if (session != null) {
-                                session.setAttribute("CURRENT_USER", usersDTO);
+
+                        // Update user Profile
+                        UsersDAO usersDAO = new UsersDAO();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        dateFormat.setLenient(false);
+                        dateFormat.parse(dob);
+                        Date dobDate = Date.valueOf(dob);
+
+                        boolean isUpdatedProfile = false;
+                        if (image.isEmpty() || filePart == null) {
+                            isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex);
+                        } else {
+                            isUpdatedProfile = usersDAO.updateProfile(userID, fullname, address, dobDate, sex, image);
+                        }
+                        if (isUpdatedProfile) {
+                            MentorDetailsDAO mentorDAO = new MentorDetailsDAO();
+                            MentorDetailsDTO dto = new MentorDetailsDTO(userID, facebook, github, profession, language, proDescription, serDescription, achDescription);
+                            boolean isUpdatedDetails = mentorDAO.updateCV(dto);
+                            if (isUpdatedDetails) {
+                                int numSkills = Integer.parseInt(request.getParameter("numSkills"));
+                                MentorSkillsDAO mentorSkillsDAO = new MentorSkillsDAO();
+
+                                mentorSkillsDAO.deleteMentorSkills(userID);
+                                boolean isAdded = false;
+
+                                for (int i = 1; i <= numSkills; i++) {
+                                    String mentorSkillID = mentorSkillsDAO.generateMentorSkillID();
+                                    String skillID = request.getParameter("skill" + i);
+                                    int year = Integer.parseInt(request.getParameter("years" + i));
+                                    int rate = Integer.parseInt(request.getParameter("rate" + i));
+                                    MentorSkillsDTO mentorSkill = new MentorSkillsDTO(mentorSkillID, userID, skillID, year, rate);
+                                    isAdded = mentorSkillsDAO.addMentorSkills(mentorSkill);
+
+                                    if (!isAdded) {
+                                        break;
+                                    }
+                                }
+                                if (isAdded) {
+                                    UsersDTO usersDTO = usersDAO.getProfile(userID);
+                                    if (session != null) {
+                                        session.setAttribute("CURRENT_USER", usersDTO);
+                                    }
+                                    request.setAttribute("UPDATE_CV_SUCCESS", "Update your CV successfully!!");
+                                } else {
+                                    request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
+                                            + "trying to add your skills! Please contact the web owners "
+                                            + "for more details.");
+                                }
+                            } else {
+                                request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
+                                        + "trying to update your CV! Please contact the web owners "
+                                        + "for more details.");
                             }
-                            request.setAttribute("UPDATE_CV_SUCCESS", "Update your CV successfully!!");
                         } else {
                             request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
-                                    + "trying to add your skills! Please contact the web owners "
+                                    + "trying to update your profile! Please contact the web owners "
                                     + "for more details.");
                         }
-                    } else {
-                        request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
-                                + "trying to update your CV! Please contact the web owners "
-                                + "for more details.");
                     }
-                } else {
-                    request.setAttribute("UPDATE_CV_ERROR", "There has been an error while we are "
-                            + "trying to update your profile! Please contact the web owners "
-                            + "for more details.");
                 }
             }
+
         } catch (ParseException ex) {
             log("Error at UpdateCVController: " + ex.getMessage());
             request.setAttribute("UPDATE_CV_ERROR", "Your Date of Birth is in wrong format!!");

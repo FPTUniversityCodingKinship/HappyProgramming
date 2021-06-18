@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "RequestsStatisticsController", urlPatterns = {"/RequestsStatisticsController"})
 public class RequestsStatisticsController extends HttpServlet {
-    
+
     private static final String VIEW_PAGE = "RequestsStatisticsPage";
     private static final String LOGIN_PAGE = "LoginPage";
 
@@ -43,10 +43,10 @@ public class RequestsStatisticsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         PrintWriter out = response.getWriter();
         String url = LOGIN_PAGE;
-        
+
         try {
 //              number of currently accepted request, 
 //              nummber of currently invited request, 
@@ -55,36 +55,43 @@ public class RequestsStatisticsController extends HttpServlet {
 //              percentage of completed request, 
 //              rating star
             HttpSession session = request.getSession(false);
-            if (session != null) {
-                UsersDTO mentor = (UsersDTO) session.getAttribute("CURRENT_USER");
-                String mentorID = mentor.getUserID();
-                
-                RequestsDAO dao = new RequestsDAO();
-                // No. of currently accepted request
-                int numAccepted = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_ACCEPTED);
-                // No. of currently invited request
-                int numRequests = dao.getNumberOfRequest(mentorID);
-                // No. of canceled request
-                int numRejected = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_REJECTED);
-                // No. of completed request
-                int numClosed = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_CLOSED);
-                
-                // Percentage of cancel request
-                float percentRejected = (float) numRejected/numRequests*100;
-                // Percentage of completed request
-                float percentClosed = (float) numClosed/numRequests*100;
-                
-                // Rating star
-                CommentsDAO commentsDAO = new CommentsDAO();
-                float rate = commentsDAO.getAvgStar(mentorID);
-                
-                RequestsStatisticsDTO returnDTO = new RequestsStatisticsDTO(numAccepted, numRequests, numRejected, percentRejected, percentClosed, rate);
-                
-                request.setAttribute("REQUESTS_STATISTICS_DATA", returnDTO);
-                url = VIEW_PAGE;
-                
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    url = LOGIN_PAGE;
+                } else {
+                    UsersDTO mentor = (UsersDTO) session.getAttribute("CURRENT_USER");
+                    String mentorID = mentor.getUserID();
+
+                    RequestsDAO dao = new RequestsDAO();
+                    // No. of currently accepted request
+                    int numAccepted = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_ACCEPTED);
+                    // No. of currently invited request
+                    int numRequests = dao.getNumberOfRequest(mentorID);
+                    // No. of canceled request
+                    int numRejected = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_REJECTED);
+                    // No. of completed request
+                    int numClosed = dao.getNumberOfRequest(mentorID, RequestsDAO.STATUS_CLOSED);
+
+                    // Percentage of cancel request
+                    float percentRejected = (float) numRejected / numRequests * 100;
+                    // Percentage of completed request
+                    float percentClosed = (float) numClosed / numRequests * 100;
+
+                    // Rating star
+                    CommentsDAO commentsDAO = new CommentsDAO();
+                    float rate = commentsDAO.getAvgStar(mentorID);
+
+                    RequestsStatisticsDTO returnDTO = new RequestsStatisticsDTO(numAccepted, numRequests, numRejected, percentRejected, percentClosed, rate);
+
+                    request.setAttribute("REQUESTS_STATISTICS_DATA", returnDTO);
+                    url = VIEW_PAGE;
+
+                }
             }
-            
+
         } catch (SQLException ex) {
             log("Error at RequestsStatisticsController: " + ex.getMessage());
             request.setAttribute("STATISTICS_ERROR", "An error has occured! Please contact the web owner for more details!!");
@@ -93,8 +100,7 @@ public class RequestsStatisticsController extends HttpServlet {
             log("Error at RejectRequestController: " + ex.getMessage());
             request.setAttribute("STATISTICS_ERROR", "An error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
-        } 
-        finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();

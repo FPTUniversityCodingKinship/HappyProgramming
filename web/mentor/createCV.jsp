@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,12 @@
         <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
         <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
                scope="page"/>
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'MT')}">
+            <c:redirect url="/" />
+        </c:if>
         <header>
             <nav>
                 <form action="Login">
