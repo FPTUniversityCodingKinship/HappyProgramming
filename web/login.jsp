@@ -11,8 +11,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
+        <link rel="stylesheet" href="css/general.css">
+
     </head>
-    <body>
+    <body style="background-image: linear-gradient(90deg, #0869B2 0%, #0869B2 33%, #EA6E26 33%, #EA6E26 66%, #0EB34A 66%, #0EB34A 100%);
+          ">
         <h1>LOG IN HERE!!!</h1>
         <c:set var="errors" value="${requestScope.LOGIN_ERROR}"/>
         <form method="POST" action="Login">

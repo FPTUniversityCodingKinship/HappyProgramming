@@ -13,14 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Profile Management</title>
-        <style>
-            *{
-                box-sizing: border-box;
-                padding: 1%;
-                border-radius: 25px;
-            }
-
-        </style>
+        <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
         <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
