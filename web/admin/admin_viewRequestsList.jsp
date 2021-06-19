@@ -39,13 +39,13 @@
             <br/><em>Enter value you want the request's content to contain, or leave blank to search all the requests</em>
             <br/>
             Request Status: 
-            <input type="checkbox" name="status" value="P" <c:if test="${pending eq 'true'}">checked=""</c:if> /> Pending 
-            <input type="checkbox" name="status" value="A" <c:if test="${accepted eq 'true'}">checked=""</c:if> /> Accepted 
-            <input type="checkbox" name="status" value="R" <c:if test="${rejected eq 'true'}">checked=""</c:if> /> Rejected 
-            <input type="checkbox" name="status" value="C" <c:if test="${closed eq 'true'}">checked=""</c:if> /> Closed
+            <input type="checkbox" name="status" value="P" id="pending" <c:if test="${pending eq 'true'}">checked=""</c:if> /> Pending 
+            <input type="checkbox" name="status" value="A" id="accepted" <c:if test="${accepted eq 'true'}">checked=""</c:if> /> Accepted 
+            <input type="checkbox" name="status" value="R" id="rejected" <c:if test="${rejected eq 'true'}">checked=""</c:if> /> Rejected 
+            <input type="checkbox" name="status" value="C" id="closed" <c:if test="${closed eq 'true'}">checked=""</c:if> /> Closed
                 <br/>
-                Start Date: <input type="date" name="startDate" value="${param.startDate}" /> 
-            End Date: <input type="date" name="endDate" value="${param.endDate}" />
+                Start Date: <input type="date" name="startDate" id="startDate" value="${param.startDate}" /> 
+            End Date: <input type="date" name="endDate" id="endDate" value="${param.endDate}" />
             <br/>
             <em>Filter the requests that have opened date after "Start Date" and closed / rejected date before "End Date" </em></br>
             <input type="submit" value="Search" name="btnSearch" />
@@ -86,7 +86,7 @@
                                     <c:param name="requestID" value="${request.requestID}"/>
                                 </c:url>
                                 <a href="${requestDetail}">${request.requestID}</a>
-                                
+
                             </td>
                             <td>
                                 ${request.menteeID}
@@ -95,12 +95,38 @@
                                 ${request.title}
                             </td>
                             <td>
-                                ${request.status}
+                                <c:choose>
+                                    <c:when test="${request.status eq 'A'}">
+                                        Accepted
+                                    </c:when>
+                                    <c:when test="${request.status eq 'P'}">
+                                        Pending
+                                    </c:when>
+                                    <c:when test="${request.status eq 'R'}">
+                                        Rejected
+                                    </c:when>
+                                    <c:when test="${request.status eq 'C'}">
+                                        Closed
+                                    </c:when>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            <c:forEach var="i" begin="1" end="${requestScope.NUM_PAGES}">
+                <c:url var="url" value="AdminViewRequestsList">
+
+                    <c:param name="searchValue" value="${param.searchValue}"/>
+                    <c:forEach var="item" items="${paramValues.status}">
+                        <c:param name="status" value="${item}" />
+                    </c:forEach>
+                    <c:param name="startDate" value="${param.startDate}" />
+                    <c:param name="endDate" value="${param.endDate}" />
+                    <c:param name="page" value="${i}"/>
+                </c:url>
+                <a href="${url}">${i}</a>
+            </c:forEach>
         </c:if>
 
         <!-- The infor of the list of request include: 
@@ -109,5 +135,7 @@
         accountname (who create request), 
         title of request, 
         status.-->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="admin/js/admin_viewRequestsList.js"></script>
     </body>
 </html>

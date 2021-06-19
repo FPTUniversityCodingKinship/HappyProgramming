@@ -1123,8 +1123,80 @@ public class RequestsDAO implements Serializable {
         return cReq;
     }
 
+    public int getNumberOfRequests(String searchValue, String[] status,
+            Date startDate, Date endDate) throws SQLException, NamingException {
+
+        int result = 0;
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT count(*) as totalRows "
+                        + "FROM requests "
+                        + "WHERE ";
+                
+                if (!searchValue.trim().isEmpty()) {
+                    sql += "reqContent LIKE '%" + searchValue + "%' ";
+                }
+                if (status != null && status.length > 0) {
+                    if (!searchValue.trim().isEmpty()) {
+                        sql += "AND ";
+                    }
+                    sql += "(";
+                    for (int i = 0; i < status.length; i++) {
+                        String checkStatus = status[i];
+                        if (i == status.length - 1) {
+                            sql += "status = '" + checkStatus + "' ";
+                        } else {
+                            sql += "status = '" + checkStatus + "' OR ";
+                        }
+                    }
+                    sql += ") ";
+                }
+                if (startDate != null) {
+                    if (!searchValue.trim().isEmpty() || (status != null && status.length > 0)) {
+                        sql += "AND ";
+                    }
+                    if (endDate != null) {
+                        sql += "openedTime >= '" + startDate + "' AND (closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
+                    } else {
+                        sql += "openedTime >= '" + startDate + "'";
+                    }
+                } else {
+                    if (endDate != null) {
+                        if (!searchValue.trim().isEmpty() || (status != null && status.length > 0)) {
+                            sql += "AND ";
+                        }
+                        sql += "(closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
+                    }
+                }
+                stmt = con.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    result = rs.getInt("totalRows");
+                }
+            }
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+
+        return result;
+    }
     public List<RequestsDTO> getRequestsList(String searchValue, String[] status,
-            Date startDate, Date endDate)
+            Date startDate, Date endDate, int pageID, int total)
             throws SQLException, NamingException {
 
         List<RequestsDTO> requestsList = new ArrayList<>();
@@ -1137,6 +1209,8 @@ public class RequestsDAO implements Serializable {
             con = DBHelper.makeConnection();
             if (con != null) {
                 String sql = "SELECT requestID, menteeID, title, status "
+                        + "FROM ("
+                        + "SELECT requestID, menteeID, title, status, ROW_NUMBER() OVER (ORDER by requestID) as numRow "
                         + "FROM requests "
                         + "WHERE ";
                 if (!searchValue.trim().isEmpty()) {
@@ -1174,8 +1248,11 @@ public class RequestsDAO implements Serializable {
                         sql += "(closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
                     }
                 }
-
+                sql += ") as m "
+                        + "WHERE m.numRow > ? AND m.numRow < ?";
                 stmt = con.prepareStatement(sql);
+                stmt.setInt(1, pageID - 1);
+                stmt.setInt(2, pageID * total + 1);
                 rs = stmt.executeQuery();
                 while (rs.next()) {
                     RequestsDTO dto = new RequestsDTO(
