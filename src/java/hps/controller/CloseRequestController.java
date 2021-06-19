@@ -6,6 +6,7 @@
 package hps.controller;
 
 import hps.requests.RequestsDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "CloseRequestController", urlPatterns = {"/CloseRequestController"})
 public class CloseRequestController extends HttpServlet {
+
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,22 +41,33 @@ public class CloseRequestController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
+
         String redirect = request.getParameter("redirect");
         String url = redirect;
-        
+
         try {
-            String requestID = request.getParameter("requestID");
-            if (!requestID.isEmpty()) {
-                RequestsDAO dao = new RequestsDAO();
-                boolean iClose = dao.closeRequest(requestID);
-                
-                if (iClose) {
-                    url = redirect;
+
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
                 } else {
-                    request.setAttribute("CLOSE_ERROR", "An error has occured while we try to close the request with the ID <strong>" 
-                            + requestID + "</strong>! Please check again the request or contact the web owner for more details!!");
-                    url = redirect;
+                    String requestID = request.getParameter("requestID");
+                    if (!requestID.isEmpty()) {
+                        RequestsDAO dao = new RequestsDAO();
+                        boolean iClose = dao.closeRequest(requestID);
+
+                        if (iClose) {
+                            url = redirect;
+                        } else {
+                            request.setAttribute("CLOSE_ERROR", "An error has occured while we try to close the request with the ID <strong>"
+                                    + requestID + "</strong>! Please check again the request or contact the web owner for more details!!");
+                            url = redirect;
+                        }
+                    }
                 }
             }
         } catch (SQLException ex) {
