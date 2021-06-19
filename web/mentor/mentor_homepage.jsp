@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +17,11 @@
         <c:if test="${empty sessionScope.CURRENT_USER}">
             <c:redirect url="/login.jsp"/>
         </c:if>
+        
+        <c:if test="${not fn:startsWith(sessionScope.CURRENT_USER.userID, 'MT')}">
+            <c:redirect url="/" />
+        </c:if>
+        
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <form action="Logout" method="POST" id="Logout">
                 <p id="Welcome">

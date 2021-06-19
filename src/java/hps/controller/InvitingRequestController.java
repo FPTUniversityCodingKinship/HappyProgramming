@@ -7,6 +7,7 @@ package hps.controller;
 
 import hps.requests.RequestsDAO;
 import hps.requests.RequestsDTO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,8 +27,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "InvitingRequestController", urlPatterns = {"/InvitingRequestController"})
 public class InvitingRequestController extends HttpServlet {
-    private static final String VIEW_PAGE = "ViewInvitingRequestPage";
 
+    private static final String VIEW_PAGE = "ViewInvitingRequestPage";
+    private static final String LOGIN_PAGE = "/";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,22 +44,31 @@ public class InvitingRequestController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
+
         String url = VIEW_PAGE;
-        
+
         try {
-            // Get current mentor
-//            UsersDTO curMentor = (UsersDTO) request.getAttribute("CURRENT_USER"); // TODO code
-//            
-//            String mentorID = curMentor.getUserID();
-            String mentorID = "MT000001";
-            RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listInvitingRequets = requestsDAO.getInvitingRequestsList(mentorID);
-            
-            request.setAttribute("INVITING_REQUESTS", listInvitingRequets);
-            url = VIEW_PAGE;
-        }
-        catch (SQLException ex) {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    url = LOGIN_PAGE;
+                } else {
+                    String mentorID = curMentor.getUserID();
+                    if (!mentorID.startsWith("MT")) {
+                        url = LOGIN_PAGE;
+                    } else {
+                        RequestsDAO requestsDAO = new RequestsDAO();
+                        List<RequestsDTO> listInvitingRequets = requestsDAO.getInvitingRequestsList(mentorID);
+
+                        request.setAttribute("INVITING_REQUESTS", listInvitingRequets);
+                        url = VIEW_PAGE;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
             log("Error at InvitingRequestController: " + ex.getMessage());
             request.setAttribute("INVITING_ERROR", "An error has occured when we try to connect to the database!"
                     + " Please contact the web owner for more details!!");
@@ -64,8 +77,7 @@ public class InvitingRequestController extends HttpServlet {
             log("Error at InvitingRequestController: " + ex.getMessage());
             request.setAttribute("INVITING_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
-        }
-        finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();

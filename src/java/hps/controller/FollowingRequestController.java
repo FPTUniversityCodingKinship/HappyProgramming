@@ -28,8 +28,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "FollowingRequestController", urlPatterns = {"/FollowingRequestController"})
 public class FollowingRequestController extends HttpServlet {
-    
+
     private static final String VIEW_PAGE = "ViewFollowingRequestPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,26 +45,36 @@ public class FollowingRequestController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
+
         String url = VIEW_PAGE;
-        
+
         try {
             // Get current mentor
             HttpSession session = request.getSession(false);
-            UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
-            
-            String mentorID = curMentor.getUserID();
-//            String mentorID = "MT000001";
-            FollowersDAO followersDAO = new FollowersDAO();
-            List<String> listFollowers = followersDAO.getListFollowers(mentorID);
-            
-            RequestsDAO requestsDAO = new RequestsDAO();
-            List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
-            
-            request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
-            url = VIEW_PAGE;
-        }
-        catch (SQLException ex) {
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    url = LOGIN_PAGE;
+                } else {
+                    String mentorID = curMentor.getUserID();
+                    if (!mentorID.startsWith("MT")) {
+                        url = LOGIN_PAGE;
+                    } else {
+                        FollowersDAO followersDAO = new FollowersDAO();
+                        List<String> listFollowers = followersDAO.getListFollowers(mentorID);
+
+                        RequestsDAO requestsDAO = new RequestsDAO();
+                        List<RequestsDTO> listFollowingRequests = requestsDAO.getFollowingRequestsList(listFollowers);
+
+                        request.setAttribute("FOLLOWING_REQUESTS", listFollowingRequests);
+                        url = VIEW_PAGE;
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
             log("Error at FollowingRequestController: " + ex.getMessage());
             request.setAttribute("FOLLOWING_ERROR", "An error has occured when we try to connect to the database! "
                     + "Please contact the web owner for more details!!");
@@ -72,8 +83,7 @@ public class FollowingRequestController extends HttpServlet {
             log("Error at FollowingRequestController: " + ex.getMessage());
             request.setAttribute("FOLLOWING_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
-        }
-        finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();
