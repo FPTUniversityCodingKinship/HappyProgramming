@@ -54,11 +54,11 @@ public class AdminViewSkillsListController extends HttpServlet {
             
         } catch (SQLException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured while we are trying to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         }
         finally {

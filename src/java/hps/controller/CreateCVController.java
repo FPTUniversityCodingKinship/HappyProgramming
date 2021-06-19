@@ -125,14 +125,14 @@ public class CreateCVController extends HttpServlet {
                 returnResult.setMessage("Your CV has been already created before! "
                         + "If you want to update your Profile, <a href='UpdateCVPage'>click here</a>");
             } else {
-                returnResult.setMessage("There has been an error while we are "
+                returnResult.setMessage("There has been a database error while we are "
                         + "trying to create your profile! Please contact the web owners "
                         + "for more details.");
             }
         } catch (NamingException ex) {
             log("Error at CreateCVController: " + ex.getMessage());
             returnResult.setSuccess(false);
-            returnResult.setMessage("There has been an error while we are "
+            returnResult.setMessage("There has been a system error while we are "
                     + "trying to create your profile! Please contact the web owners "
                     + "for more details.");
         } finally {

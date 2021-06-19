@@ -9,8 +9,6 @@ import hps.skills.SkillsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -63,11 +61,11 @@ public class AdminViewSkillsUpdateStatusController extends HttpServlet {
             }
         } catch (SQLException ex) {
             log("Error at AdminViewSkillsUpdateStatusController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured while we are trying to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } catch (NamingException ex) {
             log("Error at AdminViewSkillsUpdateStatusController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
