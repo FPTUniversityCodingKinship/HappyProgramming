@@ -59,7 +59,7 @@ public class RequestsStatisticsController extends HttpServlet {
                 url = LOGIN_PAGE;
             } else {
                 UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
-                if (curMentor == null) {
+                if (curMentor == null || !curMentor.getUserID().startsWith("MT")) {
                     url = LOGIN_PAGE;
                 } else {
                     UsersDTO mentor = (UsersDTO) session.getAttribute("CURRENT_USER");

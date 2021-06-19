@@ -7,6 +7,7 @@ package hps.controller;
 
 import hps.requests.RequestsDAO;
 import hps.requests.RequestsDTO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -20,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminViewRequestsListController extends HttpServlet {
 
     private static final String VIEW_REQUEST_PAGE = "AdminViewRequestsListPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,54 +51,61 @@ public class AdminViewRequestsListController extends HttpServlet {
         int limit = 10;
 
         try {
-            String searchValue = request.getParameter("searchValue");
-            String[] status = request.getParameterValues("status");
-            String startDateStr = request.getParameter("startDate");
-            String endDateStr = request.getParameter("endDate");
-            
-            String strPageId = request.getParameter("page");
-            if (strPageId == null) {
-                strPageId = "1";
-            }
-            int pageId = Integer.parseInt(strPageId);
-            
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null) {
+                    url = LOGIN_PAGE;
+                } else {
+                    String searchValue = request.getParameter("searchValue");
+                    String[] status = request.getParameterValues("status");
+                    String startDateStr = request.getParameter("startDate");
+                    String endDateStr = request.getParameter("endDate");
+
+                    String strPageId = request.getParameter("page");
+                    if (strPageId == null) {
+                        strPageId = "1";
+                    }
+                    int pageId = Integer.parseInt(strPageId);
+
 //            if (pageId > 1) {
 //                pageId = pageId - 1;
 //                pageId = pageId*limit + 1;
 //            }
-            
+                    if (((startDateStr == null && endDateStr == null) || (startDateStr.trim().isEmpty() && endDateStr.trim().isEmpty()))
+                            && searchValue.trim().isEmpty() && (status == null || status.length == 0)) {
+                        request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "Please enter at least 1 criteria to filter requests!!!");
+                        url = VIEW_REQUEST_PAGE;
+                    } else {
+                        Date startDate = null;
+                        Date endDate = null;
+                        if (startDate != null && !startDateStr.trim().isEmpty()) {
+                            startDate = java.sql.Date.valueOf(startDateStr);
+                        }
+                        if (endDate != null && !endDateStr.trim().isEmpty()) {
+                            endDate = java.sql.Date.valueOf(endDateStr);
+                        }
 
-            if (((startDateStr == null && endDateStr == null) || (startDateStr.trim().isEmpty() && endDateStr.trim().isEmpty()))
-                    && searchValue.trim().isEmpty() && (status == null || status.length == 0)) {
-                request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "Please enter at least 1 criteria to filter requests!!!");
-                url = VIEW_REQUEST_PAGE;
-            } else {
-                Date startDate = null;
-                Date endDate = null;
-                if (startDate != null && !startDateStr.trim().isEmpty()) {
-                    startDate = java.sql.Date.valueOf(startDateStr);
+                        RequestsDAO requestsDAO = new RequestsDAO();
+                        List<RequestsDTO> requestsList = requestsDAO.getRequestsList(searchValue, status, startDate, endDate, pageId, limit);
+
+                        int totalRequest = requestsDAO.getNumberOfRequests(searchValue, status, startDate, endDate);
+                        int numOfPages = (int) Math.ceil((double) totalRequest / limit);
+                        request.setAttribute("NUM_PAGES", numOfPages);
+
+                        request.setAttribute("REQUESTS_LIST", requestsList);
+                        url = VIEW_REQUEST_PAGE;
+                    }
                 }
-                if (endDate != null && !endDateStr.trim().isEmpty()) {
-                    endDate = java.sql.Date.valueOf(endDateStr);
-                }
-
-                RequestsDAO requestsDAO = new RequestsDAO();
-                List<RequestsDTO> requestsList = requestsDAO.getRequestsList(searchValue, status, startDate, endDate, pageId, limit);
-                
-                int totalRequest = requestsDAO.getNumberOfRequests(searchValue, status, startDate, endDate);
-                int numOfPages = (int) Math.ceil((double)totalRequest/limit);
-                request.setAttribute("NUM_PAGES", numOfPages);
-
-                request.setAttribute("REQUESTS_LIST", requestsList);
-                url = VIEW_REQUEST_PAGE;
             }
 
         } catch (NumberFormatException ex) {
             log("Error at AdminViewRequestsListController: " + ex.getMessage());
             request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "Page number is not valid!!! Please check and try again...");
             url = VIEW_REQUEST_PAGE;
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             log("Error at AdminViewRequestsListController: " + ex.getMessage());
             request.setAttribute("VIEW_REQUESTS_LIST_ERROR", "An error has occured when we try to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_REQUEST_PAGE;
