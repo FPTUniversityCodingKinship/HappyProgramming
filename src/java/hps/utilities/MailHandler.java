@@ -2,7 +2,7 @@
 package hps.utilities;
 
 import hps.users.UsersDTO;
-import hps.users.VerifyDTO;
+import hps.verify.VerifyDTO;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;

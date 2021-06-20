@@ -12,11 +12,13 @@
         <title>Create Account</title>
     </head>
     <body>
+        <a href=""> Back to Homepage</a>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="registerAction" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
             <table border="0">
+                        <%-- Email --%>
                 <tr>
                     <td>
                         Email*
@@ -26,6 +28,7 @@
                                value="${param.txtEmail}"/>
                     </td>
                 </tr>
+                        <%-- Username --%>
                 <tr>
                     <td>
                         Username*
@@ -49,6 +52,7 @@
                         ${errors.usernameIsExisted}
                     </font><br/>
                 </c:if>
+                        <%-- Password --%>
                 <tr>
                     <td>
                         Password*
@@ -67,6 +71,7 @@
                     </td>
                 </tr>    
                 </c:if>
+                        <%-- Confirm Password --%>
                 <tr>
                     <td>
                         Confirm Pass*
@@ -84,6 +89,7 @@
                     </td>
                 </tr>
                 </c:if>
+                        <%-- Fullname --%>
                 <tr>
                     <td>
                         Full Name*
@@ -102,6 +108,7 @@
                     </td>
                 </tr>
                 </c:if>
+                        <%-- Birthday --%>
                 <tr>
                     <td>
                         Birthday*
@@ -120,12 +127,13 @@
                     </td>
                 </tr>
                 </c:if>
+                        <%-- Address --%>
                 <tr>
                     <td>
                         Address*
                     </td>
                     <td>
-                        <input type="date" name="txtAddress" 
+                        <input type="text" name="txtAddress" 
                                    value="${param.txtAddress}"/>
                     </td>
                 </tr>
@@ -138,12 +146,13 @@
                     </td>
                 </tr>
                 </c:if>
-                        <tr>
+                        <%-- Phone Number --%>
+                <tr>
                     <td>
                         Phone Number*
                     </td>
                     <td>
-                        <input type="date" name="txtPhone" 
+                        <input type="text" name="txtPhone" 
                                    value="${param.txtPhone}"/>
                     </td>
                 </tr>

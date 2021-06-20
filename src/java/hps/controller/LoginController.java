@@ -10,6 +10,8 @@ import hps.users.UsersCreateError;
 
 import hps.users.UsersDAO;
 import hps.users.UsersDTO;
+import hps.utilities.MailHandler;
+import hps.verify.VerifyDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +20,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
@@ -52,35 +56,49 @@ public class LoginController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
+        String gmail = request.getParameter("txtGmail");
         String remember = request.getParameter("chkCookie");
         UsersCreateError err = new UsersCreateError();
+        MailHandler sm = null;
+        VerifyDTO verifier = null;
         boolean flag = false;
         String url = ERROR_PAGE;
         String sout = "";
+        boolean existCode = false;
         
         try {
-            if (username.isEmpty()) {
-                flag = true;
-                err.setUsernameLengthErr("Username is empty");
+            // check type of login is google or traditional
+            if (gmail == null) {
+                gmail = "";
+                if (username.isEmpty()) {
+                    flag = true;
+                    err.setUsernameLengthErr("Username is empty");
+                }
+                if (password.isEmpty()) {
+                    flag = true;
+                    err.setPasswordLengthErr("Password is empty");
+                }
             }
-            if (password.isEmpty()) {
-                flag = true;
-                err.setPasswordLengthErr("Password is empty");
-            }
+            // if param is good, call DAO
             if (flag == false) {
-                UsersDAO usersDao = new UsersDAO();
-                UsersDTO user = usersDao.checkLogin(username, password);
+                UsersDAO dao = new UsersDAO();
+                UsersDTO user;
+                if (!gmail.isEmpty())
+                    user = dao.checkLoginByMail(gmail);
+                else
+                    user = dao.checkLogin(username, password);
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
-                    if (remember != null) {
+                    if (remember != null && gmail.isEmpty()) {
                         String key = "HPSWA-" + username;
                         Cookie cookie = new Cookie(key, password);
                         cookie.setMaxAge(60*60*24);
                         response.addCookie(cookie);
                     }
-                    String role = user.getUserID().substring(0, 2);
-                    if (user.isStatus()) {
+                    
+                    if (user.isEmailStatus()) {
+                        String role = user.getUserID().substring(0, 2);
                         switch (role) {
                             case "ME":
                                 url = MENTEE_PAGE;
@@ -97,6 +115,40 @@ public class LoginController extends HttpServlet {
                         }
                     }
                     else {
+                        sm = new MailHandler();
+                        //get the 6-digit code
+                        String code = sm.getVerifyCode();
+                        //get the date time at the sendding
+                        String time = sm.getCurrentDateTime();
+                        verifier = new VerifyDTO(user.getEmail(), code, time);
+                        //add verify code to context
+                        ServletContext context = getServletContext();
+                        ArrayList<VerifyDTO> verifyList = (ArrayList<VerifyDTO>) 
+                                    context.getAttribute("VERIFY_LIST");
+                        if (verifyList != null) {
+                            verifyList.add(verifier);
+                            for (VerifyDTO entry : verifyList) {
+                                //if email existed, replace time and code
+                                if (entry.getEmail().equals(verifier.getEmail())) {
+                                    if (verifyList.remove(entry)) {
+                                        System.out.println("[UserVerify] remove:" 
+                                                    + entry.toString());
+                                    }
+                                    if (verifyList.add(verifier)) {
+                                        System.out.println("[UserVerify] add:" 
+                                                    + verifier.toString());
+                                    }
+                                    existCode = true;
+                                    break;
+                                }
+                            }
+                            if (!existCode) {
+                                verifyList.add(verifier);
+                            }
+
+                        }
+                        //re-up list onto context Scope's attribute
+                        context.setAttribute("VERIFY_LIST", verifyList);
                         url = INACTIVE_PAGE;
                         sout += "Activation Status of ["
                                     + user.getUsername() + "] is [false]";
@@ -123,6 +175,10 @@ public class LoginController extends HttpServlet {
             log(ex.getMessage());
             sout = "SQLException was caught.";
         } finally {
+            if (verifier != null && sm != null) {
+                boolean isSend = sm.sendEmail(verifier);
+                System.out.println("[UserVerify] isSend:" + isSend);
+            }
             System.out.println("[LoginController] " + sout);
             if (out != null) {
                 out.close();

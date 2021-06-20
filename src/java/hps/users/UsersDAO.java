@@ -15,7 +15,8 @@ import javax.naming.NamingException;
 public class UsersDAO implements Serializable {
 
     public UsersDTO newMentee(String username, String email, String password,
-            String fullname, boolean role)
+            String fullname, String phone, String address, Date dob, String sex,
+            String image, boolean status, boolean emailStatus)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -35,7 +36,13 @@ public class UsersDAO implements Serializable {
                 stm.setString(2, email);
                 stm.setString(3, password);
                 stm.setString(4, fullname);
-                stm.setBoolean(5, role);
+                stm.setString(5, phone);
+                stm.setString(6, address);
+                stm.setString(7, phone);
+                stm.setString(8, address);
+                stm.setDate(9, dob);
+                stm.setBoolean(10, status);
+                stm.setBoolean(11, emailStatus);
                 //4. Execute Query.
                 ResultSet rs = stm.executeQuery();
 
@@ -99,13 +106,54 @@ public class UsersDAO implements Serializable {
         }
         return null;
     }
+    
+    public UsersDTO checkLoginByMail(String mail) 
+                throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        UsersDTO dto;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT * "
+                            + "FROM users "
+                            + "WHERE email = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mail);
+                
+                rs = stm.executeQuery();
+                
+                if (rs.next()) {
+                    dto = new UsersDTO(
+                                rs.getString("userID"), rs.getString("username"),
+                                rs.getString("email"), rs.getString("password"),
+                                rs.getString("fullname"), rs.getString("phone"),
+                                rs.getString("address"), rs.getDate("dob"),
+                                rs.getString("sex"), rs.getString("image"),
+                                rs.getBoolean("status"), rs.getBoolean("emailStatus")
+                    );
+                    return dto;
+                }
+            }
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stm != null)
+                stm.close();
+            if (con != null)
+                con.close();
+        }
+        return null;
+    }
 
     public boolean checkUsername(String username, String userID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
-        UsersDTO user = null;
+        ResultSet rs;
         try {
             //1.Establish Connection
             con = DBHelper.makeConnection();
@@ -132,6 +180,82 @@ public class UsersDAO implements Serializable {
             }
         }
         return false;
+    }
+    
+    public UsersDTO verifyUser(String email) 
+                throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE users "
+                            + "SET emailStatus = 1 "
+                            + "WHERE email = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                
+                int row = stm.executeUpdate();
+                
+                if (row > 0)
+                    return getUser(email);
+            }
+        }
+        finally {
+            if (stm != null)
+                stm.close();
+            if (con != null)
+                con.close();
+        }
+        return null;
+    }
+    
+    public UsersDTO getUser(String email) 
+                throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        UsersDTO dto;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT * "
+                            + "FROM users "
+                            + "WHERE email = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                
+                rs = stm.executeQuery();
+                
+                if (rs.next()) {
+                    dto = new UsersDTO(
+                            rs.getString("userID"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getNString("fullname"),
+                            rs.getString("phone"),
+                            rs.getString("address"),
+                            rs.getDate("dob"),
+                            rs.getString("sex"),
+                            rs.getString("image"),
+                            rs.getBoolean("status"),
+                            rs.getBoolean("emailStatus"));
+                    return dto;
+                }
+            }
+        }
+        finally {
+            if (rs != null)
+                rs.close();
+            if (stm != null)
+                stm.close();
+            if (con != null)
+                con.close();
+        }
+        return null;
     }
 
     public UsersDTO getProfile(String userID) throws NamingException, SQLException {
