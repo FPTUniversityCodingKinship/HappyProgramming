@@ -5,14 +5,13 @@
  */
 package hps.controller;
 
-import hps.mentorSkills.MentorSkillsDAO;
 import hps.requests.RequestsDAO;
 import hps.requests.RequestsDTO;
 import hps.skills.SkillsDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,8 +27,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "AdminViewRequestDetailController", urlPatterns = {"/AdminViewRequestDetailController"})
 public class AdminViewRequestDetailController extends HttpServlet {
-    
+
     private static final String VIEW_PAGE = "AdminViewRequestDetailPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,25 +44,35 @@ public class AdminViewRequestDetailController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
+
         String url = VIEW_PAGE;
-        
+
         try {
-            String requestID = request.getParameter("requestID");
-            
-            RequestsDAO dao = new RequestsDAO();
-            RequestsDTO requestInfo = dao.getRequestByRequestID(requestID);
-            
-            request.setAttribute("REQUEST_INFO", requestInfo);
-            
-            String skillsID = requestInfo.getSkillsID();
-            SkillsDAO sDAO = new SkillsDAO();
-            String skillsName = sDAO.getSkillsName(skillsID);
-            
-            request.setAttribute("SKILLS_NAME", skillsName);
-            
-            url = VIEW_PAGE;
-            
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
+                } else {
+                    String requestID = request.getParameter("requestID");
+
+                    RequestsDAO dao = new RequestsDAO();
+                    RequestsDTO requestInfo = dao.getRequestByRequestID(requestID);
+
+                    request.setAttribute("REQUEST_INFO", requestInfo);
+
+                    String skillsID = requestInfo.getSkillsID();
+                    SkillsDAO sDAO = new SkillsDAO();
+                    String skillsName = sDAO.getSkillsName(skillsID);
+
+                    request.setAttribute("SKILLS_NAME", skillsName);
+
+                    url = VIEW_PAGE;
+                }
+            }
+
         } catch (NamingException ex) {
             log("Error at AdminViewRequestDetailController: " + ex.getMessage());
             request.setAttribute("VIEW_REQUEST_ERROR", "An error has occured! Please contact the web owner for more details!!");
@@ -71,8 +81,7 @@ public class AdminViewRequestDetailController extends HttpServlet {
             log("Error at AdminViewRequestDetailController: " + ex.getMessage());
             request.setAttribute("VIEW_REQUEST_ERROR", "An error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
-        }
-        finally{
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();
