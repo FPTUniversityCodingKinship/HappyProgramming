@@ -84,11 +84,11 @@ public class AdminViewSkillsUpdateNameController extends HttpServlet {
 
         } catch (SQLException ex) {
             log("Error at AdminViewSkillsUpdateNameController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured while we are trying connect to the database! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } catch (NamingException ex) {
             log("Error at AdminViewSkillsUpdateNameController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -19,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -75,11 +74,11 @@ public class AdminViewRequestDetailController extends HttpServlet {
 
         } catch (NamingException ex) {
             log("Error at AdminViewRequestDetailController: " + ex.getMessage());
-            request.setAttribute("VIEW_REQUEST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_REQUEST_ERROR", "An error has occured while we are trying to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (SQLException ex) {
             log("Error at AdminViewRequestDetailController: " + ex.getMessage());
-            request.setAttribute("VIEW_REQUEST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_REQUEST_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -74,11 +74,11 @@ public class AdminViewSkillsUpdateStatusController extends HttpServlet {
             }
         } catch (SQLException ex) {
             log("Error at AdminViewSkillsUpdateStatusController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured while we are trying to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } catch (NamingException ex) {
             log("Error at AdminViewSkillsUpdateStatusController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_STATUS_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
