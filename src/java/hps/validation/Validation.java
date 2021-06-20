@@ -5,6 +5,7 @@
  */
 package hps.validation;
 
+import hps.users.UsersCreateError;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -101,5 +102,48 @@ public class Validation implements Serializable{
         }
         
         return true;
+    }
+    
+    public static UsersCreateError signUpValidate(String email, String username,
+                String password, String confirm, String fullname, String dob,
+                String address, String phone) {
+        UsersCreateError errors = new UsersCreateError();
+        boolean foundErr = false;
+        if (!email.trim().matches("/^[^\\s@]+@[^\\s@]+$/")) {
+            foundErr = true;
+            errors.setUsernameLengthErr("Email not matches.");
+        }
+        if (username.trim().length() < 6 || username.trim().length() > 30) {
+            foundErr = true;
+            errors.setUsernameLengthErr("Username requires input between 6 and 30 characters.");
+        }
+        if (password.trim().length() < 6 || password.trim().length() > 20) {
+            foundErr = true;
+            errors.setPasswordLengthErr("Password requires input between 6 and 20 characters.");
+        }
+        if (!confirm.trim().equals(password.trim())) {
+            foundErr = true;
+            errors.setConfirmNotMatch("Confirm requires matching with Password.");
+        }
+        if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
+            foundErr = true;
+            errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
+        }
+        if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
+            foundErr = true;
+            errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
+        }
+        if (address.trim().length() < 2) {
+            foundErr = true;
+            errors.setFullnameLengthErr("Address requires not empty.");
+        }
+        if (phone.trim().length() < 9 || fullname.trim().length() > 10) {
+            foundErr = true;
+            errors.setFullnameLengthErr("Phone number is not correct.");
+        }
+        
+        if (foundErr)
+            return errors;
+        return null;
     }
 }

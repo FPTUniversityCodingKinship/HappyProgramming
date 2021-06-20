@@ -5,6 +5,8 @@
 Login = LoginController
 Logout = LogoutController
 SignUp = SignUpController
+VerifyCode = VerifyCodeController
+ResetPassword = ResetPasswordController
 UpdateProfileController = UpdateProfileServlet
 FollowingRequest = FollowingRequestController
 Approve = ApproveRequestController
@@ -44,6 +46,7 @@ AdminViewRequestDetail = AdminViewRequestDetailController
 # End of Controller
 # -----------------------------------------------
 # Start of Page
+HomePage = guest_homepage.jsp
 LoginPage = login.jsp
 MailVerificationPage = userVerification.jsp
 SignUpPage = signup.jsp
