@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -56,7 +55,7 @@ public class AdminViewRequestsListController extends HttpServlet {
                 url = LOGIN_PAGE;
             } else {
                 UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
-                if (curMentor == null) {
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
                     url = LOGIN_PAGE;
                 } else {
                     String searchValue = request.getParameter("searchValue");

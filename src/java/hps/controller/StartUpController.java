@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "StartUpController", urlPatterns = {"/StartUpController"})
 public class StartUpController extends HttpServlet {
-    private final String LOGIN_PAGE = "LoginPage";
+    private final String HOME_PAGE = "HomePage";
     private final String LOGIN_CONTROLLER = "Login";
     
     
@@ -40,7 +40,7 @@ public class StartUpController extends HttpServlet {
         
         Cookie[] cookies = null;
         String msg = "";
-        String url = LOGIN_PAGE;
+        String url = HOME_PAGE;
         
         try {
             cookies = request.getCookies();

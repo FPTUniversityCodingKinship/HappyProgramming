@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,13 @@
         <title>View Mentee Statistics</title>
     </head>
     <body>
+        <c:set var="user" value="${sessionScope.CURRENT_USER.userID}" scope="page"/>
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'AD')}">
+            <c:redirect url="/" />
+        </c:if>
         <h1>View Statistics about all the Mentees</h1>
         <c:set var="error" value="${MENTEE_STATISTICS_ERROR}" />
         <c:if test="${not empty error}">

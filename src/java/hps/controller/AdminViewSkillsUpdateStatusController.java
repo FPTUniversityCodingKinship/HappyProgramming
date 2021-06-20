@@ -6,6 +6,7 @@
 package hps.controller;
 
 import hps.skills.SkillsDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminViewSkillsUpdateStatusController extends HttpServlet {
 
     private static final String VIEW_SKILL_CONTROLLER = "AdminViewSkillsList";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,21 +46,31 @@ public class AdminViewSkillsUpdateStatusController extends HttpServlet {
         String url = VIEW_SKILL_CONTROLLER;
 
         try {
-            String skillID = request.getParameter("skillID");
-            String updatedStatus = request.getParameter("updatedStatus");
-            boolean status = "active".equals(updatedStatus);
-
-            SkillsDAO skillsDAO = new SkillsDAO();
-            boolean isUpdated = skillsDAO.updateSkill(skillID, status);
-            
-            if (isUpdated) {
-                request.setAttribute("SKILL_UPDATE_STATUS_SUCCESS", 
-                        (status ? "Activate" : "Inactivate") + " skill successfully!");
-                url = VIEW_SKILL_CONTROLLER;
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
             } else {
-                request.setAttribute("SKILL_UPDATE_STATUS_ERROR", 
-                        "The skill doesn't exist! Please check again!");
-                url = VIEW_SKILL_CONTROLLER;
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
+                } else {
+                    String skillID = request.getParameter("skillID");
+                    String updatedStatus = request.getParameter("updatedStatus");
+                    boolean status = "active".equals(updatedStatus);
+
+                    SkillsDAO skillsDAO = new SkillsDAO();
+                    boolean isUpdated = skillsDAO.updateSkill(skillID, status);
+
+                    if (isUpdated) {
+                        request.setAttribute("SKILL_UPDATE_STATUS_SUCCESS",
+                                (status ? "Activate" : "Inactivate") + " skill successfully!");
+                        url = VIEW_SKILL_CONTROLLER;
+                    } else {
+                        request.setAttribute("SKILL_UPDATE_STATUS_ERROR",
+                                "The skill doesn't exist! Please check again!");
+                        url = VIEW_SKILL_CONTROLLER;
+                    }
+                }
             }
         } catch (SQLException ex) {
             log("Error at AdminViewSkillsUpdateStatusController: " + ex.getMessage());

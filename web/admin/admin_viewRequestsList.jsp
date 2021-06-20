@@ -14,6 +14,13 @@
         <title>View Requests List</title>
     </head>
     <body>
+        <c:set var="user" value="${sessionScope.CURRENT_USER.userID}" scope="page"/>
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'AD')}">
+            <c:redirect url="/" />
+        </c:if>
         <h1>View List of Requests</h1>
         <c:set var="pending" value="false" />
         <c:set var="accepted" value="false" />
