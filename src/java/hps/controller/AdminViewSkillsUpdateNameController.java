@@ -6,6 +6,7 @@
 package hps.controller;
 
 import hps.skills.SkillsDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminViewSkillsUpdateNameController extends HttpServlet {
 
     private static final String VIEW_SKILL_CONTROLLER = "AdminViewSkillsList";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,38 +47,48 @@ public class AdminViewSkillsUpdateNameController extends HttpServlet {
         String url = VIEW_SKILL_CONTROLLER;
 
         try {
-            String skillID = request.getParameter("skillID");
-            String skillName = request.getParameter("skillName");
-            String currentSkillName = request.getParameter("currentSkillName");
-
-            SkillsDAO skillsDAO = new SkillsDAO();
-
-            if (!skillName.equals(currentSkillName)) {
-                if (skillName.trim().isEmpty()) {
-                    request.setAttribute("SKILL_UPDATE_NAME_ERROR",
-                            "The updated Skill's Name requires input more than 1 characters. Please try with another name...");
-                    url = VIEW_SKILL_CONTROLLER;
-                } else if (skillsDAO.checkSkillNameExisted(skillName)) {
-                    request.setAttribute("SKILL_UPDATE_NAME_ERROR",
-                            "The updated Skill's Name is existed! Please try with another name...");
-                    url = VIEW_SKILL_CONTROLLER;
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
                 } else {
-                    boolean result = skillsDAO.updateSkill(skillID, skillName);
-                    if (result) {
-                        request.setAttribute("SKILL_UPDATE_NAME_SUCCESS",
-                                "Update Skill's Name successfully!!");
-                        url = VIEW_SKILL_CONTROLLER;
+                    String skillID = request.getParameter("skillID");
+                    String skillName = request.getParameter("skillName");
+                    String currentSkillName = request.getParameter("currentSkillName");
+
+                    SkillsDAO skillsDAO = new SkillsDAO();
+
+                    if (!skillName.equals(currentSkillName)) {
+                        if (skillName.trim().isEmpty()) {
+                            request.setAttribute("SKILL_UPDATE_NAME_ERROR",
+                                    "The updated Skill's Name requires input more than 1 characters. Please try with another name...");
+                            url = VIEW_SKILL_CONTROLLER;
+                        } else if (skillsDAO.checkSkillNameExisted(skillName)) {
+                            request.setAttribute("SKILL_UPDATE_NAME_ERROR",
+                                    "The updated Skill's Name is existed! Please try with another name...");
+                            url = VIEW_SKILL_CONTROLLER;
+                        } else {
+                            boolean result = skillsDAO.updateSkill(skillID, skillName);
+                            if (result) {
+                                request.setAttribute("SKILL_UPDATE_NAME_SUCCESS",
+                                        "Update Skill's Name successfully!!");
+                                url = VIEW_SKILL_CONTROLLER;
+                            }
+                        }
                     }
                 }
             }
 
         } catch (SQLException ex) {
             log("Error at AdminViewSkillsUpdateNameController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured while we are trying connect to the database! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } catch (NamingException ex) {
             log("Error at AdminViewSkillsUpdateNameController: " + ex.getMessage());
-            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("SKILL_UPDATE_NAME_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_SKILL_CONTROLLER;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

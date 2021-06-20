@@ -56,7 +56,6 @@ public class UpdateProfileServlet extends HttpServlet {
         String url = PROFILE_PAGE;
         try {
             String userID = request.getParameter("txtUserID");
-
             String username = request.getParameter("txtUsername");
             String password = request.getParameter("txtPassword");
             String fullname = request.getParameter("txtFullname");
@@ -69,6 +68,7 @@ public class UpdateProfileServlet extends HttpServlet {
             String fileName = request.getParameter("txtUserImg");
             UsersDAO dao = new UsersDAO();
             boolean foundErr = false;
+            boolean result = false;
             UserUpdateError err = new UserUpdateError();
 
             request.setAttribute("ERR", err);
@@ -105,6 +105,8 @@ public class UpdateProfileServlet extends HttpServlet {
 
             //Update if the parameters are not null
             if (!foundErr) {
+                //Convert to .jpg (hard-coded in the jsp and html pages)
+                fileName = userID + ".jpg";
                 Date dob_date = Date.valueOf(dob);
                 if (filePart.getSize() != 0) {
                     //Retrive the uploading directory
@@ -112,8 +114,7 @@ public class UpdateProfileServlet extends HttpServlet {
                     File uploadDir = (File) ctx.getAttribute("DIR_FILE");
                     //Retrieve the file sent in parts from the jsp page
                     //The new avatar's ID, set automatically
-                    //Convert to .png (hard-coded in the jsp and html pages)
-                    fileName = userID + ".jpg";
+
                     //Write file to the predetermined server path
                     /*Set up a new File object to represent the uploading directory 
                     (A File object can represent both files or pathnames)*/
@@ -144,8 +145,8 @@ public class UpdateProfileServlet extends HttpServlet {
                         }
                     }
                 }
-                boolean result = dao.updateProfile(userID, username, password,
-                        fullname, phone, address, dob_date, sex, fileName);
+                result = dao.updateProfile(userID, username, password,
+                        fullname, phone, address, dob_date, sex, userID + ".jpg");
                 if (result) {
                     request.setAttribute("UPDATE_STATUS", "Profile Updated");
                 }

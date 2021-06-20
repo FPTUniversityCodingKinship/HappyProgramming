@@ -14,6 +14,13 @@
         <title>View Request Detail</title>
     </head>
     <body>
+        <c:set var="user" value="${sessionScope.CURRENT_USER.userID}" scope="page"/>
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'AD')}">
+            <c:redirect url="/" />
+        </c:if>
         <h1>View Detail of a Request</h1>
         <c:set var="error" value="${VIEW_REQUEST_ERROR}"/>
         <c:if test="${not empty error}">

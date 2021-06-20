@@ -18,6 +18,14 @@
         <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
         <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
                scope="page"/>
+        
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'MT')}">
+            <c:redirect url="/" />
+        </c:if>
+        
         <header>
             <nav>
                 <form action="Login">
@@ -44,9 +52,8 @@
                 ${error}
                 </font>
             </c:if>
-
-
         </c:if>
+                
         <c:set var="success" value="${requestScope.UPDATE_CV_SUCCESS}" />
         <c:if test="${not empty success}">
             <font color="green">
@@ -77,7 +84,7 @@
                    <label for="dob">Date of Birth (dd/mm/yyyy): </label>
                    <input type="date" name="dob" id="dob" 
                           value="<c:if test="${not empty param.dob}">${param.dob}</c:if><c:if test="${empty param.dob}">${mentor.dob}</c:if>" />
-                   <!--            <div class="error" id="errDob"></div>-->
+                   <div class="error" id="errDob"></div>
                    <br/>
             <c:if test="${not empty error}">
                 <c:if test="${fn:contains(error, 'Date') }">
@@ -156,6 +163,20 @@
             <c:set var="skillsList" value="${skillsDAO.loadSkills()}" />
             <c:set var="countSkill" scope="page" value="" />
             <div id="skills">
+                <div style="display: none" id="skill0">
+                    <select name="skill0" data-filled="skillsList">
+                        <c:forEach items="${skillsList}" var="skillItem" varStatus="iCount">
+                            <option value="${skillItem.skillID}" <c:if test="${skillItem.skillID eq mentorSkill.skillID}">selected=""</c:if>>${skillItem.skillName}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="years0">Years Of Experience: </label>
+                    <input type="number" min="0" max="50" name="years0" id="years0" value="1" />
+                    <label for="rate0">Level of this skill (1-5): </label>
+                    <input type="number" min="0" max="5" name="rate0" id="rate0" value="1" />
+                    <input type="button" style="display: none" id='btnRemoveSkill0' onclick="removeSkill(0)" value="Remove Skills" /><br/>
+                    <div class="error" id="errSkillYears0"></div>
+                    <div class="error" id="errSkillRate0"></div>
+                </div>
                 <c:forEach items="${mentorSkills}" var="mentorSkill" varStatus="count">
                     <c:set var="countSkill" value="${count.count}" />
                     <div id="skill${count.count}">
@@ -167,19 +188,20 @@
                         <label for="years${count.count}">Years Of Experience: </label>
                         <input type="number" min="0" name="years${count.count}" id="years${count.count}" value="${mentorSkill.yearsExperience}" />
                         <label for="rate${count.count}">Level of this skill (1-5): </label>
-                        <input type="number" min="1" max="5" name="rate${count.count}" id="rate${count.count}" value="${mentorSkill.rate}" />
-                        <div class="error" id="errSkill${count.count}"></div>
+                        <input type="number" min="1" max="5" name="rate${count.count}" id="rate${count.count}" value="${mentorSkill.rate}" /> 
+                        <input type="button" <c:if test="${count.count eq 1}">style="display: none"</c:if>id='btnRemoveSkill${count.count}' onclick="removeSkill(${count.count})" value="Remove Skills" /><br/>
+                        <div class="error" id="errSkillYears${count.count}"></div>
+                        <div class="error" id="errSkillRate${count.count}"></div>
                     </div>
-                    <br/>
                 </c:forEach>
 
                 <br/><input type="button" id="btnAddSkill" value="Add more Skill"></input>
             </div>
-            <input type="hidden" name="numSkills" id="numSkills" value="${countSkill}" />
-            <br/>
-            <!--Service Description-->
-            <label for="serDescription">Service Description: </label>
-            <textarea class="editor" name="serDescription" id="serDescription" rows="5" cols="20" placeholder="Description about the service you provide"><c:if test="${not empty param.serDescription}">${param.serDescription}</c:if><c:if test="${empty param.serDescription}">${mentorDetails.serviceDescription}</c:if></textarea>
+            <input type="hidden" name="numSkills" id="numSkills" value="<c:if test="${countSkill >= 1}">${countSkill}</c:if><c:if test="${countSkill < 1}">0</c:if>" />
+                <br/>
+                <!--Service Description-->
+                <label for="serDescription">Service Description: </label>
+                    <textarea class="editor" name="serDescription" id="serDescription" rows="5" cols="20" placeholder="Description about the service you provide"><c:if test="${not empty param.serDescription}">${param.serDescription}</c:if><c:if test="${empty param.serDescription}">${mentorDetails.serviceDescription}</c:if></textarea>
                 <div class="error" id="errSerDescription"></div>
                 <br/>
                 <!--Achievement Description-->
@@ -188,7 +210,7 @@
             <div class="error" id="errAchDescription"></div>
             <br/>
             <!--button-->
-            <input id="btnCreate" type="button" value="OK" name="btnAction" />
+            <input id="btnUpdate" type="button" value="OK" name="btnAction" />
             <input type="reset" value="Reset" />
 
             <div class="noti" id="noti"></div>

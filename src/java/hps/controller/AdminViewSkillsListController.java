@@ -7,6 +7,7 @@ package hps.controller;
 
 import hps.skills.SkillsDAO;
 import hps.skills.SkillsDTO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminViewSkillsListController extends HttpServlet {
 
     private static final String VIEW_PAGE = "AdminViewSkillsListPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,23 +48,31 @@ public class AdminViewSkillsListController extends HttpServlet {
         String url = VIEW_PAGE;
 
         try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
+                } else {
 
-            SkillsDAO skillsDAO = new SkillsDAO();
-            List<SkillsDTO> skillsList = skillsDAO.loadAllSkills();
-            
-            request.setAttribute("ALL_SKILLS_LIST", skillsList);
-            url = VIEW_PAGE;
-            
+                    SkillsDAO skillsDAO = new SkillsDAO();
+                    List<SkillsDTO> skillsList = skillsDAO.loadAllSkills();
+
+                    request.setAttribute("ALL_SKILLS_LIST", skillsList);
+                    url = VIEW_PAGE;
+                }
+            }
         } catch (SQLException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured while we are trying to connect to the database! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("VIEW_SKILLS_LIST_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
-        }
-        finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             out.close();

@@ -13,8 +13,10 @@
         <title>Login Page</title>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="401908117605-vofu7m8maarbv0c6remdnf8n1r568060.apps.googleusercontent.com">
+        <link rel="stylesheet" href="css/general.css">
     </head>
-    <body>
+    <body style="background-image: linear-gradient(90deg, #0869B2 0%, #0869B2 33%, #EA6E26 33%, #EA6E26 66%, #0EB34A 66%, #0EB34A 100%);
+          ">
         <h1>LOG IN HERE!!!</h1>
         <!-- Google Login -->
         <div class="g-signin2" data-onsuccess="onSignIn"></div>

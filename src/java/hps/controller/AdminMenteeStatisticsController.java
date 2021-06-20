@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,8 +29,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AdminMenteeStatisticsController", urlPatterns = {"/AdminMenteeStatisticsController"})
 public class AdminMenteeStatisticsController extends HttpServlet {
-    
+
     private static final String VIEW_PAGE = "AdminMenteeStatisticsPage";
+    private static final String LOGIN_PAGE = "/";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,41 +45,50 @@ public class AdminMenteeStatisticsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         PrintWriter out = response.getWriter();
-        
+
         String url = VIEW_PAGE;
-        
+
         List<MenteeStatisticsDTO> statisticsData = new ArrayList<>();
-        
+
         try {
-            //  Name of Mentee, accountname, Nummber of Mentor, Total hours of all request, Total of skills of all requests.
-            // Mentee
-            UsersDAO usersDAO = new UsersDAO();
-            List<UsersDTO> menteeList = usersDAO.getMenteeList();
-            
-            RequestsDAO requestsDAO = new RequestsDAO();
-            
-            for (UsersDTO mentee : menteeList) {
-                String menteeName = mentee.getFullname();
-                String username = mentee.getUsername();
-                String numMentor = requestsDAO.getTotalMentor(mentee.getUserID());
-                String requestTotalHour = requestsDAO.getRequestsTotalHours(mentee.getUserID());
-                int totalSkills = requestsDAO.getTotalSkills(mentee.getUserID());
-                MenteeStatisticsDTO statisticsDTO = new MenteeStatisticsDTO(menteeName, username, numMentor, requestTotalHour, totalSkills);
-                statisticsData.add(statisticsDTO);
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                url = LOGIN_PAGE;
+            } else {
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                    url = LOGIN_PAGE;
+                } else {
+                    //  Name of Mentee, accountname, Nummber of Mentor, Total hours of all request, Total of skills of all requests.
+                    // Mentee
+                    UsersDAO usersDAO = new UsersDAO();
+                    List<UsersDTO> menteeList = usersDAO.getMenteeList();
+
+                    RequestsDAO requestsDAO = new RequestsDAO();
+
+                    for (UsersDTO mentee : menteeList) {
+                        String menteeName = mentee.getFullname();
+                        String username = mentee.getUsername();
+                        String numMentor = requestsDAO.getTotalMentor(mentee.getUserID());
+                        String requestTotalHour = requestsDAO.getRequestsTotalHours(mentee.getUserID());
+                        int totalSkills = requestsDAO.getTotalSkills(mentee.getUserID());
+                        MenteeStatisticsDTO statisticsDTO = new MenteeStatisticsDTO(menteeName, username, numMentor, requestTotalHour, totalSkills);
+                        statisticsData.add(statisticsDTO);
+                    }
+
+                    request.setAttribute("MENTEE_STATISTICS_DATA", statisticsData);
+                    url = VIEW_PAGE;
+                }
             }
-            
-            request.setAttribute("MENTEE_STATISTICS_DATA", statisticsData);
-            url = VIEW_PAGE;
-            
         } catch (SQLException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("MENTEE_STATISTICS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("MENTEE_STATISTICS_ERROR", "An error has occured while we are trying to connect to database! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } catch (NamingException ex) {
             log("Error at AdminMenteeStatisticsController: " + ex.getMessage());
-            request.setAttribute("MENTEE_STATISTICS_ERROR", "An error has occured! Please contact the web owner for more details!!");
+            request.setAttribute("MENTEE_STATISTICS_ERROR", "A system error has occured! Please contact the web owner for more details!!");
             url = VIEW_PAGE;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
