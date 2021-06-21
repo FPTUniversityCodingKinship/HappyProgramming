@@ -33,6 +33,7 @@ a:focus {
     position: absolute;
     top: 0;
     right: 0;
+    margin-top: 50px;
 }
 
 #sidebar {
@@ -122,5 +123,19 @@ a.download {
 a.article,
 a.article:hover {
     background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+
+/* Other menu */
+
+#topMenu {
+    left: 250px;
+}
+
+#topMenu > div > ul > li > a.btn-outline-danger {
+    color: #dc3545 !important;
+}
+#topMenu > div > ul > li > a.btn-outline-danger:hover {
     color: #fff !important;
 }
