@@ -55,9 +55,5 @@
         <li class="<c:if test="${iPage eq 'requestStats'}">${"active"}</c:if>">
             <a href="RequestsStatistics">Your Requests Statistics</a>
         </li>
-        
-        <li>
-            <a href="Logout">LOG OUT</a>
-        </li>
     </ul>
 </nav>
