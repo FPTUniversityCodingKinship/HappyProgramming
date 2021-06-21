@@ -21,9 +21,6 @@
         </div>-->
     <div class="sidebar-header">
         <h3>Happy Programming</h3>
-        <p class="mt-3">
-            Welcome, ${mentor.fullname}
-        </p>
     </div>
 
     <ul class="list-unstyled components"> 
