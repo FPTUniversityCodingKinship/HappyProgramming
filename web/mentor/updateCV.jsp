@@ -41,6 +41,7 @@
             </header>
             <main>
                 <div id="content">
+                    <jsp:include flush="true" page="/topMenu.jsp"/>
                     <h1>Update your CV</h1>
                     <div class="row">
                         <div class="col-8">

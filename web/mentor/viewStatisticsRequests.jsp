@@ -39,6 +39,7 @@
             </header>
             <main>
                 <div id="content">
+                    <jsp:include flush="true" page="/topMenu.jsp"/>
                     <h1>View Statistics about all of the Requests that belong to you</h1>
                     <c:set var="error" value="${STATISTICS_ERROR}" />
                     <c:if test="${not empty error}">

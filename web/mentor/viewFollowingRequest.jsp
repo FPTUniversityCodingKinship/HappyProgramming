@@ -41,6 +41,7 @@
 
             <main>  
                 <div id="content">
+                    <jsp:include flush="true" page="/topMenu.jsp"/>
                     <h1>Requests from the Mentees following you</h1>
                     <div class="row">
                         <div class="col-8">
