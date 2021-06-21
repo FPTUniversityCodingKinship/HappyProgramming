@@ -338,8 +338,8 @@
         <script src = "js/popper/popper.min.js"></script>
         <script src = "js/bootstrap/bootstrap.min.js"></script>
         <script src="https://cdn.tiny.cloud/1/uvrwnlarfgzt2bb56y6vdl6cb5mhfr6h5sl6tqnucb5yuvvu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-        <script src="mentor/js/updateCV.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <script src="js/menu.js"></script>
+        <script src="mentor/js/updateCV.js"></script>
     </body>
 </html>

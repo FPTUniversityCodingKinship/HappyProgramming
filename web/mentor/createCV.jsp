@@ -266,8 +266,12 @@
             </main>
         </div>
         <!--Script-->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src = "js/jquery/jquery-3.6.0.min.js"></script>
+        <script src = "js/popper/popper.min.js"></script>
+        <script src = "js/bootstrap/bootstrap.min.js"></script>
         <script src="https://cdn.tiny.cloud/1/uvrwnlarfgzt2bb56y6vdl6cb5mhfr6h5sl6tqnucb5yuvvu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="js/menu.js"></script>
         <script src="mentor/js/createCV.js"></script>
     </body>
 </html>
