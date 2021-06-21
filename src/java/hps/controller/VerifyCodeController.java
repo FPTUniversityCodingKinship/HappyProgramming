@@ -71,7 +71,7 @@ public class VerifyCodeController extends HttpServlet {
                         }
                         else {
                             flag = true;
-                            String wrongCode = "You have entered a wrong verify code!";
+                            String wrongCode = "You have entered a wrong verification code!";
                             request.setAttribute("WRONG_VERIFY", wrongCode);
                             break;
                         }
