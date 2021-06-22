@@ -5,6 +5,7 @@
  */
 var skillsList;
 var numSkill = 1;
+var _numSkill = 1;
 
 function removeSkill(skillId) {
     var selector = "div[id='skill" + skillId + "']";
@@ -14,8 +15,14 @@ function removeSkill(skillId) {
 
 function displayError(id, name, min, max) {
     var selector = ".error[id='err" + id + "']";
-    var htmlStr = '<font color="red">' + name + ' requires input from ' + min + ' to ' + max + ' characters!!</font>';
-    $(selector).html(htmlStr);
+    var htmlStr = name + ' requires input from ' + min + ' to ' + max + ((name.includes("years") || name.includes("rate")) ? '' : ' characters!!');
+    $(selector).removeClass("d-none").html(htmlStr);
+}
+
+function scrollTo(selector, element) {
+    $(selector).animate({
+        scrollTop: element.offset().top
+    }, 1000);
 }
 
 /*
@@ -72,13 +79,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     $("#btnAddSkill").click(function () {
-        var idDivSkill = "skill" + numSkill;
+        var idDivSkill = "skill0";
         var selector = "#" + idDivSkill;
-        var nextNumSkill = numSkill + 1;
+        var nextNumSkill = _numSkill + 1;
         var nextIdDivSkill = "skill" + nextNumSkill;
 //        console.log(selector);
 //        console.log(nextIdDivSkill);
-        $(selector).clone().insertAfter(selector).attr("id", nextIdDivSkill);
+        $(selector).clone().insertBefore("#btnAddSkill").attr("id", nextIdDivSkill);
+        
+        selector = "#" + nextIdDivSkill;
+        $(selector).last().removeClass("d-none");
+        
 //        numSkill++;
 //        console.log(numSkill);
         $("#numSkills").val(nextNumSkill);
@@ -89,41 +100,42 @@ document.addEventListener("DOMContentLoaded", function () {
         var nextErrorRateId = "errSkillRate" + nextNumSkill;
         var nextBtnId = "btnRemoveSkill" + nextNumSkill;
 
-        selector = "select[name='skill" + numSkill + "']";
+        selector = "select[name='skill" + 0 + "']";
         $(selector).last().attr("name", nextIdDivSkill);
 
-        selector = "label[for='years" + numSkill + "']";
+        selector = "label[for='years" + 0 + "']";
         $(selector).last().attr("for", nextYearId);
 
-        selector = "input[name='years" + numSkill + "']";
+        selector = "input[name='years" + 0 + "']";
         $(selector).last().attr("name", nextYearId);
 
-        selector = "input[id='years" + numSkill + "']";
+        selector = "input[id='years" + 0 + "']";
         $(selector).last().attr("id", nextYearId);
 
-        selector = "label[for='rate" + numSkill + "']";
+        selector = "label[for='rate" + 0 + "']";
         $(selector).last().attr("for", nextRateId);
 
-        selector = "input[name='rate" + numSkill + "']";
+        selector = "input[name='rate" + 0 + "']";
         $(selector).last().attr("name", nextRateId);
 
-        selector = "input[id='rate" + numSkill + "']";
+        selector = "input[id='rate" + 0 + "']";
         $(selector).last().attr("id", nextRateId);
 
 
-        selector = "input[id='btnRemoveSkill" + numSkill + "']";
+        selector = "input[id='btnRemoveSkill" + 0 + "']";
         $(selector).last().attr("id", nextBtnId);
         selector = "input[id='btnRemoveSkill" + nextNumSkill + "']";
         var event = "removeSkill(" + nextNumSkill + ")";
-        $(selector).last().css("display", "inline").attr("onclick", event);
+        $(selector).last().removeClass("d-none").attr("onclick", event);
 
-        selector = "div[id='errSkillYears" + numSkill + "']";
+        selector = "div[id='errSkillYears" + 0 + "']";
         $(selector).last().attr("id", nextErrorYearsId);
 
-        selector = "div[id='errSkillRate" + numSkill + "']";
+        selector = "div[id='errSkillRate" + 0 + "']";
         $(selector).last().attr("id", nextErrorRateId);
 
-        numSkill = nextNumSkill;
+        numSkill++;
+        _numSkill = nextNumSkill;
     });
 
 
@@ -132,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Clear all Error before
         $(".error").html("");
+        $(".error").addClass("d-none");
 
         // Get Parameter
         var userID = $("input[name='userID']").val();
@@ -185,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var dob, dobDate;
         if (!dobInput || dobInput.length === 0) {
             isError = true;
-            $(".error[id=errDob]").html("<font color='red'>Date of birth is in a wrong format! Correct format is dd/mm/yyyy</font>");
+            $(".error[id=errDob]").removeClass("d-none").html("Date of birth is in a wrong format! Correct format is dd/mm/yyyy");
         } else {
 
             dobDate = new Date(dobInput);
@@ -201,11 +214,11 @@ document.addEventListener("DOMContentLoaded", function () {
             isError = true;
         }
         if (!validateFbURL(facebook)) {
-            $(".error[id='errFacebook']").html('<font color="red">Please enter a valid Facebook Profile URL!!!</font>');
+            $(".error[id='errFacebook']").removeClass("d-none").html('Please enter a valid Facebook Profile URL!!!');
             isError = true;
         }
         if (!validateGithubURL(github)) {
-            $(".error[id='errGithub']").html('<font color="red">Please enter a valid Github Profile URL!!!</font>');
+            $(".error[id='errGithub']").removeClass("d-none").html('Please enter a valid Github Profile URL!!!');
             isError = true;
         }
         if (language.length > 255 || language.length < 2) {
@@ -247,7 +260,9 @@ document.addEventListener("DOMContentLoaded", function () {
 //        console.log(skillsList);
 //        console.log(isError);
         if (!isError) {
-            $("#noti").html("Your CV is being created... Please wait for a moment")
+            $("#noti").removeClass("d-none").addClass('alert-info').html("Your CV is being created... Please wait for a moment");
+            var element = $('#noti');
+            scrollTo($('html, body'), element);
 
             // AJAX to Servlet
             $.ajax({
@@ -286,9 +301,14 @@ document.addEventListener("DOMContentLoaded", function () {
 //                                console.log(strData);
 //                                console.log(strData.success);
                                 if (strData.success) {
-                                    $("#noti").html("<font color='green'>Your CV has been created successfully!!</font>");
+                                    $("#noti").removeClass("d-none").addClass('alert-success').html("Your CV has been created successfully!! " + 
+                                            "<a class='btn btn-outline-primary' href='UpdateCVPage'>Click here</a> to update your CV.");
+                                    var element = $('#noti');
+                                    scrollTo($('html, body'), element);
                                 } else {
-                                    $("#noti").html("<font color='red'>" + strData.message + "</font>");
+                                    $("#noti").removeClass("d-none").addClass('alert-danger').html(strData.message);
+                                    var element = $('#noti');
+                                    scrollTo($('html, body'), element);
                                 }
                             },
                             error: function (data) {
@@ -296,13 +316,18 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     } else {
-                        $("#noti").html("<font color='red'>" + strData.message + "</font>");
+                        $("#noti").removeClass("d-none").addClass('alert-danger').html(strData.message);
+                        var element = $('#noti');
+                        scrollTo($('html, body'), element);
                     }
                 },
                 error: function (data) {
                     console.log(data);
                 }
             });
+        } else {
+            var element = $('.error').not('d-none').first();
+            scrollTo($('html, body'), element);
         }
         isError = false;
     });
