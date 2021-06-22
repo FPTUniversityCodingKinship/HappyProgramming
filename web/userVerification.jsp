@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Email Verify Page</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
         <c:set var="successVerify" value="${requestScope.SUCCESS_VERIFY}"/>
@@ -19,13 +20,13 @@
             <c:if test="${empty requestScope.WRONG_VERIFY}">
                 <span>We already send a verification  code to your email.</span>
             </c:if>
+            <c:if test="${not empty requestScope.WRONG_VERIFY}">
+                ${requestScope.WRONG_VERIFY}
+            </c:if>
             <form action="VerifyCode" method="post">
                 <input type="text" name="authCode" >
                 <input type="submit" value="verify">
             </form>
-            <c:if test="${not empty requestScope.WRONG_VERIFY}">
-                ${requestScope.WRONG_VERIFY}
-            </c:if>
         </c:if>
         <c:if test="${not empty successVerify}">
             <h1>

@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SignUpController", urlPatterns = {"/SignUpController"})
 public class SignUpController extends HttpServlet {
     private final String SIGNUP_INVALID_PAGE = "SignUpPage";
-    private final String SIGNUP_SUCCESS_PAGE = "LoginPage";
+    private final String SIGNUP_SUCCESS_PAGE = "Login";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,7 +64,7 @@ public class SignUpController extends HttpServlet {
             errors = Validation.signUpValidate(email, username, password,
                                     confirm, fullname, dob, address, phone);
             //if any error found.
-            if (errors == null) {
+            if (errors != null) {
                 request.setAttribute("CREATE_ERROR", errors);
             } else {
                 //2. call DAO if no error found.

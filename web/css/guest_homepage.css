@@ -1,0 +1,38 @@
+/* 
+    Created on : Jun 20, 2021, 10:46:10 PM
+    Author     : Admin
+*/
+
+a {
+    font-size: 64px;
+    text-decoration: none;
+    color: #fff;
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: .2s;
+}
+.header {
+    width: 50%;
+    height: 120px;
+    float: left;
+    margin-left: 25%;
+    margin-top: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #aaa;
+    border-radius: 10px;
+}
+.animated-background {
+    position: absolute;
+    z-index: -1;
+}
+
+/* Animate area */
+
+a:hover {
+    color: rgb(76, 185, 255);
+    filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.67));
+    margin-top: -4px;
+    transition: .5s;
+}

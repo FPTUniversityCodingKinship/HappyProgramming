@@ -1,0 +1,35 @@
+/* 
+    Created on : Jun 22, 2021, 5:56:03 PM
+    Author     : Admin
+*/
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1d1e22;
+}
+
+#form {
+    width: 60%;
+    float: left;
+    height: 60%;
+    position: absolute;
+    z-index: 0;
+    background-color: aquamarine;
+    filter: opacity(0.4) drop-shadow(0 4px 4px #000);
+    border-radius: 10px;
+    left: 20%;
+    top: 20%;
+    text-align: center;
+}
+
+canvas {
+    position: absolute;
+    z-index: -1;
+    display: block;
+}
+
+#stats {
+    left: auto !important;
+    right: 0;
+}
