@@ -730,4 +730,54 @@ public class UsersDAO implements Serializable {
         }
         return menteeList;
     }
+    public List<UsersDTO> getMentorList() 
+            throws SQLException, NamingException {
+        List<UsersDTO> mentorList = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT userID, username, email, password, fullname, "
+                        + "phone, address, dob, sex, image, status, emailStatus "
+                        + "FROM users "
+                        + "WHERE userID LIKE ? ";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "MT%");
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    UsersDTO mentor = new UsersDTO(
+                            rs.getString("userID"), 
+                            rs.getString("username"),
+                            rs.getString("email"), 
+                            rs.getString("password"),
+                            rs.getString("fullname"), 
+                            rs.getString("phone"),
+                            rs.getString("address"), 
+                            rs.getDate("dob"),
+                            rs.getString("sex"), 
+                            rs.getString("image"),
+                            rs.getBoolean("status"),
+                            rs.getBoolean("emailStatus")
+                    );
+                    mentorList.add(mentor);
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return mentorList;
+    }
 }
