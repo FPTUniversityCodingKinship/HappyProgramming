@@ -55,7 +55,12 @@ public class VerifyCodeController extends HttpServlet {
                         if (code.equals(entry.getCode())) {
                             // Call DAO
                             UsersDAO dao = new UsersDAO();
-                            user = dao.verifyUser(user.getEmail());
+                            if (user.isStatus())
+                                // this pass condition  for signing in but inactive
+                                user = dao.verifyUser(user.getEmail());
+                            else
+                                // this pass condition  for signing up
+                                user = dao.verifyUserSignUp(user.getEmail());
                             if (user != null)
                                 if (user.isEmailStatus()) {
                                     //set the url
@@ -76,15 +81,16 @@ public class VerifyCodeController extends HttpServlet {
                             break;
                         }
                     }
+                    else
+                        msg = "No email found in verify list on system.";
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
-        catch (NamingException ex) {
-            Logger.getLogger(VerifyCodeController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(VerifyCodeController.class.getName()).log(Level.SEVERE, null, ex);
+        catch (NamingException | SQLException ex) {
+            Logger.getLogger(VerifyCodeController.class.getName())
+                        .log(Level.SEVERE, null, ex);
         }
         finally {
             System.out.println("[VerifyCode] " + msg);

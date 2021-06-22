@@ -29,8 +29,8 @@ import javax.servlet.ServletContextListener;
  */
 public class ContextListener implements ServletContextListener {
 
-    private final String SITE_MAP = "/MAPPING/siteMap.map";
-    private final String VERIFY_LIST = "/MAPPING/verify.csv";
+    private final String SITE_MAP_PATH = "/MAPPING/siteMap.map";
+    private final String VERIFY_LIST_PATH = "/MAPPING/verify.csv";
 
     private static List<VerifyDTO> VerifyList;
 
@@ -153,9 +153,9 @@ public class ContextListener implements ServletContextListener {
 
         try {
             if (context != null) {
-                filepathMap = context.getRealPath(SITE_MAP);
+                filepathMap = context.getRealPath(SITE_MAP_PATH);
                 siteMap = getSiteMap(filepathMap);
-                filepathMV = context.getRealPath(VERIFY_LIST);
+                filepathMV = context.getRealPath(VERIFY_LIST_PATH);
                 getVerifyList(filepathMV);
 
                 // add map of sites into context
@@ -212,15 +212,28 @@ public class ContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         ServletContext application = sce.getServletContext();
         String filepath;
+        String msg = "";
 
         try {
             if (application != null) {
-                filepath = application.getRealPath(SITE_MAP);
-                if (VerifyList != null)
+                filepath = application.getRealPath(SITE_MAP_PATH);
+                VerifyList = (ArrayList) application.getAttribute("VERIFY_LIST");
+                if (VerifyList != null) {
                     setVerifyList(filepath, VerifyList);
+                    msg = "verifyList write successful. Destination file: " 
+                                + filepath;
+                }
+                else
+                    msg = "verifyList write failed. List not found.";
             }
+            else
+                msg = "null application.";
         } catch (IOException ex) {
-            Logger.getLogger(ContextListener.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ContextListener.class.getName())
+                        .log(Level.SEVERE, null, ex);
+        }
+        finally {
+            System.out.println("[ContextListener] " + msg);
         }
     }
 }

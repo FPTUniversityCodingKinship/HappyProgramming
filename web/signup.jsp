@@ -5,14 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Create Account</title>
+        <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
-        <a href=""> Back to Homepage</a>
+        <c:set var="success" value="requestScope.SIGN_UP_SUCCESS"/>
+        <a href="http://localhost:8084/HappyProgramming/"> Back to Homepage</a>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="registerAction" method="POST">

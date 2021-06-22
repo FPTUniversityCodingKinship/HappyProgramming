@@ -210,6 +210,34 @@ public class UsersDAO implements Serializable {
         }
         return null;
     }
+    public UsersDTO verifyUserSignUp(String email) 
+                throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE users "
+                            + "SET emailStatus = 1, status = 1 "
+                            + "WHERE email = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                
+                int row = stm.executeUpdate();
+                
+                if (row > 0)
+                    return getUser(email);
+            }
+        }
+        finally {
+            if (stm != null)
+                stm.close();
+            if (con != null)
+                con.close();
+        }
+        return null;
+    }
     
     public UsersDTO getUser(String email) 
                 throws NamingException, SQLException {
