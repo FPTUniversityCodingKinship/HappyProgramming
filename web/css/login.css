@@ -3,5 +3,101 @@
     Author     : Admin
 */
 @charset "UTF-8";
+a {
+    text-decoration: none;
+}
+.frm-login {
+    width: 40%;
+    float: left;
+    height: 660px;
+    margin-left: 25%;
+    margin-top: 120px;
+    background-color: #f0f0f0;
+    border-radius: 2%;
+    filter: drop-shadow(0 2% 1% #000);
+    color: #000;
+}
+.container {
+    width: 100%;
+}
+.separator {
+    width: 100%;
+    float: left;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    opacity: 0.3;
+}
+._line {
+    width: 30%;
+    height: 2px;
+    margin-top: 12px;
+    background-color: #000;
+}
+.separator span {
+    cursor: default;
+    margin: 0 12px;
+    color: #000;
+}
+.g-signin2-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 36px 0;
+}
+h1 {
+    margin-top: 24px;
+    margin-bottom: 36px;
+    text-align: center;
+    cursor: default;
+}
+.form-group {
+    margin-left: 15%;
+}
+.more-thing {
+    width: 100%;
+    float: right;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
 
+/* Animation */
+.form-group .col-sm-10:hover {
+    filter: drop-shadow(0 0 2% #149EF8);
+}
+
+.scale-in-center {
+	-webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+/**
+ * ----------------------------------------
+ * animation scale-in-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
 
