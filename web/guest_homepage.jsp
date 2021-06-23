@@ -27,5 +27,9 @@
             <canvas id="background">Node Garden</canvas>
             <script src="js/animated-background.js"></script>
         </div>
+        <script>
+            var href = window.location.href;
+            var mainURL = href.substring(0, href.indexOf(href.split("/")[4]));
+        </script>
     </body>
 </html>

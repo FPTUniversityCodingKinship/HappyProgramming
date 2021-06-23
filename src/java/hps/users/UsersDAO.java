@@ -27,7 +27,8 @@ public class UsersDAO implements Serializable {
             if (con != null) {
                 //2.Create SQL String.
                 String sql = "Insert Into "
-                        + "users(username, email, password, fullname, status) "
+                        + "users(username, email, password, fullname, phone, "
+                        + "address, dob, sex, image, status, emailStatus) "
                         + "Values( ?, ?, ?, ?)";
 
                 //3. Create Statement and assign Parameter(s) if any.
@@ -38,9 +39,9 @@ public class UsersDAO implements Serializable {
                 stm.setString(4, fullname);
                 stm.setString(5, phone);
                 stm.setString(6, address);
-                stm.setString(7, phone);
-                stm.setString(8, address);
-                stm.setDate(9, dob);
+                stm.setDate(7, dob);
+                stm.setString(8, sex);
+                stm.setString(9, image);
                 stm.setBoolean(10, status);
                 stm.setBoolean(11, emailStatus);
                 //4. Execute Query.
@@ -52,6 +53,8 @@ public class UsersDAO implements Serializable {
                     newUser.setUsername(username);
                     newUser.setEmail(email);
                     newUser.setPassword(password);
+                    newUser.setStatus(status);
+                    newUser.setEmailStatus(emailStatus);
                     return newUser;
                 }
             }
