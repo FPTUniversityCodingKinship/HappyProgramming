@@ -14,10 +14,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-        
+        <link rel="stylesheet" href="css/style.css">
+
+
         <title>Following Requests</title>
     </head>
     <body>
@@ -108,7 +109,7 @@
                                                     <c:if test="${request.status eq 'P'}">
                                                         <td class="align-middle">
                                                             <span class="badge badge-info p-2">Pending</span>
-<!--                                                            <font color="purple">Pending</font>-->
+                                                            <!--                                                            <font color="purple">Pending</font>-->
                                                         </td>
                                                         <td class="align-middle">
                                                             <c:url var="approveURL" value="Approve">
@@ -128,7 +129,7 @@
                                                     <c:if test="${request.status eq 'A'}">
                                                         <td class="align-middle">
                                                             <span class="badge badge-primary p-2">Approved</span>
-<!--                                                            <font color="purple">Approved - Processing</font>-->
+                                                            <!--                                                            <font color="purple">Approved - Processing</font>-->
                                                         </td>
                                                         <td class="align-middle">
                                                             <c:url var="closeURL" value="Close">
@@ -173,9 +174,8 @@
         </div>
 
 
-        <script src = "js/jquery/jquery-3.6.0.min.js"></script>
-        <script src = "js/popper/popper.min.js"></script>
-        <script src = "js/bootstrap/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <script src="js/menu.js"></script>
     </body>
