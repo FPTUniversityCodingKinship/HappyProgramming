@@ -42,8 +42,8 @@
                         <c:set var="mentorList" value="${sessionScope.MENTOR_LIST}"/>
                         <c:set var="professionList" value="${sessionScope.PROFESSION_LIST}"/>
                         <c:set var="followedMentors" value="${sessionScope.FOLLOWED_MENTORS}"/>
-                        <table border="1">
-                            <thead>
+                        <table class='table table-bordered table-hover'>
+                            <thead class='thead-light'>
                                 <tr>
                                     <th>No</th>
                                     <th>Full name</th>
