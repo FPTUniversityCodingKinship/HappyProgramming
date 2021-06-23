@@ -50,8 +50,8 @@
 
                     <c:if test="${not empty requestScope.MENTEE_LIST_REQUEST}">
                         <c:set var="listRequest" value="${requestScope.MENTEE_LIST_REQUEST}"/>
-                        <table border="1">
-                            <thead>
+                        <table class='table table-bordered table-hover'>
+                            <thead class='thead-light'>
                                 <tr>
                                     <th>No</th>
                                     <th>Title</th>
