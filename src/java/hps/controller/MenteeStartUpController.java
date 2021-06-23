@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeStartUpController", urlPatterns = {"/MenteeStartUpController"})
 public class MenteeStartUpController extends HttpServlet {
-private final String MENTEE_HOMEPAGE = "MenteeHomePage";
+private final String MENTEE_HOMEPAGE = "MenteeCreateRequestPage";
 private final String MENTEE_RATE = "MenteeRate";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
