@@ -37,8 +37,10 @@
                 to redirect to see amazing things...
             </p>
             <script>
-                var count = 3;
+                int count = 3;
                 $(document).ready(function(){
+                  var params = window.location.href.split("?")[1];
+                  
                   while (count > 0) {
                       setTimeout(function() {
                           document.getElementById("countdown").innerHTML = count;
@@ -46,8 +48,9 @@
                       },1000);
                   }
                   if (count === 0) {
-                      var path = "http://localhost:8084/HappyProgramming/LoginController";
-                      window.location.href = path + "";
+                      var href = window.location.href;
+                      var mainURL = href.substring(0, href.indexOf(href.split("/")[4]));
+                      window.location.href = mainURL + "LoginController?" + params;
                   }
                 });
             </script>

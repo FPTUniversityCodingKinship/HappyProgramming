@@ -5,15 +5,21 @@
  */
 package hps.controller;
 
-import hps.requests.RequestsDAO;
-import hps.skills.SkillsDAO;
-import hps.skills.SkillsDTO;
+import hps.followers.FollowersDAO;
+import hps.mentorDetails.MentorDetailsDAO;
+import hps.users.UsersDAO;
 import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,10 +33,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "MenteeStartUpController", urlPatterns = {"/MenteeStartUpController"})
-public class MenteeStartUpController extends HttpServlet {
-private final String MENTEE_HOMEPAGE = "MenteeCreateRequestPage";
-private final String MENTEE_RATE = "MenteeRate";
+@WebServlet(name = "MenteeFollowMentorController", urlPatterns = {"/MenteeFollowMentorController"})
+public class MenteeFollowMentorController extends HttpServlet {
+private final String VIEW = "MenteFollowMentorPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,20 +49,31 @@ private final String MENTEE_RATE = "MenteeRate";
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
-        String url = MENTEE_HOMEPAGE;
+        String url = VIEW;
         try{
+            UsersDAO uDAO = new UsersDAO();
+            MentorDetailsDAO mDAO = new MentorDetailsDAO();
+            FollowersDAO fDAO = new FollowersDAO();
+            List<UsersDTO> mentorList = uDAO.getMentorList();
+            Map<String,String> professtionList = new HashMap<>();
+            for(UsersDTO mentor : mentorList){
+                professtionList.put(mentor.getUserID(),
+                    mDAO.getProfession(mentor.getUserID()));
+            }
             HttpSession session = request.getSession();
-            UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            SkillsDAO skillDAO = new SkillsDAO();
-            ArrayList<SkillsDTO> skillList = (ArrayList)skillDAO.loadSkills();
-            session.setAttribute("SKILL_LIST", skillList);
-        }catch (NamingException ex) {
-            log("MenteeStartUpController NamingException: " + ex.getMessage());
+            session.setAttribute("MENTOR_LIST", mentorList);
+            session.setAttribute("PROFESSION_LIST", professtionList);
+            
+            UsersDTO currentUser = (UsersDTO)session.getAttribute("CURRENT_USER");
+            String userID = currentUser.getUserID();
+            List<String> followedMentor = fDAO.getListFollowedMentors(userID);
+            session.setAttribute("FOLLOWED_MENTORS", followedMentor);
+            
         } catch (SQLException ex) {
-            log("MenteeStartUpController SQLException: " + ex.getMessage());
-        }
-        finally{
+            log("MenteeFollowMentorController SQLException: " + ex.getMessage());
+        } catch (NamingException ex) {
+            log("MenteeFollowMentorController NamingException: " + ex.getMessage());
+        }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             if(out != null){
