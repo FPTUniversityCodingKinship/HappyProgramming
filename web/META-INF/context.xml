@@ -2,15 +2,17 @@
 <Context path="/HappyProgramming" allowCasualMultipartParsing="true">
     
     <!-- Local -->
-<!--    <Resource     
+
+    <Resource     
     name="DBContext" auth="Container" type="javax.sql.DataSource"
     driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
     url="jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming;
                 instanceName=SQLExpress2019"
     username="sa" password="123456"
-    />-->
-    <!-- Cloud -->
+    />
     
+    <!-- Cloud -->
+<!--    
     <Resource
         name="DBContext" auth="Container" type="javax.sql.DataSource"
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
@@ -18,13 +20,14 @@
             databaseName=db_a75ca4_happyprogramming;"
         username="db_a75ca4_happyprogramming_admin" password="Hps123456"
     />
-    
-<!--    <Resource
+-->
+<!--    
+    <Resource
         name="DBContext" auth="Container" type="javax.sql.DataSource"
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
         url="jdbc:sqlserver://mssql-35163-0.cloudclusters.net:35200;
             databaseName=HappyProgramming;"
         username="hpsAdmin" password="Happy123456"
-    />-->
-    
+    />
+-->    
 </Context>

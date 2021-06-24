@@ -99,7 +99,7 @@
                     <div class="col-md-10">
                         <div class="checkbox">
                             <label class="col-form-label col-form-label-lg">
-                                <input type="checkbox" name="chkCookie">
+                                <input type="checkbox" name="chkCookie" value="ON">
                                 Remember me
                             </label>
                         </div>
