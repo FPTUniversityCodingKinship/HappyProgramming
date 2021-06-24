@@ -91,11 +91,13 @@ public class LoginController extends HttpServlet {
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
-                    if (remember != null && gmail.isEmpty()) {
+                    if (remember != null && !remember.isEmpty() 
+                                && gmail.isEmpty()) {
                         String key = "HPSWA-" + username;
                         Cookie cookie = new Cookie(key, password);
                         cookie.setMaxAge(60*60*24);
                         response.addCookie(cookie);
+                        session.setAttribute("CURRENT_COOKIE", cookie);
                     }
                     
                     if (user.isEmailStatus()) {

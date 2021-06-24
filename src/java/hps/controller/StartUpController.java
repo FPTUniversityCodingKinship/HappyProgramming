@@ -5,6 +5,7 @@
  */
 package hps.controller;
 
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,30 +42,55 @@ public class StartUpController extends HttpServlet {
         
         Cookie[] cookies = null;
         String msg = "";
+        String username = "";
+        String password = "";
         String url = HOME_PAGE;
         
         try {
-            cookies = request.getCookies();
-            if (cookies != null) {
-                msg = "Cookies file was found. ";
-                String username = "";
-                String password = "";
-                for (Cookie info : cookies) {
-                    String[] key = info.getName().split("-", 2);
-                    if (key[0].equals("HPSWA")) {
-                        username = key[1];
-                        password = info.getValue();
-                    }
-                }
-
-                if (!username.equals("") && !password.equals("")) {
+            // check current session
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                msg = "Session was found. ";
+                UsersDTO user = (UsersDTO) session.getAttribute("CURRENT_USER");
+                // allow multi tabs running if a user found.
+                if (user != null) {
                     msg += "Redirect to [LoginController]. ";
+                    username = user.getUsername();
+                    password = user.getPassword();
                     url = LOGIN_CONTROLLER + "?"
                                 + "txtUsername=" + username + "&"
-                                + "txtPassword=" + password;
-                } else {
-                    msg += "Wrong cookie or logged out. ";
+                                + "txtPassword=" + password + "&";
+                    // find and refresh the cookie if user has check it
+                    Cookie cookie = (Cookie) session.getAttribute("CURRENT_COOKIE");
+                    if (cookie != null)
+                        url += "&chkCookie=ON";
                 }
+            }
+            else {
+                // check cookie if no session has found.
+                cookies = request.getCookies();
+                if (cookies != null) {
+                    msg = "Cookies file was found. ";
+                    for (Cookie info : cookies) {
+                        String[] key = info.getName().split("-", 2);
+                        if (key[0].equals("HPSWA")) {
+                            username = key[1];
+                            password = info.getValue();
+                        }
+                    }
+
+                    if (!username.equals("") && !password.equals("")) {
+                        msg += "Redirect to [LoginController]. ";
+                        url = LOGIN_CONTROLLER + "?"
+                                    + "txtUsername=" + username + "&"
+                                    + "txtPassword=" + password + "&"
+                                    + "chkCookie=ON";
+                    } else {
+                        msg += "Wrong cookie or logged out. ";
+                    }
+                }
+                else
+                    msg = "Cookie found but failed to load. ";
             }
         }
         finally {
