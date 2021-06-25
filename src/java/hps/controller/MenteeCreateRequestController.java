@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeCreateRequestController", urlPatterns = {"/MenteeCreateRequestController"})
 public class MenteeCreateRequestController extends HttpServlet {
-private final String REQUEST_SUCCESS = "MenteeHomePage";
+private final String REQUEST_SUCCESS = "MenteeCreateRequestPage";
 private final String REQUEST_ERROR = "MenteeCreateRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

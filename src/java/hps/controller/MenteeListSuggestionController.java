@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(urlPatterns = {"/MenteeListSuggestionController"})
 public class MenteeListSuggestionController extends HttpServlet {
-private final String SUCCESS_PAGE = "MenteeHomePage";
+private final String SUCCESS_PAGE = "MenteeListSuggestionPage";
 private final String ERROR_PAGE = "MenteeListSuggestionPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

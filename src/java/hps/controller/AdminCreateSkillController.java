@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AdminCreateSkillController", urlPatterns = {"/AdminCreateSkillController"})
 public class AdminCreateSkillController extends HttpServlet {
 private final String ERROR_PAGE = "AdminCreateSkillPage";
-private final String SUCCESS_PAGE = "AdminHomePage";
+private final String SUCCESS_PAGE = "AdminCreateSkillPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
