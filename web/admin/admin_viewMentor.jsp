@@ -39,7 +39,8 @@
             <main>
                 <div id="content">
                     <jsp:include flush="true" page="/topMenu.jsp"/>
-                    <h1>View All Mentor</h1>
+                    <h1>View All Mentor</h1><br/>
+                    <h3>Search Mentor By ID</h3>
                     <form action="AdminViewMentor" method="POST">
                         <input type="text" name="searchValue" value="${param.searchValue}" />
                         <input type="submit" value="Search" /><br/>

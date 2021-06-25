@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "MenteeListRequestController", urlPatterns = {"/MenteeListRequestController"})
 public class MenteeListRequestController extends HttpServlet {
 private final String LOAD_REQUEST_LIST_SUCCESS = "MenteeListRequestPage";
+private final String LOGIN_PAGE = "LoginPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,17 +42,22 @@ private final String LOAD_REQUEST_LIST_SUCCESS = "MenteeListRequestPage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
         String url = "";
         try{
             HttpSession session = request.getSession();
             UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String userID = user.getUserID();
-            RequestsDAO dao = new RequestsDAO();
-            List<RequestsDTO> listRequest = dao.getMenteeListRequest(userID);
-            request.setAttribute("MENTEE_LIST_REQUEST", listRequest);
-            url = LOAD_REQUEST_LIST_SUCCESS;
+            if(user == null){
+                url = LOGIN_PAGE;
+            }else{
+                String userID = user.getUserID();
+                RequestsDAO dao = new RequestsDAO();
+                List<RequestsDTO> listRequest = dao.getMenteeListRequest(userID);
+                request.setAttribute("MENTEE_LIST_REQUEST", listRequest);
+                url = LOAD_REQUEST_LIST_SUCCESS;
+            } 
         } catch (NamingException ex) {
             log("MenteeListRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {

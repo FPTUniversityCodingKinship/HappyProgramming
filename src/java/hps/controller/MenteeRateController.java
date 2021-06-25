@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 public class MenteeRateController extends HttpServlet {
 private final String ERROR_PAGE = "MenteeRatePage";
 private final String SUCCESS_PAGE = "MenteeHomePage";
+private final String LOGIN_PAGE = "LoginPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,54 +46,59 @@ private final String SUCCESS_PAGE = "MenteeHomePage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
         String url = ERROR_PAGE;
         try{
             HttpSession session = request.getSession();
             UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String menteeID = user.getUserID();
-            RequestsDAO reqDAO = new RequestsDAO();
-            Map<String,String> reqInfo = (Map)reqDAO.loadRequestForRating(menteeID);
-            if(!reqInfo.isEmpty()){
-                session.setAttribute("REQ_INFO_FOR_RATING", reqInfo);
-                String requestID = request.getParameter("requestID");
-                String mentorID = request.getParameter("mentorID");
-                if(!requestID.isEmpty()){
-                    ArrayList<String> ratingInfo = new ArrayList<>();
-                    ratingInfo.add(requestID); 
-                    ratingInfo.add(menteeID); 
-                    ratingInfo.add(mentorID);
-                    session.setAttribute("RATING_INFO", ratingInfo);
-                    int rate = Integer.parseInt(request.getParameter("rate").replace(" ", ""));
-                    String comments = request.getParameter("comments");
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    LocalDateTime now = LocalDateTime.now();
-                    String timestamp = dtf.format(now);
-                    boolean isError = false;
-                    CommentsError errors = new CommentsError();
-                    
-                    if(rate < 0 || rate > 5){
-                        isError = true;
-                        errors.setRateOutOfBoundError("Please rate from 1-5 stars");
-                    }
-                    if(comments.length() < 1){
-                        isError = true;
-                        errors.setCommentLengthError("Please leave a comment.");
-                    }
-                    if(isError){
-                        request.setAttribute("RATE_ERROR", errors);
-                    }else{
-                        CommentsDAO cmDAO = new CommentsDAO();
-                        boolean result = cmDAO.addComment(requestID.substring(0,6), 
-                                menteeID, mentorID, rate, comments, timestamp);
-                        if(result){
-                            url = SUCCESS_PAGE;
-                            session.removeAttribute("RATING_INFO");
+            if(user == null){
+                url = LOGIN_PAGE;
+            }else{
+                String menteeID = user.getUserID();
+                RequestsDAO reqDAO = new RequestsDAO();
+                Map<String,String> reqInfo = (Map)reqDAO.loadRequestForRating(menteeID);
+                if(!reqInfo.isEmpty()){
+                    session.setAttribute("REQ_INFO_FOR_RATING", reqInfo);
+                    String requestID = request.getParameter("requestID");
+                    String mentorID = request.getParameter("mentorID");
+                    if(!requestID.isEmpty()){
+                        ArrayList<String> ratingInfo = new ArrayList<>();
+                        ratingInfo.add(requestID); 
+                        ratingInfo.add(menteeID); 
+                        ratingInfo.add(mentorID);
+                        session.setAttribute("RATING_INFO", ratingInfo);
+                        int rate = Integer.parseInt(request.getParameter("rate").replace(" ", ""));
+                        String comments = request.getParameter("comments");
+                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        LocalDateTime now = LocalDateTime.now();
+                        String timestamp = dtf.format(now);
+                        boolean isError = false;
+                        CommentsError errors = new CommentsError();
+
+                        if(rate < 0 || rate > 5){
+                            isError = true;
+                            errors.setRateOutOfBoundError("Please rate from 1-5 stars");
+                        }
+                        if(comments.length() < 1){
+                            isError = true;
+                            errors.setCommentLengthError("Please leave a comment.");
+                        }
+                        if(isError){
+                            request.setAttribute("RATE_ERROR", errors);
+                        }else{
+                            CommentsDAO cmDAO = new CommentsDAO();
+                            boolean result = cmDAO.addComment(requestID.substring(0,6), 
+                                    menteeID, mentorID, rate, comments, timestamp);
+                            if(result){
+                                url = SUCCESS_PAGE;
+                                session.removeAttribute("RATING_INFO");
+                            }
                         }
                     }
                 }
-            }
+            }  
         }catch (NamingException ex) {
             log("MenteeRateController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 public class MenteeLoadRequestController extends HttpServlet {
 private final String UPDATE_PAGE = "MenteeUpdateRequestPage";
 private final String LIST_SUGGESTION_PAGE = "MenteeListSuggestionPage";
+private final String LOGIN_PAGE = "LoginPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,6 +43,7 @@ private final String LIST_SUGGESTION_PAGE = "MenteeListSuggestionPage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
         String url = "";
@@ -49,14 +51,18 @@ private final String LIST_SUGGESTION_PAGE = "MenteeListSuggestionPage";
         try{
             HttpSession session = request.getSession();
             UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String menteeID = user.getUserID();
-            RequestsDAO dao = new RequestsDAO();
-            List<RequestsDTO> listRequest = (List<RequestsDTO>)dao.loadListRequest(menteeID);
-            session.setAttribute("LIST_REQUEST", listRequest);
-            if(action.equals("Update")){
-                url = UPDATE_PAGE;
-            }else if(action.equals("Suggest")){
-                url = LIST_SUGGESTION_PAGE;
+            if(user == null){
+                url = LOGIN_PAGE;
+            }else{
+                String menteeID = user.getUserID();
+                RequestsDAO dao = new RequestsDAO();
+                List<RequestsDTO> listRequest = (List<RequestsDTO>)dao.loadListRequest(menteeID);
+                session.setAttribute("LIST_REQUEST", listRequest);
+                if(action.equals("Update")){
+                    url = UPDATE_PAGE;
+                }else if(action.equals("Suggest")){
+                    url = LIST_SUGGESTION_PAGE;
+                }   
             }
         }catch (NamingException ex) {
             log("MenteeLoadRequestController NamingException: " + ex.getMessage());

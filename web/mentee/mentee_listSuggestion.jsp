@@ -32,7 +32,12 @@
                 </form><br/>
             </nav>
         </header>-->
-        
+        <c:if test="${empty user}">
+            <c:redirect url="LoginPage" />
+        </c:if>
+        <c:if test="${not fn:startsWith(user.userID, 'ME')}">
+            <c:redirect url="/" />
+        </c:if>
         <div class="wrapper">
             <header>
                 <!--Menu-->

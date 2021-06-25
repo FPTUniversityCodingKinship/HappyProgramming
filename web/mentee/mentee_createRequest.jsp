@@ -8,6 +8,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,6 +32,12 @@
                     </form><br/>
                 </nav>
             </header>-->
+            <c:if test="${empty user}">
+                <c:redirect url="LoginPage" />
+            </c:if>
+            <c:if test="${not fn:startsWith(user.userID, 'ME')}">
+                <c:redirect url="/" />
+            </c:if>
             <header>
                 <!--Menu-->
                 <jsp:include flush="true" page="menteeMenu.jsp">

@@ -36,6 +36,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "MenteeFollowMentorController", urlPatterns = {"/MenteeFollowMentorController"})
 public class MenteeFollowMentorController extends HttpServlet {
 private final String VIEW = "MenteFollowMentorPage";
+private final String LOGIN_PAGE = "LoginPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,6 +49,7 @@ private final String VIEW = "MenteFollowMentorPage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String url = VIEW;
         try{
@@ -65,10 +67,13 @@ private final String VIEW = "MenteFollowMentorPage";
             session.setAttribute("PROFESSION_LIST", professtionList);
             
             UsersDTO currentUser = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String userID = currentUser.getUserID();
-            List<String> followedMentor = fDAO.getListFollowedMentors(userID);
-            session.setAttribute("FOLLOWED_MENTORS", followedMentor);
-            
+            if(currentUser == null){
+                url = LOGIN_PAGE;
+            }else{
+                String userID = currentUser.getUserID();
+                List<String> followedMentor = fDAO.getListFollowedMentors(userID);
+                session.setAttribute("FOLLOWED_MENTORS", followedMentor);
+            }
         } catch (SQLException ex) {
             log("MenteeFollowMentorController SQLException: " + ex.getMessage());
         } catch (NamingException ex) {

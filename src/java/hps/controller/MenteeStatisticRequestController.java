@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "MenteeStatisticRequestController", urlPatterns = {"/MenteeStatisticRequestController"})
 public class MenteeStatisticRequestController extends HttpServlet {
 private final String SUCCESS_PAGE = "MenteeStatisticRequestPage";
+private final String LOGIN_PAGE = "LoginPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,24 +40,29 @@ private final String SUCCESS_PAGE = "MenteeStatisticRequestPage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String url = SUCCESS_PAGE;
         
         try{
             HttpSession session = request.getSession();
             UsersDTO user = (UsersDTO)session.getAttribute("CURRENT_USER");
-            String menteeID = user.getUserID();
-            RequestsDAO dao = new RequestsDAO();
-            ArrayList<String> titles = (ArrayList)dao.getRequestTitle(menteeID);
-            if(!titles.isEmpty()){
-                request.setAttribute("REQUESTS_TITLE", titles);
-            }
-            String totalRequest = dao.getTotalNumberOfRequest(menteeID);
-            request.setAttribute("TOTAL_REQUEST", totalRequest);
-            String totalHours = dao.getTotalHoursOfRequest(menteeID);
-            request.setAttribute("TOTAL_HOUR", totalHours);
-            String totalMentor = dao.getTotalMentor(menteeID);
-            request.setAttribute("TOTAL_MENTOR", totalMentor);
+            if(user == null){
+                url = LOGIN_PAGE;
+            }else{
+                String menteeID = user.getUserID();
+                RequestsDAO dao = new RequestsDAO();
+                ArrayList<String> titles = (ArrayList)dao.getRequestTitle(menteeID);
+                if(!titles.isEmpty()){
+                    request.setAttribute("REQUESTS_TITLE", titles);
+                }
+                String totalRequest = dao.getTotalNumberOfRequest(menteeID);
+                request.setAttribute("TOTAL_REQUEST", totalRequest);
+                String totalHours = dao.getTotalHoursOfRequest(menteeID);
+                request.setAttribute("TOTAL_HOUR", totalHours);
+                String totalMentor = dao.getTotalMentor(menteeID);
+                request.setAttribute("TOTAL_MENTOR", totalMentor);
+            } 
         }catch (NamingException ex) {
             log("MenteeStatisticRequestController NamingException: " + ex.getMessage());
         } catch (SQLException ex) {
