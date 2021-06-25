@@ -8,6 +8,11 @@
     font-family: NTR;
     src: url('../css/NTR-Regular.ttf');
 }
+
+@font-face{
+    font-family: requiem;
+    src: url('../css/Requiem.ttf');
+}
 *{
     font-family: NTR;
     top: 0;
