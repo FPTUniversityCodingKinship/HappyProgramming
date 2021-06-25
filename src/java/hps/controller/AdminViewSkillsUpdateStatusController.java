@@ -59,7 +59,7 @@ public class AdminViewSkillsUpdateStatusController extends HttpServlet {
 
                     if (isUpdated) {
                         request.setAttribute("SKILL_UPDATE_STATUS_SUCCESS",
-                                (status ? "Activate" : "Inactivate") + " skill successfully!");
+                                "Skill " + (status ? "activated" : "deactivated"));
                         url = VIEW_SKILL_CONTROLLER;
                     } else {
                         request.setAttribute("SKILL_UPDATE_STATUS_ERROR",
