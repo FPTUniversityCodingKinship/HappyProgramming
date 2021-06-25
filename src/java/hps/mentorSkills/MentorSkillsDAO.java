@@ -1,4 +1,3 @@
-
 package hps.mentorSkills;
 
 import hps.utilities.DBHelper;
@@ -9,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 
 /**
@@ -16,17 +17,17 @@ import javax.naming.NamingException;
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
 public class MentorSkillsDAO implements Serializable {
-    
-    public String generateMentorSkillID() 
+
+    public String generateMentorSkillID()
             throws SQLException, NamingException, NumberFormatException {
         String mentorSkillID = "";
         String lastMentorSkillID = "";
         int digit = 1;
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -41,9 +42,9 @@ public class MentorSkillsDAO implements Serializable {
                 }
 //                digit++;
                 mentorSkillID = "MS" + String.format("%06d", digit);
-                
+
             }
-            
+
         } finally {
             if (stmt != null) {
                 stmt.close();
@@ -54,14 +55,14 @@ public class MentorSkillsDAO implements Serializable {
         }
         return mentorSkillID;
     }
-     
-    public boolean addMentorSkills(MentorSkillsDTO mentorSkill) 
+
+    public boolean addMentorSkills(MentorSkillsDTO mentorSkill)
             throws SQLException, NamingException {
         boolean result = false;
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
-        
+
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -74,7 +75,7 @@ public class MentorSkillsDAO implements Serializable {
                 stmt.setString(3, mentorSkill.getSkillID());
                 stmt.setInt(4, mentorSkill.getYearsExperience());
                 stmt.setInt(5, mentorSkill.getRate());
-                
+
                 result = stmt.executeUpdate() > 0;
             }
         } finally {
@@ -87,14 +88,14 @@ public class MentorSkillsDAO implements Serializable {
         }
         return result;
     }
-    
-    public boolean deleteMentorSkills(String mentorID) 
+
+    public boolean deleteMentorSkills(String mentorID)
             throws NamingException, SQLException {
         boolean result = false;
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
-        
+
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -102,7 +103,7 @@ public class MentorSkillsDAO implements Serializable {
                         + "WHERE mentorID = ?";
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, mentorID);
-                
+
                 result = stmt.executeUpdate() > 0;
             }
         } finally {
@@ -115,73 +116,73 @@ public class MentorSkillsDAO implements Serializable {
         }
         return result;
     }
-    
-    public List<String> getMappingMentorId(String skillsID) 
-            throws NamingException, SQLException{
+
+    public List<String> getMappingMentorId(String skillsID)
+            throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         String[] listSkillsID = skillsID.replace(" ", "").split(",");
         List<String> mentorsID = new ArrayList<>();
-        
-        try{
+
+        try {
             con = DBHelper.makeConnection();
-            if(con != null){
-                for(String skillID : listSkillsID){
+            if (con != null) {
+                for (String skillID : listSkillsID) {
                     String sql = "Select mentorID "
-                        + "From mentorSkills "
-                        + "Where skillID like ?";
+                            + "From mentorSkills "
+                            + "Where skillID like ?";
                     stm = con.prepareStatement(sql);
                     stm.setString(1, skillID);
                     rs = stm.executeQuery();
-                    while(rs.next()){
-                        if(!mentorsID.contains(rs.getString("mentorID"))){
+                    while (rs.next()) {
+                        if (!mentorsID.contains(rs.getString("mentorID"))) {
                             mentorsID.add(rs.getString("mentorID"));
                         }
                     }
                 }
             }
-        }finally{
-            if(rs != null){
+        } finally {
+            if (rs != null) {
                 rs.close();
             }
-            if(stm != null){
+            if (stm != null) {
                 stm.close();
             }
-            if(con != null){
+            if (con != null) {
                 con.close();
             }
         }
         return mentorsID;
     }
-    
-    public List<MentorSkillsDTO> getMentorSkills(String mentorID) 
-            throws NamingException, SQLException{
+
+    public List<MentorSkillsDTO> getMentorSkills(String mentorID)
+            throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         List<MentorSkillsDTO> mentorSkills = new ArrayList<>();
-        
-        try{
+
+        try {
             con = DBHelper.makeConnection();
-            if(con != null){
-               
-                    String sql = "SELECT mentorSkillID, mentorID, skillID, yearsExperience, rate "
+            if (con != null) {
+
+                String sql = "SELECT mentorSkillID, mentorID, skillID, yearsExperience, rate "
                         + "FROM mentorSkills "
                         + "WHERE mentorID = ?";
-                    stm = con.prepareStatement(sql);
-                    stm.setString(1, mentorID);
-                    rs = stm.executeQuery();
-                    while(rs.next()) {
-                        MentorSkillsDTO dto = new MentorSkillsDTO(
-                                rs.getString("mentorSkillID"), 
-                                rs.getString("mentorID"), 
-                                rs.getString("skillID"), 
-                                rs.getInt("yearsExperience"), 
-                                rs.getInt("rate")
-                        );
-                        mentorSkills.add(dto);
-                    }
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mentorID);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    MentorSkillsDTO dto = new MentorSkillsDTO(
+                            rs.getString("mentorSkillID"),
+                            rs.getString("mentorID"),
+                            rs.getString("skillID"),
+                            rs.getInt("yearsExperience"),
+                            rs.getInt("rate")
+                    );
+                    mentorSkills.add(dto);
+                }
             }
         } finally {
             if (rs != null) {
@@ -196,4 +197,6 @@ public class MentorSkillsDAO implements Serializable {
         }
         return mentorSkills;
     }
+
+    
 }
