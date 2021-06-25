@@ -185,16 +185,16 @@
                                                 
                                                 <div class="d-none" id="skill0">
                                                     <div class="form-group row">
-                                                        <div class="col-2">
+                                                        <div class="col-4">
                                                             <select class='form-control' name="skill0" data-filled="skillsList">
 
                                                             </select>
                                                         </div>
-                                                        <label class="col-3 col-form-label float-right" for="years0">Years Of Experience: </label>
+                                                        <label class="col-2 col-form-label float-right" for="years0">Years Of Experience: </label>
                                                         <div class="col-2">
                                                             <input class="form-control" type="number" min="0" name="years0" id="years0" value="1" />
                                                         </div>
-                                                        <label class="col-3 col-form-label" for="rate0">Level of this skill (1-5): </label>
+                                                        <label class="col-2 col-form-label" for="rate0">Level of this skill (1-5): </label>
                                                         <div class="col-2">
                                                             <input class="form-control" type="number" min="1" max="5" name="rate0" id="rate0" value="1" />
                                                         </div>
@@ -206,16 +206,16 @@
                                                 
                                                 <div id="skill1">
                                                     <div class="form-group row">
-                                                        <div class="col-2">
+                                                        <div class="col-4">
                                                             <select class='form-control' name="skill1" data-filled="skillsList">
 
                                                             </select>
                                                         </div>
-                                                        <label class="col-3 col-form-label float-right" for="years1">Years Of Experience: </label>
+                                                        <label class="col-2 col-form-label float-right" for="years1">Years Of Experience: </label>
                                                         <div class="col-2">
                                                             <input class="form-control" type="number" min="0" name="years1" id="years1" value="1" />
                                                         </div>
-                                                        <label class="col-3 col-form-label" for="rate1">Level of this skill (1-5): </label>
+                                                        <label class="col-2 col-form-label" for="rate1">Level of this skill (1-5): </label>
                                                         <div class="col-2">
                                                             <input class="form-control" type="number" min="1" max="5" name="rate1" id="rate1" value="1" />
                                                         </div>
