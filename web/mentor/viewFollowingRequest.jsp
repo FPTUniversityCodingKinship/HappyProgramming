@@ -55,7 +55,7 @@
                             <c:if test="${empty error}">
                                 <c:set var="requestsList" value="${requestScope.FOLLOWING_REQUESTS}" />
                                 <c:if test="${empty requestsList}">
-                                    There is no request that is from the mentess who follow you...
+                                    There is no request that is from the mentees who follow you...
                                 </c:if>
                                 <c:if test="${not empty requestsList}">
                                     <table class='table table-bordered table-hover table-responsive'>
