@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "AdminUpdateSkillController", urlPatterns = {"/AdminUpdateSkillController"})
 public class AdminUpdateSkillController extends HttpServlet {
 private final String ERROR_PAGE = "AdminUpdateSkillPage";
-private final String SUCCESS_PAGE = "AdminHomePage";
+private final String SUCCESS_PAGE = "AdminUpdateSkillPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

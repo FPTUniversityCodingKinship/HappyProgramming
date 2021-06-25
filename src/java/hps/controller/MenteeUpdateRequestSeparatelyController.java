@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeUpdateRequestSeparatelyController", urlPatterns = {"/MenteeUpdateRequestSeparatelyController"})
 public class MenteeUpdateRequestSeparatelyController extends HttpServlet {
-private final String UPDATE_REQUEST_SUCCESS_PAGE = "MenteeHomePage";
+private final String UPDATE_REQUEST_SUCCESS_PAGE = "MenteeUpdateRequestPage";
 private final String UPDATE_REQUEST_ERROR_PAGE = "MenteeUpdateRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
