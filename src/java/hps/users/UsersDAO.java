@@ -27,7 +27,8 @@ public class UsersDAO implements Serializable {
             if (con != null) {
                 //2.Create SQL String.
                 String sql = "Insert Into "
-                        + "users(username, email, password, fullname, status) "
+                        + "users(username, email, password, fullname, phone, "
+                        + "address, dob, sex, image, status, emailStatus) "
                         + "Values( ?, ?, ?, ?)";
 
                 //3. Create Statement and assign Parameter(s) if any.
@@ -38,9 +39,9 @@ public class UsersDAO implements Serializable {
                 stm.setString(4, fullname);
                 stm.setString(5, phone);
                 stm.setString(6, address);
-                stm.setString(7, phone);
-                stm.setString(8, address);
-                stm.setDate(9, dob);
+                stm.setDate(7, dob);
+                stm.setString(8, sex);
+                stm.setString(9, image);
                 stm.setBoolean(10, status);
                 stm.setBoolean(11, emailStatus);
                 //4. Execute Query.
@@ -52,6 +53,8 @@ public class UsersDAO implements Serializable {
                     newUser.setUsername(username);
                     newUser.setEmail(email);
                     newUser.setPassword(password);
+                    newUser.setStatus(status);
+                    newUser.setEmailStatus(emailStatus);
                     return newUser;
                 }
             }
@@ -757,5 +760,55 @@ public class UsersDAO implements Serializable {
             }
         }
         return menteeList;
+    }
+    public List<UsersDTO> getMentorList() 
+            throws SQLException, NamingException {
+        List<UsersDTO> mentorList = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT userID, username, email, password, fullname, "
+                        + "phone, address, dob, sex, image, status, emailStatus "
+                        + "FROM users "
+                        + "WHERE userID LIKE ? ";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, "MT%");
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    UsersDTO mentor = new UsersDTO(
+                            rs.getString("userID"), 
+                            rs.getString("username"),
+                            rs.getString("email"), 
+                            rs.getString("password"),
+                            rs.getString("fullname"), 
+                            rs.getString("phone"),
+                            rs.getString("address"), 
+                            rs.getDate("dob"),
+                            rs.getString("sex"), 
+                            rs.getString("image"),
+                            rs.getBoolean("status"),
+                            rs.getBoolean("emailStatus")
+                    );
+                    mentorList.add(mentor);
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return mentorList;
     }
 }

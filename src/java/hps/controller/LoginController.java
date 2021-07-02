@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 
@@ -35,7 +31,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends HttpServlet {
     private static final String MENTEE_PAGE = "MenteeStartUp";
     private static final String MENTOR_PAGE = "MentorHomePage";
-    private static final String ADMIN_PAGE = "AdminHomePage";
+//    private static final String ADMIN_PAGE = "AdminHomePage";
+    private static final String ADMIN_PAGE = "AdminViewRequestsListPage";
     private static final String INACTIVE_PAGE = "MailVerificationPage";
     private static final String ERROR_PAGE = "LoginPage";
 
@@ -90,11 +87,13 @@ public class LoginController extends HttpServlet {
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
-                    if (remember != null && gmail.isEmpty()) {
+                    if (remember != null && !remember.isEmpty() 
+                                && gmail.isEmpty()) {
                         String key = "HPSWA-" + username;
                         Cookie cookie = new Cookie(key, password);
                         cookie.setMaxAge(60*60*24);
                         response.addCookie(cookie);
+                        session.setAttribute("CURRENT_COOKIE", cookie);
                     }
                     
                     if (user.isEmailStatus()) {

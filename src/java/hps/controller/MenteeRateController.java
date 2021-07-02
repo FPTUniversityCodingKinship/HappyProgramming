@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 import hps.comments.CommentsDAO;
@@ -32,7 +28,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "MenteeRateController", urlPatterns = {"/MenteeRateController"})
 public class MenteeRateController extends HttpServlet {
 private final String ERROR_PAGE = "MenteeRatePage";
-private final String SUCCESS_PAGE = "MenteeHomePage";
+private final String SUCCESS_PAGE = "MenteeRatePage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

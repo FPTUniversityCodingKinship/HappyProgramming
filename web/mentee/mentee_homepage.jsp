@@ -31,6 +31,7 @@
             <a href="MenteeLoadRequest?action=Update">Update request</a><br/>
             <a href="MenteeRate">Rate & Comment mentor</a><br/>
             <a href="MenteeLoadRequest?action=Suggest">List mentor suggestion</a><br/>
+            <a href="MenteeFollowMentor">Follow mentor</a><br/>
         </c:if>
     </body>
 </html>

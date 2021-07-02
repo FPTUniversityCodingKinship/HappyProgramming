@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 import hps.requests.RequestError;
@@ -30,7 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeCreateRequestController", urlPatterns = {"/MenteeCreateRequestController"})
 public class MenteeCreateRequestController extends HttpServlet {
-private final String REQUEST_SUCCESS = "MenteeHomePage";
+private final String REQUEST_SUCCESS = "MenteeCreateRequestPage";
 private final String REQUEST_ERROR = "MenteeCreateRequestPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

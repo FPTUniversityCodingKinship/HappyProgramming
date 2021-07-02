@@ -5,6 +5,7 @@
  */
 var skillsList;
 var numSkill = parseInt($("#numSkills").val(), 10);
+var _numSkill = parseInt($("#numSkills").val(), 10);
 
 function removeSkill(skillId) {
     var selector = "div[id='skill" + skillId + "']";
@@ -14,8 +15,8 @@ function removeSkill(skillId) {
 
 function displayError(id, name, min, max) {
     var selector = ".error[id='err" + id + "']";
-    var htmlStr = '<font color="red">' + name + ' requires input from ' + min + ' to ' + max + ' characters!!</font>';
-    $(selector).html(htmlStr);
+    var htmlStr = name + ' requires input from ' + min + ' to ' + max + ((name.includes("years") || name.includes("rate")) ? '' : ' characters!!');
+    $(selector).removeClass("d-none").html(htmlStr);
 }
 
 /*
@@ -65,6 +66,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    $("#imageFile").change(function() {
+        
+        if(this.files[0].size > 2097152){
+           $("#errAvatar").removeClass("d-none").html("File is too large! Only file whose size is less than 2MB is allowed.");
+           this.value = "";
+        } else {
+            $("#errAvatar").addClass("d-none").html("");
+        }
+    });
+
     // Fill DropDown
 //    $.each(skillsList, function (i, skill) {
 //        $('select[data-filled="skillsList"]').append($('<option/>').attr("value", skill.skillID).text(skill.skillName));
@@ -72,18 +83,17 @@ document.addEventListener("DOMContentLoaded", function () {
 //    });
 
     $("#btnAddSkill").click(function () {
-        console.log(numSkill);
-        var idDivSkill = "skill" + numSkill;
+        var idDivSkill = "skill0";
         var selector = "#" + idDivSkill;
-        var nextNumSkill = numSkill + 1;
+        var nextNumSkill = _numSkill + 1;
         var nextIdDivSkill = "skill" + nextNumSkill;
 
 //        console.log(selector);
 //        console.log(nextIdDivSkill);
-        $(selector).clone().insertAfter(selector).attr("id", nextIdDivSkill);
+        $(selector).clone().insertBefore("#btnAddSkill").attr("id", nextIdDivSkill);
 
         selector = "#" + nextIdDivSkill;
-        $(selector).last().css("display", "inline");
+        $(selector).last().removeClass("d-none");
 
 //        numSkill++;
 //        console.log(numSkill);
@@ -95,46 +105,46 @@ document.addEventListener("DOMContentLoaded", function () {
         var nextErrorRateId = "errSkillRate" + nextNumSkill;
         var nextBtnId = "btnRemoveSkill" + nextNumSkill;
 
-        selector = "select[name='skill" + numSkill + "']";
+        selector = "select[name='skill" + 0 + "']";
         $(selector).last().attr("name", nextIdDivSkill);
 
-        selector = "label[for='years" + numSkill + "']";
+        selector = "label[for='years" + 0 + "']";
         $(selector).last().attr("for", nextYearId);
 
-        selector = "input[name='years" + numSkill + "']";
+        selector = "input[name='years" + 0 + "']";
         $(selector).last().attr("name", nextYearId);
 
-        selector = "input[id='years" + numSkill + "']";
+        selector = "input[id='years" + 0 + "']";
         $(selector).last().attr("id", nextYearId);
 
-        selector = "label[for='rate" + numSkill + "']";
+        selector = "label[for='rate" + 0 + "']";
         $(selector).last().attr("for", nextRateId);
 
-        selector = "input[name='rate" + numSkill + "']";
+        selector = "input[name='rate" + 0 + "']";
         $(selector).last().attr("name", nextRateId);
 
-        selector = "input[id='rate" + numSkill + "']";
+        selector = "input[id='rate" + 0 + "']";
         $(selector).last().attr("id", nextRateId);
 
-        selector = "input[id='btnRemoveSkill" + numSkill + "']";
+        selector = "input[id='btnRemoveSkill" + 0 + "']";
         $(selector).last().attr("id", nextBtnId);
         selector = "input[id='btnRemoveSkill" + nextNumSkill + "']";
         var event = "removeSkill(" + nextNumSkill + ")";
-        if (numSkill === 0) {
+        if (_numSkill === 0) {
             $(selector).last().attr("onclick", event);
 
         } else {
             $(selector).last().css("display", "inline").attr("onclick", event);
         }
 
-         selector = "div[id='errSkillYears" + numSkill + "']";
+        selector = "div[id='errSkillYears" + 0 + "']";
         $(selector).last().attr("id", nextErrorYearsId);
 
-        selector = "div[id='errSkillRate" + numSkill + "']";
+        selector = "div[id='errSkillRate" + 0 + "']";
         $(selector).last().attr("id", nextErrorRateId);
 
-
-        numSkill = nextNumSkill;
+        _numSkill = nextNumSkill;
+        numSkill++;
 
     });
 
@@ -147,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get Parameter
         var userID = $("input[name='userID']").val();
         var image = $("#imageFile").val();
-        console.log(image);
         var fullname = $("#fullname").val();
         var dobInput = $("#dob").val();
 
@@ -195,19 +204,19 @@ document.addEventListener("DOMContentLoaded", function () {
             displayError("Fullname", "Full Name", 2, 50);
             isError = true;
         }
-        
+
         // Validate Date of birth
         var dob, dobDate;
         if (!dobInput || dobInput.length === 0) {
             isError = true;
-            $(".error[id=errDob]").html("<font color='red'>Date of birth is in a wrong format! Correct format is dd/mm/yyyy</font>");
+            $(".error[id=errDob]").removeClass("d-none").html("Date of birth is in a wrong format! Correct format is dd/mm/yyyy");
         } else {
 
             dobDate = new Date(dobInput);
             var month = dobDate.getMonth() + 1;
             dob = dobDate.getDate() + "/" + month + "/" + dobDate.getFullYear();
         }
-        
+
 //        if (!validateEmail(email)) {
 //            $(".error[id='errEmail']").html('<font color="red">Please enter a valid Email!!!</font>');
 //            isError = true;
@@ -217,11 +226,11 @@ document.addEventListener("DOMContentLoaded", function () {
             isError = true;
         }
         if (!validateFbURL(facebook)) {
-            $(".error[id='errFacebook']").html('<font color="red">Please enter a valid Facebook Profile URL!!!</font>');
+            $(".error[id='errFacebook']").removeClass("d-none").html('Please enter a valid Facebook Profile URL!!!');
             isError = true;
         }
         if (!validateGithubURL(github)) {
-            $(".error[id='errGithub']").html('<font color="red">Please enter a valid Github Profile URL!!!</font>');
+            $(".error[id='errGithub']").removeClass("d-none").html('Please enter a valid Github Profile URL!!!');
             isError = true;
         }
         if (language.length > 255 || language.length < 2) {
@@ -264,6 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
             var form = $('#updateInformation');
             form.submit();
 //            form.submit();
+        } else {
+            var scrollTo = $('.error').not('.d-none').first();
+            $('html, body').animate({
+                scrollTop: scrollTo.offset().top
+            }, 1000);
         }
     });
 

@@ -59,4 +59,69 @@ public class FollowersDAO implements Serializable {
         }
         return listFollowers;
     }
+    public List<String> getListFollowedMentors(String menteeID) 
+        throws SQLException, NamingException {
+        List<String> listFollowedMentors = new ArrayList<>();
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "SELECT mentorID "
+                        + "FROM followers "
+                        + "WHERE menteeID = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, menteeID);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    listFollowedMentors.add(rs.getString("mentorID"));
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return listFollowedMentors;
+    }
+    public boolean addNewFollow(String menteeID, String mentorID, String timestamp)
+            throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Insert into followers "
+                        + "values(?,?,?,?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID + "_" + mentorID);
+                stm.setString(2, menteeID);
+                stm.setString(3, mentorID);
+                stm.setString(4, timestamp);
+                
+                int row = stm.executeUpdate();
+                if( row > 0) return true;
+            }
+        }
+        finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

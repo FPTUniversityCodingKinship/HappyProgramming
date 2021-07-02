@@ -14,9 +14,8 @@ a {
 .header {
     width: 50%;
     height: 120px;
-    float: left;
     margin-left: 25%;
-    margin-top: 400px;
+    margin-top: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,3 +35,15 @@ a:hover {
     margin-top: -4px;
     transition: .5s;
 }
+
+/*.fade-in{
+    animation: fadeIn ease 5s;
+}
+@keyframes fadeIn{
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}*/

@@ -1,4 +1,3 @@
-
 package hps.mentorDetails;
 
 import hps.utilities.DBHelper;
@@ -11,17 +10,18 @@ import javax.naming.NamingException;
 
 /**
  *
-
+ *
  * @author Tran Phong <phongntse150974@fpt.edu.vn>
  */
 public class MentorDetailsDAO implements Serializable {
-    public boolean createCV(MentorDetailsDTO mentorDetails) 
+
+    public boolean createCV(MentorDetailsDTO mentorDetails)
             throws NamingException, SQLException {
         boolean result = false;
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
-        
+
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -38,7 +38,7 @@ public class MentorDetailsDAO implements Serializable {
                 stmt.setNString(6, mentorDetails.getIntroduction());
                 stmt.setNString(7, mentorDetails.getServiceDescription());
                 stmt.setNString(8, mentorDetails.getAchievementDescription());
-                
+
                 result = stmt.executeUpdate() > 0;
             }
         } finally {
@@ -51,16 +51,16 @@ public class MentorDetailsDAO implements Serializable {
         }
         return result;
     }
-    
-    public MentorDetailsDTO getMentorDetails(String mentorID) 
+
+    public MentorDetailsDTO getMentorDetails(String mentorID)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         MentorDetailsDTO detail = null;
-        try{
+        try {
             con = DBHelper.makeConnection();
-            if(con != null){
+            if (con != null) {
                 String sql = "Select mentorID, facebook, github, profession, "
                         + "language, introduction, serviceDescription, achievementDescription "
                         + "From mentorDetails "
@@ -68,40 +68,40 @@ public class MentorDetailsDAO implements Serializable {
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mentorID);
                 rs = stm.executeQuery();
-                
-                if(rs.next()){
+
+                if (rs.next()) {
                     detail = new MentorDetailsDTO(
                             rs.getString("mentorID"),
-                            rs.getString("facebook"), 
-                            rs.getString("github"), 
-                            rs.getString("profession"), 
-                            rs.getString("language"), 
-                            rs.getString("introduction"), 
-                            rs.getString("serviceDescription"), 
+                            rs.getString("facebook"),
+                            rs.getString("github"),
+                            rs.getString("profession"),
+                            rs.getString("language"),
+                            rs.getString("introduction"),
+                            rs.getString("serviceDescription"),
                             rs.getString("achievementDescription"));
                 }
             }
-        }finally{
-            if(rs != null){
+        } finally {
+            if (rs != null) {
                 rs.close();
             }
-            if(stm != null){
+            if (stm != null) {
                 stm.close();
             }
-            if(con != null){
+            if (con != null) {
                 con.close();
             }
         }
         return detail;
     }
-    
-    public boolean updateCV(MentorDetailsDTO mentorDetails) 
+
+    public boolean updateCV(MentorDetailsDTO mentorDetails)
             throws NamingException, SQLException {
         boolean result = false;
-        
+
         Connection con = null;
         PreparedStatement stmt = null;
-        
+
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -110,7 +110,7 @@ public class MentorDetailsDAO implements Serializable {
                         + "introduction = ?, serviceDescription = ?, achievementDescription = ? "
                         + "WHERE mentorID = ?";
                 stmt = con.prepareStatement(sql);
-                
+
                 stmt.setNString(1, mentorDetails.getFacebook());
                 stmt.setNString(2, mentorDetails.getGithub());
                 stmt.setNString(3, mentorDetails.getProfession());
@@ -119,7 +119,7 @@ public class MentorDetailsDAO implements Serializable {
                 stmt.setNString(6, mentorDetails.getServiceDescription());
                 stmt.setNString(7, mentorDetails.getAchievementDescription());
                 stmt.setString(8, mentorDetails.getMentorID());
-                
+
                 result = stmt.executeUpdate() > 0;
             }
         } finally {
@@ -132,6 +132,7 @@ public class MentorDetailsDAO implements Serializable {
         }
         return result;
     }
+
     public String getProfession(String mentorID)
             throws NamingException, SQLException {
         Connection con = null;
@@ -166,4 +167,5 @@ public class MentorDetailsDAO implements Serializable {
         }
         return profession;
     }
+
 }

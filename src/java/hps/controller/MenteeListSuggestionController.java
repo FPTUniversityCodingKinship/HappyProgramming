@@ -1,10 +1,5 @@
-package hps.controller;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package hps.controller;
 
 import hps.requests.RequestsDAO;
 import java.io.IOException;
@@ -25,7 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(urlPatterns = {"/MenteeListSuggestionController"})
 public class MenteeListSuggestionController extends HttpServlet {
-private final String SUCCESS_PAGE = "MenteeHomePage";
+private final String SUCCESS_PAGE = "MenteeListSuggestionPage";
 private final String ERROR_PAGE = "MenteeListSuggestionPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

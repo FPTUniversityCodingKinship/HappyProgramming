@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
-import hps.requests.RequestsDAO;
 import hps.skills.SkillsDAO;
 import hps.skills.SkillsDTO;
 import hps.users.UsersDTO;
@@ -13,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "MenteeStartUpController", urlPatterns = {"/MenteeStartUpController"})
 public class MenteeStartUpController extends HttpServlet {
-private final String MENTEE_HOMEPAGE = "MenteeHomePage";
+private final String MENTEE_HOMEPAGE = "MenteeCreateRequestPage";
 private final String MENTEE_RATE = "MenteeRate";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

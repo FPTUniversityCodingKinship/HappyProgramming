@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 import hps.requests.RequestsDAO;
@@ -51,7 +47,7 @@ public class ApproveRequestController extends HttpServlet {
                 url = LOGIN_PAGE;
             } else {
                 UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
-                if (curMentor == null || !curMentor.getUserID().startsWith("AD")) {
+                if (curMentor == null || !curMentor.getUserID().startsWith("MT")) {
                     url = LOGIN_PAGE;
                 } else {
                     String requestID = request.getParameter("requestID");

@@ -1,4 +1,3 @@
-
 package hps.comments;
 
 import hps.utilities.DBHelper;
@@ -8,22 +7,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 /**
  *
  * @author ADMIN
  */
-public class CommentsDAO implements Serializable{
-    public boolean addComment(String commentID, String menteeID, String mentorID, 
-            int rate, String comments, String datetime) 
-            throws NamingException, SQLException{
+public class CommentsDAO implements Serializable {
+
+    public boolean addComment(String commentID, String menteeID, String mentorID,
+            int rate, String comments, String datetime)
+            throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        
-        try{
+
+        try {
             con = DBHelper.makeConnection();
-            if(con != null){
+            if (con != null) {
                 String sql = "Insert into comments "
                         + "Values(?,?,?,?,?,?)";
                 stm = con.prepareStatement(sql);
@@ -34,56 +36,57 @@ public class CommentsDAO implements Serializable{
                 stm.setString(5, comments);
                 stm.setString(6, datetime);
                 int row = stm.executeUpdate();
-                if(row > 0){
+                if (row > 0) {
                     return true;
                 }
             }
-        } finally{
-            if(stm != null){
+        } finally {
+            if (stm != null) {
                 stm.close();
             }
-            if(con != null){
+            if (con != null) {
                 con.close();
             }
         }
         return false;
     }
-    
-    public float getAvgStar(String mentorID) 
-            throws NamingException, SQLException{
+
+    public float getAvgStar(String mentorID)
+            throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         float avg = -1;
-        try{
+        try {
             con = DBHelper.makeConnection();
-            if(con != null){
+            if (con != null) {
                 String sql = "Select AVG(CAST(rate as float)) as avgStar "
                         + "From comments "
                         + "Where mentorID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mentorID);
                 rs = stm.executeQuery();
-                
-                if(rs.next()){
-                    if(rs.getString("avgStar") != null){
+
+                if (rs.next()) {
+                    if (rs.getString("avgStar") != null) {
                         avg = Float.parseFloat(rs.getString("avgStar"));
                     }
                 }
             }
-        } finally{
-            if(rs != null){
+        } finally {
+            if (rs != null) {
                 rs.close();
             }
-            if(stm != null){
+            if (stm != null) {
                 stm.close();
             }
-            if(con != null){
+            if (con != null) {
                 con.close();
             }
         }
         return avg;
     }
+
     public int getRateStar(String mentorID)
             throws NamingException, SQLException {
         Connection con = null;
@@ -119,5 +122,37 @@ public class CommentsDAO implements Serializable{
             }
         }
         return rate;
+    }
+
+    public List<String> getBestMentor()
+            throws SQLException, NamingException {
+        //1.  Establish DB Connection
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<String> topMentors = new ArrayList<>();
+        try {
+            con = DBHelper.makeConnection();
+            //2. Prepare sql string
+            String sql = "SELECT TOP 3 mentorID, AVG(rate) as rank "
+                    + "FROM comments "
+                    + "GROUP BY mentorID "
+                    + "ORDER BY rank DESC";
+            stm = con.prepareCall(sql);
+            //3. ResultSet
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                topMentors.add(rs.getString("mentorID"));
+            }
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return topMentors;
     }
 }

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 import hps.skills.SkillsDAO;
@@ -26,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "AdminUpdateSkillController", urlPatterns = {"/AdminUpdateSkillController"})
 public class AdminUpdateSkillController extends HttpServlet {
 private final String ERROR_PAGE = "AdminUpdateSkillPage";
-private final String SUCCESS_PAGE = "AdminHomePage";
+private final String SUCCESS_PAGE = "AdminUpdateSkillPage";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

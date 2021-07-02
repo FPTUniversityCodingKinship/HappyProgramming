@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hps.controller;
 
 import hps.mentorDetails.MentorDetailsDAO;
@@ -165,13 +161,15 @@ public class UpdateCVController extends HttpServlet {
                                 for (int i = 1; i <= numSkills; i++) {
                                     String mentorSkillID = mentorSkillsDAO.generateMentorSkillID();
                                     String skillID = request.getParameter("skill" + i);
-                                    int year = Integer.parseInt(request.getParameter("years" + i));
-                                    int rate = Integer.parseInt(request.getParameter("rate" + i));
-                                    MentorSkillsDTO mentorSkill = new MentorSkillsDTO(mentorSkillID, userID, skillID, year, rate);
-                                    isAdded = mentorSkillsDAO.addMentorSkills(mentorSkill);
+                                    if (skillID != null && !skillID.trim().isEmpty()) {
+                                        int year = Integer.parseInt(request.getParameter("years" + i));
+                                        int rate = Integer.parseInt(request.getParameter("rate" + i));
+                                        MentorSkillsDTO mentorSkill = new MentorSkillsDTO(mentorSkillID, userID, skillID, year, rate);
+                                        isAdded = mentorSkillsDAO.addMentorSkills(mentorSkill);
 
-                                    if (!isAdded) {
-                                        break;
+                                        if (!isAdded) {
+                                            break;
+                                        }
                                     }
                                 }
                                 if (isAdded) {
