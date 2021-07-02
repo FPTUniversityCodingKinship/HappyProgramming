@@ -77,10 +77,10 @@
                                             <th scope='row'>Status</th>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${data.status eq 'P'}">Pending</c:when>
-                                                    <c:when test="${data.status eq 'A'}">Accepted</c:when>
-                                                    <c:when test="${data.status eq 'R'}">Rejected</c:when>
-                                                    <c:when test="${data.status eq 'C'}">Closed</c:when>
+                                                    <c:when test="${data.status eq 'P'}"><span class="badge badge-info p-2">Pending</span></c:when>
+                                                    <c:when test="${data.status eq 'A'}"><span class="badge badge-primary p-2">Approved</span></c:when>
+                                                    <c:when test="${data.status eq 'R'}"><span class="badge badge-danger p-2">Rejected</span></c:when>
+                                                    <c:when test="${data.status eq 'C'}"><span class='badge badge-success p-2'>Closed</span></c:when>
                                                 </c:choose>
                                             </td>
                                         </tr>

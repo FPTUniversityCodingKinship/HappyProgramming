@@ -167,16 +167,16 @@
                                                 <td class="align-middle">
                                                     <c:choose>
                                                         <c:when test="${request.status eq 'A'}">
-                                                            Accepted
+                                                            <span class="badge badge-primary p-2">Approved</span>
                                                         </c:when>
                                                         <c:when test="${request.status eq 'P'}">
-                                                            Pending
+                                                            <span class="badge badge-info p-2">Pending</span>
                                                         </c:when>
                                                         <c:when test="${request.status eq 'R'}">
-                                                            Rejected
+                                                            <span class="badge badge-danger p-2">Rejected</span>
                                                         </c:when>
                                                         <c:when test="${request.status eq 'C'}">
-                                                            Closed
+                                                            <span class='badge badge-success p-2'>Closed</span>
                                                         </c:when>
                                                     </c:choose>
                                                 </td>

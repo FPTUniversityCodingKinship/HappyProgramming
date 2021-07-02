@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,7 +17,17 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+        <!-- Add icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <link rel="stylesheet" href="css/style.css">
+
+        <style>
+            .checked {
+                color: orange;
+            }
+        </style>
         <title>View Requests' Statistics</title>
 
     </head>
@@ -65,7 +76,29 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <p><strong>Your rating:</strong> <c:if test="${data.rate lt '0'}">${0}</c:if><c:if test="${data.rate ge '0'}">${data.rate}</c:if></p>
+                                            <p><strong>Your rating:</strong> 
+                                                <c:if test="${data.rate lt '0'}">
+                                                    <span>0/5</span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                </c:if>
+                                                <c:if test="${data.rate ge '0'}">
+                                                    <span>${data.rate}/5</span>
+                                                    <fmt:parseNumber var="rate" value="${data.rate}"/>
+                                                    <c:set var="rate" value="${rate/100}"/>
+                                                    <c:forEach begin="1" end="${rate}">
+                                                        <span class="fa fa-star checked"></span>
+                                                    </c:forEach>
+                                                    <c:set var="rate" value="${5 - rate}"/>
+                                                    <c:forEach begin="1" end="${rate}">
+                                                        <span class="fa fa-star"></span>
+                                                    </c:forEach>
+
+                                                </c:if>
+                                            </p>
                                             <p><strong>Number of currently accepted request:</strong> ${data.numAccepted}</p>
                                             <p><strong>Number of currently requests:</strong> ${data.numRequests}</p>
                                             <p><strong>Number of currently rejected request:</strong> ${data.numRejected}</p>
