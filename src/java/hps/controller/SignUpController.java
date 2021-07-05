@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SignUpController", urlPatterns = {"/SignUpController"})
 public class SignUpController extends HttpServlet {
     private final String SIGNUP_INVALID_PAGE = "SignUpPage";
-    private final String SIGNUP_SUCCESS_PAGE = "Login";
+    private final String SIGNUP_SUCCESS_PAGE = "SignUpSuccessPage";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,6 +41,7 @@ public class SignUpController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        /* Thiếu userID */
         String url = SIGNUP_INVALID_PAGE;
         String email = request.getParameter("txtEmail");
         String username = request.getParameter("txtUsername");
@@ -80,7 +81,8 @@ public class SignUpController extends HttpServlet {
             log("\nRegisterServlet_SQL: " + errMsg);
             //if primary key is duplicated, SQL will throws error here.
             if (errMsg.contains("duplicate")) {
-                errors.setUsernameIsExisted(username + " is existed.");
+                if (errors != null)
+                    errors.setUsernameIsExisted(username + " is existed.");
                 request.setAttribute("CREATE_ERROR", errors);
             }
         } catch (NamingException ex) {

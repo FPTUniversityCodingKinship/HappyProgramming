@@ -13,6 +13,7 @@ public class UsersCreateError {
     private String confirmNotMatch;
     private String fullnameLengthErr;
     private String usernameIsExisted;
+    private String emailIsExisted;
     private String phoneInvalid;
     private String addressInvalid;
     private String dobInvalid;
@@ -106,6 +107,20 @@ public class UsersCreateError {
      */
     public void setUsernameIsExisted(String usernameIsExisted) {
         this.usernameIsExisted = usernameIsExisted;
+    }
+
+    /**
+     * @param emailIsExisted the emailIsExisted to set
+     */
+    public String getEmailIsExisted() {
+        return emailIsExisted;
+    }
+
+    /**
+     * @param emailIsExisted the emailIsExisted to set
+     */
+    public void setEmailIsExisted(String emailIsExisted) {
+        this.emailIsExisted = emailIsExisted;
     }
 
     /**

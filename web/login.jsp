@@ -107,7 +107,7 @@
                     <div class="col-sm-offset-8 col-sm-10">
                         <p class="text-right">
                             Forgot your password?
-                            <a href="ResetPassword">
+                            <a href="ResetPasswordPage">
                                 <span>Thì cút đi bạn</span>
                                 <span hidden>Reset now</span>
                             </a>

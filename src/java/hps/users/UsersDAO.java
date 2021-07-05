@@ -25,36 +25,37 @@ public class UsersDAO implements Serializable {
             //1. Make connection.
             con = DBHelper.makeConnection();
             if (con != null) {
+                //1.1 Generate new userID
+                String userID = DBHelper.generateUserID(con);
+                
                 //2.Create SQL String.
                 String sql = "Insert Into "
-                        + "users(username, email, password, fullname, phone, "
+                        + "users(userID, username, email, password, fullname, phone, "
                         + "address, dob, sex, image, status, emailStatus) "
-                        + "Values( ?, ?, ?, ?)";
+                        + "Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 //3. Create Statement and assign Parameter(s) if any.
                 stm = con.prepareStatement(sql);
-                stm.setString(1, username);
-                stm.setString(2, email);
-                stm.setString(3, password);
-                stm.setString(4, fullname);
-                stm.setString(5, phone);
-                stm.setString(6, address);
-                stm.setDate(7, dob);
-                stm.setString(8, sex);
-                stm.setString(9, image);
-                stm.setBoolean(10, status);
-                stm.setBoolean(11, emailStatus);
+                stm.setString(1, userID);
+                stm.setString(2, username);
+                stm.setString(3, email);
+                stm.setString(4, password);
+                stm.setString(5, fullname);
+                stm.setString(6, phone);
+                stm.setString(7, address);
+                stm.setDate(8, dob);
+                stm.setString(9, sex);
+                stm.setString(10, image);
+                stm.setBoolean(11, status);
+                stm.setBoolean(12, emailStatus);
                 //4. Execute Query.
                 ResultSet rs = stm.executeQuery();
 
                 //5. Process resultSet.
                 if (rs != null) {
-                    UsersDTO newUser = new UsersDTO();
-                    newUser.setUsername(username);
-                    newUser.setEmail(email);
-                    newUser.setPassword(password);
-                    newUser.setStatus(status);
-                    newUser.setEmailStatus(emailStatus);
+                    UsersDTO newUser = new UsersDTO(rs.getString("userID"), 
+                                username, email, password, fullname, phone, 
+                                address, dob, sex, image, status, emailStatus);
                     return newUser;
                 }
             }

@@ -109,9 +109,11 @@ public class Validation implements Serializable{
                 String address, String phone) {
         UsersCreateError errors = new UsersCreateError();
         boolean foundErr = false;
-        if (!email.trim().matches("/^[^\\s@]+@[^\\s@]+$/")) {
+        
+        if (!email.trim().matches("[a-zA-Z0-9]*@[a-z.]*")
+                    || email.trim().length() < 1) {
             foundErr = true;
-            errors.setUsernameLengthErr("Email not matches.");
+            errors.setEmailInvalid("Email is invalid.");
         }
         if (username.trim().length() < 6 || username.trim().length() > 30) {
             foundErr = true;
@@ -129,17 +131,17 @@ public class Validation implements Serializable{
             foundErr = true;
             errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
         }
-        if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
+        if (dob.trim().length() < 8) {
             foundErr = true;
-            errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
+            errors.setDobInvalid("Birthday requires input.");
         }
         if (address.trim().length() < 2) {
             foundErr = true;
-            errors.setFullnameLengthErr("Address requires not empty.");
+            errors.setAddressInvalid("Address requires input.");
         }
-        if (phone.trim().length() < 9 || fullname.trim().length() > 10) {
+        if (phone.trim().length() < 9 || phone.trim().length() > 12) {
             foundErr = true;
-            errors.setFullnameLengthErr("Phone number is not correct.");
+            errors.setPhoneInvalid("Phone number is not correct.");
         }
         
         if (foundErr)

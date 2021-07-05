@@ -15,13 +15,20 @@
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
+        <c:if test="${not empty sessionScope.CURRENT_USER}">
+            <form action="Logout" method="POST" id="Logout">
+                <p id="Welcome">
+                    <input type="submit" value="Logout" class="btn"/>
+                </p>
+            </form>
+        </c:if>
         <c:set var="successVerify" value="${requestScope.SUCCESS_VERIFY}"/>
         <c:if test="${empty successVerify}">
             <c:if test="${empty requestScope.WRONG_VERIFY}">
                 <span>We already send a verification  code to your email.</span>
             </c:if>
             <c:if test="${not empty requestScope.WRONG_VERIFY}">
-                ${requestScope.WRONG_VERIFY}
+                <span class="error-text">${requestScope.WRONG_VERIFY}</span>
             </c:if>
             <form action="VerifyCode" method="post">
                 <input type="text" name="authCode" >
@@ -36,22 +43,24 @@
                 Please wait <span id="countdown"></span> second
                 to redirect to see amazing things...
             </p>
+            <c:set var="txtGmail" value="${requestScope.TO_LOGIN_MAIL}"/>
             <script>
-                int count = 3;
                 $(document).ready(function(){
-                  var params = window.location.href.split("?")[1];
-                  
-                  while (count > 0) {
-                      setTimeout(function() {
-                          document.getElementById("countdown").innerHTML = count;
-                          count--;
-                      },1000);
-                  }
-                  if (count === 0) {
-                      var href = window.location.href;
-                      var mainURL = href.substring(0, href.indexOf(href.split("/")[4]));
-                      window.location.href = mainURL + "LoginController?" + params;
-                  }
+                    var params = window.location.href.split("?")[1];
+                    var countDown = document.getElementById("countdown");
+                    countDown.innerHTML = '3';
+                    setTimeout(function() {
+                        countDown.innerHTML = '2';
+                        setTimeout(function () {
+                            countDown.innerHTML = '1';
+                            setTimeout(function () {
+                                countDown.innerHTML = '0';
+                                var origin = window.location.origin;
+                                window.location.href = origin + 
+                                        "/Login?" + params;
+                            }, 1000);
+                        }, 1000);
+                    }, 1000);
                 });
             </script>
         </c:if>
