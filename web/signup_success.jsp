@@ -10,6 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Sign Up Success</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <script type="module"  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        
     </head>
     <body>
         <h1>Your Account is Successfully created</h1>
@@ -27,7 +31,7 @@
         var params = window.location.href.split("?")[1];
         function sendMail() {
             if (params !== null)
-                location.href = location.origin + "/Login?" + params;
+                location.href = location.origin + "/HappyProgramming";
             else
                 alert("Something went wrong...");
         }
@@ -42,7 +46,7 @@
                         countDown.innerHTML = '0';
                         var origin = window.location.origin;
                         if (params !== null)
-                            window.location.href = origin + "/Login?" + params;
+                            window.location.href = origin + "/HappyProgramming";
                         else
                             alert("Something went wrong...");
                     }, 1000);

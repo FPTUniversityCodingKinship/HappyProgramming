@@ -37,30 +37,38 @@ public class DBHelper implements Serializable {
         String newID = "";
         
         if (!lastID.isEmpty()) {
-            int lastNum = Integer.parseInt(lastID.substring(2, 6));
-            if (lastNum > 0) {
-                //increase 1
-                lastNum++;
-                int digits = 6;
-                if (lastNum > MAX_INDEX)
-                    newID = "OVER_STACK_FOUND";
-                else {
-                    while (lastNum > 0) {
-                        newID = String.valueOf(lastNum % 10) + newID;
-                        lastNum /= 10;
-                        digits--;
+            System.out.println("Last ID: " + lastID);
+            try {
+                int lastNum = Integer.parseInt(lastID.substring(2, 8));
+                System.out.println("Last Num: " + lastNum);
+                if (lastNum > 0) {
+                    //increase 1
+                    lastNum++;
+                    int digits = 6;
+                    if (lastNum > MAX_INDEX)
+                        newID = "@OVER_STACK_FOUND";
+                    else {
+                        while (lastNum > 0) {
+                            newID = String.valueOf(lastNum % 10) + newID;
+                            lastNum /= 10;
+                            digits--;
+                        }
+                        if (digits > 0)
+                            for (int i = 0; i < digits; i++)
+                                newID = "0" + newID;
+                        newID = "ME" + newID;
                     }
-                    if (digits > 0)
-                        for (int i = 0; i < digits; i++)
-                            newID = "0" + newID;
                 }
-            }
-            else {
-                newID = "WRONG_ID_FOUND";
+                else {
+                    newID = "@WRONG_ID_FOUND";
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                newID = "@CANNOT_CONVERT_ID";
             }
         }
         else {
-            newID = "NO_ID_FOUND";
+            newID = "ME000001";
         }
         
         return newID;
@@ -79,7 +87,7 @@ public class DBHelper implements Serializable {
             stm = con.prepareStatement(sql);
             rs = stm.executeQuery();
             
-            if (rs != null)
+            if (rs.next())
                 return rs.getString("userID");
         } finally {
             if (rs != null)

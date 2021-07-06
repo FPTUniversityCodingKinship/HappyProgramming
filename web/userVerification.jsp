@@ -57,7 +57,7 @@
                                 countDown.innerHTML = '0';
                                 var origin = window.location.origin;
                                 window.location.href = origin + 
-                                        "/Login?" + params;
+                                        "/HappyProgramming/Login?" + params;
                             }, 1000);
                         }, 1000);
                     }, 1000);

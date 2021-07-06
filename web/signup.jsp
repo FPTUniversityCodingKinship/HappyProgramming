@@ -14,13 +14,21 @@
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
-        <c:set var="success" value="requestScope.SIGN_UP_SUCCESS"/>
         <a href="http://localhost:8084/HappyProgramming/"> Back to Homepage</a>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="SignUp" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
             <table border="0">
+                <c:if test="${not empty errors.userIDFailedToGenerate}">
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.userIDFailedToGenerate}
+                        </font>
+                    </td>
+                </tr>
+                </c:if>
                         <%-- Email --%>
                 <tr>
                     <td>
@@ -38,6 +46,15 @@
                         <font color="red">
                             ${errors.emailInvalid}
                         </font>
+                    </td>
+                </tr>
+                </c:if>
+                <c:if test="${not empty errors.emailIsExisted}">
+                <tr>
+                    <td colspan="2">
+                    <font color="red">
+                        ${errors.emailIsExisted}
+                    </font><br/>
                     </td>
                 </tr>
                 </c:if>
@@ -62,9 +79,13 @@
                 </tr>
                 </c:if>
                 <c:if test="${not empty errors.usernameIsExisted}">
-                    <font color="red">
-                        ${errors.usernameIsExisted}
-                    </font><br/>
+                <tr>
+                    <td colspan="2">
+                        <font color="red">
+                            ${errors.usernameIsExisted}
+                        </font>
+                    </td>
+                </tr>
                 </c:if>
                         <%-- Password --%>
                 <tr>

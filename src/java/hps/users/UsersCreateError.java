@@ -7,6 +7,7 @@ package hps.users;
  */
 public class UsersCreateError {
     //register
+    private String userIDFailedToGenerate;
     private String usernameLengthErr;
     private String emailInvalid;
     private String passwordLengthErr;
@@ -23,6 +24,20 @@ public class UsersCreateError {
 
     public UsersCreateError() {
         
+    }
+    
+    /**
+     * @return the userIDFailedToGenerate
+     */
+    public String getUserIDFailedToGenerate() {
+        return userIDFailedToGenerate;
+    }
+
+    /**
+     * @param userIDFailedToGenerate the userIDFailedToGenerate to set
+     */
+    public void setUserIDFailedToGenerate(String userIDFailedToGenerate) {
+        this.userIDFailedToGenerate = userIDFailedToGenerate;
     }
 
     /**
@@ -110,7 +125,7 @@ public class UsersCreateError {
     }
 
     /**
-     * @param emailIsExisted the emailIsExisted to set
+     * @return the emailIsExisted
      */
     public String getEmailIsExisted() {
         return emailIsExisted;

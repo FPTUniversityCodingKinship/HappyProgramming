@@ -119,9 +119,17 @@ public class Validation implements Serializable{
             foundErr = true;
             errors.setUsernameLengthErr("Username requires input between 6 and 30 characters.");
         }
+        else if (!username.trim().matches("[a-zA-Z]+[a-zA-Z0-9]*")) {
+            foundErr = true;
+            errors.setUsernameLengthErr("Username cannot include special characters.");
+        }
         if (password.trim().length() < 6 || password.trim().length() > 20) {
             foundErr = true;
             errors.setPasswordLengthErr("Password requires input between 6 and 20 characters.");
+        }
+        else if (!password.trim().matches("[a-zA-Z0-9]*")) {
+            foundErr = true;
+            errors.setPasswordLengthErr("Password cannot include special characters.");
         }
         if (!confirm.trim().equals(password.trim())) {
             foundErr = true;
@@ -139,11 +147,14 @@ public class Validation implements Serializable{
             foundErr = true;
             errors.setAddressInvalid("Address requires input.");
         }
-        if (phone.trim().length() < 9 || phone.trim().length() > 12) {
+        if (!address.trim().matches("[a-zA-Z0-9 /.,]*")) {
             foundErr = true;
-            errors.setPhoneInvalid("Phone number is not correct.");
+            errors.setAddressInvalid("Address seems wrong or contains unexpected characters.");
         }
-        
+        if (!phone.trim().matches("[0-9]{9,12}")) {
+            foundErr = true;
+            errors.setPhoneInvalid("It might not a phone number.");
+        }
         if (foundErr)
             return errors;
         return null;

@@ -66,11 +66,11 @@ public class SignUpController extends HttpServlet {
             } else {
                 //2. call DAO if no error found.
                 UsersDAO dao = new UsersDAO();
-                UsersDTO user = dao.newMentee(username, email, password, 
-                            fullname, phone, address, Date.valueOf(dob), sex, 
-                            image, false, false);
+                UsersDTO user;
+                user = dao.newMentee(username, email, password, fullname, phone,
+                            address, Date.valueOf(dob), sex, image, false, false);
                 if (user != null) {
-                    url = SIGNUP_SUCCESS_PAGE;
+                    url = SIGNUP_SUCCESS_PAGE + "?txtGmail=" + email;
                     // CHECK IF ACTIVE OR NOT
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
@@ -79,15 +79,19 @@ public class SignUpController extends HttpServlet {
         } catch (SQLException ex) {
             String errMsg = ex.getMessage();
             log("\nRegisterServlet_SQL: " + errMsg);
+            if (errors == null)
+                errors = new UsersCreateError();
             //if primary key is duplicated, SQL will throws error here.
-            if (errMsg.contains("duplicate")) {
-                if (errors != null)
-                    errors.setUsernameIsExisted(username + " is existed.");
-                request.setAttribute("CREATE_ERROR", errors);
-            }
+            if (errMsg.contains("username"))
+                errors.setUsernameIsExisted("The username '" + username + "' is existed.");
+            else if (errMsg.contains("email"))
+                errors.setEmailIsExisted("The email '" + email + "' is existed.");
+            else
+                errors.setUserIDFailedToGenerate("Something went wrong =.=");
+            request.setAttribute("CREATE_ERROR", errors);
         } catch (NamingException ex) {
             String errMsg = ex.getMessage();
-            log("RegisterServlet_Naming: " + errMsg);
+            log("\nRegisterServlet_Naming: " + errMsg);
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

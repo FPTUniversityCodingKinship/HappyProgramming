@@ -129,7 +129,7 @@ public class ContextListener implements ServletContextListener {
 
                         if (line.charAt(0) != '#') {
                             String[] entry = line.split("=", 2);
-                            if (entry[1] != null)
+                            if (entry.length > 1)
                                 siteMap.put(entry[0].trim(), entry[1].trim());
                         }
                     }
