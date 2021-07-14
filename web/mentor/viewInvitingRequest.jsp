@@ -21,6 +21,27 @@
         <title>Inviting Requests</title>
     </head>
     <body>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
+            <h1 class="text-warning">
+                Unauthorised access detected! Redirecting...
+            </h1>
+            <script>
+                setTimeout(function () {
+                    document.location = "MenteeCreateRequestPage";
+                }, 2000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
+            <h1 class="text-warning">
+                Unauthorised access detected! Redirecting...           
+            </h1>
+            <script>
+                setTimeout(function () {
+                    document.location = "AdminViewRequestsListPage";
+                }, 2000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
         <div class="wrapper">
             <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
             <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
@@ -171,6 +192,7 @@
                 </div>
             </main>
         </div>
+        </c:if>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
