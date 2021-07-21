@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/style.css">
         <title>Statistic of requests</title>
     </head>
@@ -63,26 +64,68 @@
                         <h1>Statistic Request</h1>
                         <c:if test="${not empty sessionScope.CURRENT_USER}">
                             <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
-                            Mentee ID: ${user.userID}<br/>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="font-weight-bold">Mentee ID</label>
+                                </div>
+                                <div class="col-4">
+                                    ${user.userID}<br/>
+                                </div>
+                            </div>
                         </c:if>
                         <c:if test="${not empty requestScope.REQUESTS_TITLE}" >
-                            Title of requests: 
-                            <c:set var="titles" value="${requestScope.REQUESTS_TITLE}" />
-                            <c:forEach var="title" items="${titles}">
-                                ${title},
-                            </c:forEach> 
+                            <div class="form-group row">
+                                <div class="col-2">
+                                    <label for="" class="font-weight-bold">Title of requests</label>
+                                </div>
+                                <div class="col-4">
+                                    <c:set var="titles" value="${requestScope.REQUESTS_TITLE}" />
+                                    <c:forEach var="title" items="${titles}">
+                                       <i class="fas fa-chevron-right"></i> &nbsp;
+                                       ${title} <br/>
+                                    </c:forEach> 
+                                </div>
+                            </div>
                         </c:if>
                         <c:if test="${empty requestScope.REQUESTS_TITLE}">
-                            Title of requests: (No request yet)
+                            <div class="form-group row">
+                                <div class="col-2">
+                                    <label for="" class="font-weight-bold">Title of requests</label>
+                                </div>
+                                <div class="col-4">
+                                    (No request yet)
+                                </div>
+                            </div>
                         </c:if><br/>
                         <c:if test="${not empty requestScope.TOTAL_REQUEST}" >
-                            Total of request: ${requestScope.TOTAL_REQUEST}
+                            <div class="form-group row">
+                                <div class="col-2">
+                                    <label class="font-weight-bold">Total of request</label>
+                                </div>
+                                <div class="col-4">
+                                    ${requestScope.TOTAL_REQUEST}
+                                </div>
+                            </div>
                         </c:if><br/>
                         <c:if test="${not empty requestScope.TOTAL_HOUR}" >
-                            Total of hours of all request: ${requestScope.TOTAL_HOUR}
+                            <div class="form-group row">
+                                <div class="col-2">
+                                    <label class="font-weight-bold">Total of hours of all request</label>
+                                </div>
+                                <div class="col-4">
+                                    ${requestScope.TOTAL_HOUR}
+                                </div>
+                            </div>
                         </c:if><br/>
                         <c:if test="${not empty requestScope.TOTAL_MENTOR}" >
-                            Total mentor: ${requestScope.TOTAL_MENTOR}
+                            <div class="form-group row">
+                                <div class="col-2">
+                                    <label class="font-weight-bold">Total mentor</label>
+                                </div>
+                                <div class="col-4">
+                                    ${requestScope.TOTAL_MENTOR}
+                                </div>
+                            </div>
                         </c:if>
                     </div>
                 </main>

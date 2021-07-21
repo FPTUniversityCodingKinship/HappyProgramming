@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/style.css">
         <title>Rate & Comment mentor</title>
     </head>
@@ -62,21 +63,26 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Rate Mentor</h1>
                         <c:if test="${not empty sessionScope.REQ_INFO_FOR_RATING}">
-                            Select the concluded request you want to rate:<br/>
+                            <label class="font-weight-bold">Please select the concluded request you want to rate</label>
+                            <br/>
                             <c:set var="reqInfo" value="${sessionScope.REQ_INFO_FOR_RATING}"/>
                             <c:forEach var="entry" items="${reqInfo}">
                                 <c:url var="url" value="MenteeRate">
                                     <c:param name="requestID" value="${entry.key}"/>
                                     <c:param name="mentorID" value="${fn:split(entry.value,',')[1]}"/>
                                 </c:url>
-                                <a href="${url}" style="text-decoration: underline !important">${fn:split(entry.value,',')[0]}</a><br/>
+                                <i class="fas fa-chevron-right"></i> &nbsp; 
+                                <a href="${url}">${fn:split(entry.value,',')[0]}</a><br/>
                             </c:forEach>
                             <br/>
                             <c:if test="${not empty sessionScope.RATING_INFO}">
                                 <c:set var="info" value="${sessionScope.RATING_INFO}"/>
                                 <c:forEach var="entry" items="${reqInfo}">
                                     <c:if test="${entry.key == info[0]}">
-                                        Title of this request: ${fn:split(entry.value,',')[0]}<br/>
+                                        <label class="font-weight-bold mb-2">
+                                            Title of this request: 
+                                        </label>
+                                        <span class="text-info">${fn:split(entry.value,',')[0]}<br/></span>
                                     </c:if>
                                 </c:forEach>
                                 <form action="MenteeRate" method="POST">
@@ -84,14 +90,29 @@
                                     <input type="hidden" name="requestID" value="${info[0]}"/>
                                     <input type="hidden" name="menteeID" value="${info[1]}"/>
                                     <input type="hidden" name="mentorID" value="${info[2]}"/>
-                                    Rate: <input type="text" name="rate" value="${param.rate}" /><br/>
-                                    <c:if test="${not empty error.rateOutOfBoundError}" >
-                                        <font color="red">${error.rateOutOfBoundError}</font><br/>
-                                    </c:if>
-                                    Comment:<br/> <textarea name="comments" rows="4" cols="30"></textarea><br/>
-                                    <c:if test="${not empty error.commentLengthError}" >
-                                        <font color="red">${error.commentLengthError}</font><br/>
-                                    </c:if>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <label for="rate" class="font-weight-bold">Rate</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control" type="text" name="rate" value="${param.rate}" /><br/>
+                                            <c:if test="${not empty error.rateOutOfBoundError}" >
+                                                <font color="red">${error.rateOutOfBoundError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-1">
+                                            <label for="" class="font-weight-bold">Comment</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <textarea class="form-control" name="comments" rows="4" cols="30"></textarea><br/>
+                                            <c:if test="${not empty error.commentLengthError}" >
+                                                <font color="red">${error.commentLengthError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
                                     <input class="btn btn-primary" type="submit" value="OK" /><br/>
                                     <c:if test="${not empty error.ratedError}" >
                                         <font color="red">${error.ratedError}</font><br/>
