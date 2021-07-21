@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/style.css">
         <title>List mentor suggestion</title>
         <style>
@@ -65,23 +66,27 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>List Mentor Suggestion</h1>
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
-                            Choose request to get mentor suggestion: <br/>
+                            <label class="font-weight-bold">
+                                Please choose request to get mentor suggestion 
+                            </label><br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                                 <c:url var="url" value="MenteeShowRequest">
                                     <c:param name="action" value="Suggest"/>
                                     <c:param name="requestID" value="${request.requestID}"/>
                                 </c:url>
-                                <a href="${url}" style="text-decoration: underline !important">${request.title}</a>, 
+                                <i class="fas fa-chevron-right"></i> &nbsp;
+                                <a href="${url}">${request.title}</a><br/>
                             </c:forEach>
                             <br/><br/>
                             <c:if test="${not empty sessionScope.REQUEST_INFO}">
                                 <c:set var="request" value="${sessionScope.REQUEST_INFO}"/>
                                 <c:set var="skillsName" value="${sessionScope.SKILLS_NAME}"/>
-                                Skill(s): ${skillsName}
-                                is/are selected for ${request.title} <br/>
+                                <span class="font-weight-bold">Skill(s): </span> 
+                                <span class="text-danger"> ${skillsName} </span>
+                                is/are selected for <span class="text-info">${request.title}</span> <br/>
                                 <c:if test="${not empty sessionScope.MAPPING_MENTORS_ID}">
                                     <c:set var="listMentorsID" value="${sessionScope.MAPPING_MENTORS_ID}"/>
-                                    Suggested mentor mapping these skills:
+                                    <label class="font-weight-bold">Suggested mentor mapping these skills:</label>
 
                                     <c:forEach var="mentorID" items="${listMentorsID}">
                                         <c:url var="url" value="ShowMentorDetails">
@@ -91,10 +96,38 @@
                                     </c:forEach><br/><br/>
                                     <c:if test="${not empty sessionScope.MENTOR_INFO}">
                                         <c:set var="mentorInfo" value="${sessionScope.MENTOR_INFO}"/>
-                                        Full name of mentor: ${fn:split(mentorInfo, ",")[0]}<br/>
-                                        Account name: ${fn:split(mentorInfo, ",")[1]}<br/>
-                                        Rating star: ${fn:split(mentorInfo, ",")[2]}<br/>
-                                        Number of requests this mentor currently has: ${fn:split(mentorInfo, ",")[3]}<br/>
+                                        <div class="form-group row">
+                                            <div class="col-3">
+                                                <label class="font-weight-bold">Full name of mentor</label>
+                                            </div>
+                                            <div class="col-4">
+                                                ${fn:split(mentorInfo, ",")[0]}<br/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-3">
+                                                <label class="font-weight-bold">Account name</label>
+                                            </div>
+                                            <div class="col-4">
+                                                ${fn:split(mentorInfo, ",")[1]}<br/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-3">
+                                                <label class="font-weight-bold">Rating star</label>
+                                            </div>
+                                            <div class="col-4">
+                                                ${fn:split(mentorInfo, ",")[2]}<br/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-3">
+                                                <label class="font-weight-bold">Number currently requests:</label>
+                                            </div>
+                                            <div class="col-4">
+                                                ${fn:split(mentorInfo, ",")[3]}<br/>
+                                            </div>
+                                        </div>
                                     </c:if>
                                     <form action="MenteeListSuggestion" method="POST">    
                                         <c:if test="${not empty sessionScope.CHOSEN_MENTOR_ID}">
@@ -103,6 +136,10 @@
                                             <input class="btn btn-primary" type="submit" value="Invite" />
                                         </c:if>
                                     </form>
+                                </c:if>
+                                <c:if test="${empty sessionScope.MAPPING_MENTORS_ID}">
+                                    <br/>
+                                    <span class="text-danger">No mentor match!</span>
                                 </c:if>
                                 <br/>
                             </c:if>

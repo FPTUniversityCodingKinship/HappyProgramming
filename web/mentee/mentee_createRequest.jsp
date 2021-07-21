@@ -67,40 +67,80 @@
                     <div id="content">
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Create Request</h1>
+                        <c:set var="error" value="${requestScope.REQUEST_ERROR}"/>
                         <form action="MenteeCreateRequest" method="POST">
-                            <c:set var="error" value="${requestScope.REQUEST_ERROR}"/>
-                            Title: <input type="text" name="title" value="${param.title}"><br/>
-                            <c:if test="${not empty error.titleLengthError}" >
-                                <font color="red">${error.titleLengthError}</font><br/>
-                            </c:if>
-                            Deadline date (year-month-day): <input type="text" name="deadlineDate" value="${param.deadlineDate}" /><br/>
-                            <c:if test="${not empty error.deadlineDateError}" >
-                                <font color="red">${error.deadlineDateError}</font><br/>
-                            </c:if>
-                            Deadline hour (hour:minute): <input type="text" name="deadlineHour" value="${param.deadlineHour}" /><br/>
-                            <c:if test="${not empty error.deadlineTimeError}" >
-                                <font color="red">${error.deadlineTimeError}</font><br/>
-                            </c:if>
-                            Content: <br/> <textarea name="reqContent" rows="4" cols="30"></textarea><br/>
-                            <c:if test="${not empty error.contentLengthError}" >
-                                <font color="red">${error.contentLengthError}</font><br/>
-                            </c:if>
-                            Select skill (1-3): <br/>
-                            <c:if test="${not empty sessionScope.SKILL_LIST}">
-                                <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
-                                <c:forEach var="skill" items="${skillList}">
-                                    <input type="checkbox" name="ckb" value="${skill.skillName}" 
-                                           onclick="return chkControl()"/>${skill.skillName}<br/>
-                                </c:forEach>
-                            </c:if>
-                            <c:if test="${not empty error.ckbError}" >
-                                <font color="red">${error.ckbError}</font><br/>
-                            </c:if>
-                            Your mentor ID: <input type="text" name="mentorID" value="${param.mentorID}" /><br/>
-                            <c:if test="${not empty error.mentorIDConflictError}" >
-                                <font color="red">${error.mentorIDConflictError}</font><br/>
-                            </c:if>
-
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label for="title" class="font-weight-bold">Title</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="title" value="${param.title}"><br/>
+                                    <c:if test="${not empty error.titleLengthError}" >
+                                        <font color="red">${error.titleLengthError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label for="deadlineDate" class="font-weight-bold">Deadline date (year-month-day)</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="deadlineDate" value="${param.deadlineDate}" /><br/>
+                                    <c:if test="${not empty error.deadlineDateError}" >
+                                        <font color="red">${error.deadlineDateError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label for="deadlineHour" class="font-weight-bold">Deadline hour (hour:minute)</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="deadlineHour" value="${param.deadlineHour}" /><br/>
+                                    <c:if test="${not empty error.deadlineTimeError}" >
+                                        <font color="red">${error.deadlineTimeError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label for="reqContent" class="font-weight-bold">Content</label>
+                                </div>
+                                <div class="col-4">
+                                    <textarea class="form-control" name="reqContent" rows="4" cols="30"></textarea><br/>
+                                    <c:if test="${not empty error.contentLengthError}" >
+                                        <font color="red">${error.contentLengthError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3" class="font-weight-bold">
+                                    <label class="font-weight-bold">Select skill (1-3) </label> 
+                                </div>
+                                <div class="col-4">
+                                    <c:if test="${not empty sessionScope.SKILL_LIST}">
+                                        <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
+                                        <c:forEach var="skill" items="${skillList}">
+                                            <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                                                   onclick="return chkControl()"/>${skill.skillName}<br/>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${not empty error.ckbError}" >
+                                        <font color="red">${error.ckbError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label for="mentorID" class="font-weight-bold">Your mentor ID</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="mentorID" value="${param.mentorID}" /><br/>
+                                    <c:if test="${not empty error.mentorIDConflictError}" >
+                                        <font color="red">${error.mentorIDConflictError}</font><br/>
+                                    </c:if>
+                                </div>
+                            </div>
                             <input class="btn btn-primary" type="submit" value="OK" name="btnAction" onclick="valCkb()"/>
                         </form>
                     </div>

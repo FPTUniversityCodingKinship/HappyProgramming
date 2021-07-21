@@ -81,20 +81,35 @@
                                     <c:set var="skillInfo" value="${sessionScope.SKILL_INFO}"/>
                                     <input type="hidden" name="skillID" value="${skillInfo.skillID}"/>
                                     <input type="hidden" name="currentSkillName" value="${skillInfo.skillName}"/>
-                                    Skill name: <input type="text" name="txtSkillName" value="${skillInfo.skillName}" /> <br/>
-                                    <c:if test="${not empty requestScope.UPDATE_SKILL_ERROR.skillNameExisted}">
-                                        <font color="red">${requestScope.UPDATE_SKILL_ERROR.skillNameExisted}</font><br/>
-                                    </c:if>
-                                    <c:if test="${not empty requestScope.UPDATE_SKILL_ERROR.skillNameLengthErr}">
-                                        <font color="red">${requestScope.UPDATE_SKILL_ERROR.skillNameLengthErr}</font><br/>
-                                    </c:if>
-                                    Current status: <c:if test="${skillInfo.status eq 'true'}">Active</c:if>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-2">
+                                            <label for="txtSkillName" class="font-weight-bold">Skill name</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" name="txtSkillName" value="${skillInfo.skillName}" /> <br/>
+                                            <c:if test="${not empty requestScope.UPDATE_SKILL_ERROR.skillNameExisted}">
+                                                <font color="red">${requestScope.UPDATE_SKILL_ERROR.skillNameExisted}</font><br/>
+                                            </c:if>
+                                            <c:if test="${not empty requestScope.UPDATE_SKILL_ERROR.skillNameLengthErr}">
+                                                <font color="red">${requestScope.UPDATE_SKILL_ERROR.skillNameLengthErr}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <label class="font-weight-bold">Current status </label> <c:if test="${skillInfo.status eq 'true'}">Active</c:if>
                                     <c:if test="${skillInfo.status eq 'false'}">Inactive</c:if>
-                                        <br/>
-                                        Status: <select name="status">
-                                            <option>Active</option>
-                                            <option>Inactive</option>
-                                        </select> <br/>
+                                    <br/>
+                                    <div class="form-group row">
+                                        <div class="col-2">
+                                            <label class="font-weight-bold">Status</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <select name="status">
+                                                <option>Active</option>
+                                                <option>Inactive</option>
+                                            </select> <br/>
+                                        </div>
+                                    </div>
                                         <input class='btn btn-primary' type="submit" value="OK" />
                                     </form>
                             </c:if>

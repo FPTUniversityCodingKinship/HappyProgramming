@@ -15,6 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/style.css">
         <title>Update request</title>
     </head>
@@ -64,14 +65,21 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Update Request</h1>
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
-                            Choose request for updating: <br/>
+                            <label class="font-weight-bold">Please choose request for updating </label> <br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                                 <c:url var="url" value="MenteeShowRequest">
                                     <c:param name="action" value="Update"/>
                                     <c:param name="requestID" value="${request.requestID}"/>
                                 </c:url>
-                                <a href="${url}" style="text-decoration: underline !important">${request.title}</a>
-                                (Status: ${request.status})<br/> 
+                                <div class= "row">
+                                    <div class="col-4">
+                                        <i class="fas fa-chevron-right"></i> &nbsp;
+                                        <a href="${url}">${request.title}</a>
+                                    </div>
+                                    <div class="col-2">
+                                        (Status: ${request.status})<br/> 
+                                    </div>
+                                </div>
                             </c:forEach>
                             <br/><br/>    
 
@@ -79,41 +87,82 @@
                                 <c:set var="request" value="${sessionScope.REQUEST_INFO}"/>
                                 <form action="MenteeUpdateRequestSeparately" method="POST">
                                     <c:set var="error" value="${requestScope.UPDATE_REQUEST_ERROR}"/>
-                                    Title: <input type="text" name="title" value="${request.title}"><br/>
-                                    <c:if test="${not empty error.titleLengthError}" >
-                                        <font color="red">${error.titleLengthError}</font><br/>
-                                    </c:if>
-                                    Deadline date (year-month-day): <input type="text" name="deadlineDate" 
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="title" class="font-weight-bold">Title</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control" type="text" name="title" value="${request.title}"><br/>
+                                            <c:if test="${not empty error.titleLengthError}" >
+                                                <font color="red">${error.titleLengthError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="deadlineDate" class="font-weight-bold">Deadline date (year-month-day)</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control" type="text" name="deadlineDate" 
                                                                            value="${fn:split(request.deadline," ")[0]}" /><br/>
-                                    <c:if test="${not empty error.deadlineDateError}" >
-                                        <font color="red">${error.deadlineDateError}</font><br/>
-                                    </c:if>
+                                            <c:if test="${not empty error.deadlineDateError}" >
+                                                <font color="red">${error.deadlineDateError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div> 
                                     <c:set var="hour" value="${fn:split(request.deadline,' ')[1]}"/>
-                                    Deadline hour (hour:minute): <input type="text" name="deadlineHour" 
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="deadlineHour" class="font-weight-bold">Deadline hour (hour:minute)</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control" type="text" name="deadlineHour" 
                                                                         value="${fn:substring(hour,0,5)}" /><br/>
-                                    <c:if test="${not empty error.deadlineTimeError}" >
-                                        <font color="red">${error.deadlineTimeError}</font><br/>
-                                    </c:if>
-                                    Content: <br/> <textarea name="reqContent" rows="4" cols="30"></textarea><br/>
-                                    <c:if test="${not empty error.contentLengthError}" >
-                                        <font color="red">${error.contentLengthError}</font><br/>
-                                    </c:if>
-                                    Select skill (1-3): <br/>
-                                    <c:if test="${not empty sessionScope.SKILL_LIST}">
-                                        <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
-                                        <c:forEach var="skill" items="${skillList}">
-                                            <input type="checkbox" name="ckb" value="${skill.skillName}" 
-                                                   onclick="return chkControl()"/>${skill.skillName}<br/>
-                                        </c:forEach>
-                                    </c:if>
-                                    <c:if test="${not empty error.ckbError}" >
-                                        <font color="red">${error.ckbError}</font><br/>
-                                    </c:if>
-                                    Your mentor ID: <input type="text" name="mentorID" value="${request.mentorID}" /><br/>
-                                    <c:if test="${not empty error.mentorIDConflictError}" >
-                                        <font color="red">${error.mentorIDConflictError}</font><br/>
-                                    </c:if>
-
+                                            <c:if test="${not empty error.deadlineTimeError}" >
+                                                <font color="red">${error.deadlineTimeError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="reqContent" class="font-weight-bold">Content</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <textarea class="form-control" name="reqContent" rows="4" cols="30"></textarea><br/>
+                                            <c:if test="${not empty error.contentLengthError}" >
+                                                <font color="red">${error.contentLengthError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3" class="font-weight-bold">
+                                            <label class="font-weight-bold">Select skill (1-3) </label> 
+                                        </div>
+                                        <div class="col-4">
+                                            <c:if test="${not empty sessionScope.SKILL_LIST}">
+                                                <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
+                                                <c:forEach var="skill" items="${skillList}">
+                                                    <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                                                           onclick="return chkControl()"/>${skill.skillName}<br/>
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${not empty error.ckbError}" >
+                                                <font color="red">${error.ckbError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="mentorID" class="font-weight-bold">Your mentor ID</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control" type="text" name="mentorID" value="${request.mentorID}" /><br/>
+                                            <c:if test="${not empty error.mentorIDConflictError}" >
+                                                <font color="red">${error.mentorIDConflictError}</font><br/>
+                                            </c:if>
+                                        </div>
+                                    </div>
                                     <input class="btn btn-primary" type="submit" value="Update" name="btnAction" onclick="valCkb()"/>
                                 </form>
                             </c:if>

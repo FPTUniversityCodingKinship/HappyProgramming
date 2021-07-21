@@ -66,7 +66,7 @@
                         <h1>View All Mentor</h1>
                         <form action="AdminViewMentor" method="POST">
                             <input type="text" name="searchValue" value="${param.searchValue}" />
-                            <input type="submit" value="Search" /><br/>
+                            <input class="btn btn-info" type="submit" value="Search" /><br/>
                         </form>
                         <br/>
                         <c:if test="${not empty sessionScope.MENTOR_INFO}">
@@ -118,18 +118,24 @@
                                                 <c:if test="${fn:split(mentorInfo['value'],',')[6] eq '0'}">Inactive</c:if>
                                                 </td>
                                                 <td>
-                                                <c:url var="url1" value="AdminManageMentorStatus">
-                                                    <c:param name="searchValue" value="${param.searchValue}"/>
-                                                    <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                    <c:param name="status" value="1"/>
-                                                </c:url>
-                                                <a href="${url1}" style="text-decoration: underline">Active</a> /
-                                                <c:url var="url2" value="AdminManageMentorStatus">
-                                                    <c:param name="searchValue" value="${param.searchValue}"/>
-                                                    <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                    <c:param name="status" value="0"/>
-                                                </c:url>
-                                                <a href="${url2}" style="text-decoration: underline">Inactive</a>
+                                                    <div>
+                                                        <div class="mb-2">
+                                                            <c:url var="url1" value="AdminManageMentorStatus">
+                                                                <c:param name="searchValue" value="${param.searchValue}"/>
+                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                                <c:param name="status" value="1"/>
+                                                            </c:url>
+                                                            <a class="btn btn-success" href="${url1}">Active</a> 
+                                                        </div>
+                                                        <div style="display: inline-block">
+                                                            <c:url var="url2" value="AdminManageMentorStatus">
+                                                                <c:param name="searchValue" value="${param.searchValue}"/>
+                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                                <c:param name="status" value="0"/>
+                                                            </c:url>
+                                                            <a class="btn btn-danger" href="${url2}">Inactive</a>
+                                                        </div>
+                                                    </div>
                                             </td>
                                         </tr>
                                     </c:forEach>
