@@ -2,41 +2,63 @@
     Created on : Jun 20, 2021, 10:46:10 PM
     Author     : Admin
 */
-
-a {
-    font-size: 64px;
-    text-decoration: none;
-    color: #fff;
-    margin-left: 20px;
-    margin-right: 20px;
-    transition: .2s;
-}
-.header {
-    width: 50%;
-    height: 120px;
-    margin-left: 25%;
-    margin-top: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #aaa;
-    border-radius: 10px;
-}
-.animated-background {
+body {
+    width: 100%;
+    height: 1800px;
     position: absolute;
     z-index: -1;
 }
-
-/* Animate area */
-
-a:hover {
-    color: rgb(76, 185, 255);
-    filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.67));
-    margin-top: -4px;
-    transition: .5s;
+footer {
+    height: 0;
+}
+.w-100 {
+    width: 100%;
+    position: fixed;
+    z-index: 10;
 }
 
-/*.fade-in{
+.bold-text {
+    width: auto;
+    display: flex;
+    font-weight: bold;
+}
+
+.header-background {
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+    height: 72px;
+    background-color: #f0f0f0;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.67));
+    opacity: 0;
+    transition: .3s;
+}
+
+.animated-background {
+    z-index: -1;
+}
+.content-container {
+    margin-top: 120px;
+    width: 100%;
+    height: auto;
+}
+.content-child {
+    width: 100%;
+    margin: 240px 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Animate area */
+.animated-logo:hover {
+    opacity: 60%;
+    transition: .3s;
+}
+.animated-logo:active {
+    opacity: 100%;
+    transition: .2s;
+}
+.fade-in{
     animation: fadeIn ease 5s;
 }
 @keyframes fadeIn{
@@ -46,4 +68,4 @@ a:hover {
     100% {
         opacity:1;
     }
-}*/
+}

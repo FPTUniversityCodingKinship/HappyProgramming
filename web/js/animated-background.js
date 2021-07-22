@@ -3,18 +3,23 @@
     Author     : Admin
 */
                     //DON'T BE WORRY ABOUT THIS FACKEN' BULLSHIT ERROR//
-const numberOfNodes = 80;
-const connectionRange = 200;
+const numberOfNodes = 120;
+const connectionRange = 240;
 const connectLineWidth = 1;
 const moveSpeed = 0.5 + Math.random() * 2;
 const particleRadius = 5;
+const gWidth = innerWidth - 12;
+const gHeight = Math.max(window.innerHeight,
+                        document.body.offsetHeight,
+                        document.documentElement.clientHeight);
 
 ((d) => {
   const c = d.querySelector("#background");
   const ctx = c.getContext("2d");
 
-  c.width = innerWidth;
-  c.height = innerHeight;
+  c.width = gWidth;
+  c.height = gHeight;
+  console.log(c.width + "x" + c.height);
 
   class Particles {
     constructor({ x, y, color, radius, d }) {
@@ -63,8 +68,8 @@ const particleRadius = 5;
   let particles;
 
   const init = (e) => {
-    c.width = innerWidth;
-    c.height = innerHeight;
+    c.width = gWidth;
+    c.height = gHeight;
 
     const particlesLenght = numberOfNodes;
     particles = [];

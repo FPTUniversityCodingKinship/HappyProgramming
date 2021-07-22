@@ -90,7 +90,7 @@
                     </p>
                     </c:if>
                     <c:if test="${not empty errors.loginInfoNotMatch}">
-                    <p>
+                    <p style="color: red;">
                         ${errors.loginInfoNotMatch}
                     </p>
                     </c:if>
