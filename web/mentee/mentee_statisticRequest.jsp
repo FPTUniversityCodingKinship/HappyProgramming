@@ -66,7 +66,7 @@
                             <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
                             <div class="row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Mentee ID</label>
+                                    <label class="font-weight-bold">Mentee's ID</label>
                                 </div>
                                 <div class="col-4">
                                     ${user.userID}<br/>
@@ -100,7 +100,7 @@
                         <c:if test="${not empty requestScope.TOTAL_REQUEST}" >
                             <div class="form-group row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Total of request</label>
+                                    <label class="font-weight-bold">Total number of requests</label>
                                 </div>
                                 <div class="col-4">
                                     ${requestScope.TOTAL_REQUEST}
@@ -110,7 +110,7 @@
                         <c:if test="${not empty requestScope.TOTAL_HOUR}" >
                             <div class="form-group row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Total of hours of all request</label>
+                                    <label class="font-weight-bold">Total time of all request (hours)</label>
                                 </div>
                                 <div class="col-4">
                                     ${requestScope.TOTAL_HOUR}

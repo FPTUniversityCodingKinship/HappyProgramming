@@ -81,7 +81,6 @@
         </c:if>
         <c:if test="${empty param.type}">
             <h1>Something went wrong and we're trying to fix it</h1>
-            <h1 hidden>Djtme thằng hamlon sửa url chi zạy</h1>
             <a href="guest_homepage.jsp">
                 Back to Homepage...
             </a>

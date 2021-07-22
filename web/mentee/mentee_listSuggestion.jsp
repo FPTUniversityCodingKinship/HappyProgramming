@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="css/style.css">
-        <title>List mentor suggestion</title>
+        <title>List of suggested Mentor</title>
         <style>
 
         </style>
@@ -67,7 +67,7 @@
                         <h1>List Mentor Suggestion</h1>
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
                             <label class="font-weight-bold">
-                                Please choose request to get mentor suggestion 
+                                Please choose a request to get the list of suggested Mentor 
                             </label><br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                                 <c:url var="url" value="MenteeShowRequest">
@@ -86,7 +86,7 @@
                                 is/are selected for <span class="text-info">${request.title}</span> <br/>
                                 <c:if test="${not empty sessionScope.MAPPING_MENTORS_ID}">
                                     <c:set var="listMentorsID" value="${sessionScope.MAPPING_MENTORS_ID}"/>
-                                    <label class="font-weight-bold">Suggested mentor mapping these skills:</label>
+                                    <label class="font-weight-bold">Suggested mentor having these skills:</label>
 
                                     <c:forEach var="mentorID" items="${listMentorsID}">
                                         <c:url var="url" value="ShowMentorDetails">
@@ -98,7 +98,7 @@
                                         <c:set var="mentorInfo" value="${sessionScope.MENTOR_INFO}"/>
                                         <div class="form-group row">
                                             <div class="col-3">
-                                                <label class="font-weight-bold">Full name of mentor</label>
+                                                <label class="font-weight-bold">Mentor's fullname</label>
                                             </div>
                                             <div class="col-4">
                                                 ${fn:split(mentorInfo, ",")[0]}<br/>
@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-3">
-                                                <label class="font-weight-bold">Account name</label>
+                                                <label class="font-weight-bold">Account's name</label>
                                             </div>
                                             <div class="col-4">
                                                 ${fn:split(mentorInfo, ",")[1]}<br/>
@@ -114,7 +114,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-3">
-                                                <label class="font-weight-bold">Rating star</label>
+                                                <label class="font-weight-bold">Rating (stars)</label>
                                             </div>
                                             <div class="col-4">
                                                 ${fn:split(mentorInfo, ",")[2]}<br/>

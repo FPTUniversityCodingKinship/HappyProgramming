@@ -65,7 +65,7 @@
                         <c:if test="${not empty sessionScope.CURRENT_USER}">
                             <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
 
-                            Mentee ID: ${user.userID}<br/>
+                            Mentee's ID: ${user.userID}<br/>
                         </c:if>
 
                         <c:if test="${not empty requestScope.MENTEE_LIST_REQUEST}">
@@ -73,10 +73,10 @@
                             <table class='table table-bordered table-hover'>
                                 <thead class='thead-light'>
                                     <tr>
-                                        <th>No</th>
+                                        <th>No.</th>
                                         <th>Title</th>
                                         <th>Deadline Date</th>
-                                        <th>Deadline Hour</th>
+                                        <th>Deadline Time</th>
                                         <th>Content</th>
                                         <th>Skill(s)</th>
                                         <th>Status</th>

@@ -23,22 +23,33 @@
     <body>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "MenteeCreateRequestPage";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0) {
+                        document.location = "MenteeCreateRequestPage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting <span id='countdown'>2</span>...           
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "AdminViewRequestsListPage";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0){
+                        document.location = "AdminViewRequestsListPage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                    
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">

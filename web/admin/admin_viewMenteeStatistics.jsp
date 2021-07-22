@@ -78,8 +78,8 @@
                                                 <th class="align-middle" scope='col'>Mentee's Full name</th>
                                                 <th class="align-middle" scope='col'>Mentee's Username</th>
                                                 <th class="align-middle" scope='col'>Total number of Mentors</th>
-                                                <th class="align-middle" scope='col'>Total hours of Requests</th>
-                                                <th class="align-middle" scope='col'>Total skills of all Requests</th>
+                                                <th class="align-middle" scope='col'>Total Request time</th>
+                                                <th class="align-middle" scope='col'>Total Requested Skills</th>
                                             </tr>
                                         </thead>
                                         <tbody>

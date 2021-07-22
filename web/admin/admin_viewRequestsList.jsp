@@ -91,7 +91,7 @@
                                         <div class="col-5">
                                             <input type="text" class="form-control" name="searchValue"
                                                    value="${param.searchValue}" placeholder="Java, Algorithm..." aria-describedby="searchHelp"/>
-                                            <small id="searchHelp" class="form-text text-muted">Enter value you want the request's content to contain, or leave blank to search all the requests</small>
+                                            <small id="searchHelp" class="form-text text-muted">Enter the value contained in a request's content, leave blank to search all the requests</small>
                                         </div>
                                     </div>
 
@@ -130,7 +130,7 @@
                                         <label for="endDate" class="col-4 col-form-label">End Date</label>
                                         <div class="col-5">
                                             <input aria-describedby="dateHelp" class="form-control"  type="date" name="endDate" id="endDate" value="${param.endDate}" />
-                                            <small id="dateHelp" class="form-text text-muted">Filter the requests that have opened date after "Start Date" and closed / rejected date before "End Date</small>
+                                            <small id="dateHelp" class="form-text text-muted">Filter the requests that have opened date after "Start Date" and closed / rejected date before "End Date"</small>
                                         </div>
                                     </div>
                                     <div class='row'>

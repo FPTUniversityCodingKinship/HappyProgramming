@@ -65,7 +65,7 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Update Request</h1>
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
-                            <label class="font-weight-bold">Please choose request for updating </label> <br/>
+                            <label class="font-weight-bold">Please choose the request to be updated </label> <br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                                 <c:url var="url" value="MenteeShowRequest">
                                     <c:param name="action" value="Update"/>
@@ -113,7 +113,7 @@
                                     <c:set var="hour" value="${fn:split(request.deadline,' ')[1]}"/>
                                     <div class="form-group row">
                                         <div class="col-3">
-                                            <label for="deadlineHour" class="font-weight-bold">Deadline hour (hour:minute)</label>
+                                            <label for="deadlineHour" class="font-weight-bold">Deadline time (hour:minute)</label>
                                         </div>
                                         <div class="col-4">
                                             <input class="form-control" type="text" name="deadlineHour" 

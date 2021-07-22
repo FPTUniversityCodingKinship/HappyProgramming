@@ -85,7 +85,7 @@
                                                 <td>${(fn:split(data.deadline," "))[0]}</td>
                                             </tr>
                                             <tr>
-                                                <th scope='row'>Deadline hour</th>
+                                                <th scope='row'>Deadline time</th>
                                                 <td>${(fn:split(data.deadline,' '))[1]}</td>
                                             </tr>
                                             <tr>

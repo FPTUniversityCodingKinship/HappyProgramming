@@ -16,11 +16,10 @@
         
     </head>
     <body>
-        <h1>Your Account is Successfully created</h1>
+        <h1>Your Account has been successfully created</h1>
         <p>
             We are preparing for your best experience.<br/>
-            To make sure you are not a robot, please do for us<br/>
-            one last step is to verify your account.<br/>
+            To make sure you are not a robot, please verify your account<br/>
         </p>
         <p>
             <a onclick="sendMail();">Click here</a> to send verify mail now

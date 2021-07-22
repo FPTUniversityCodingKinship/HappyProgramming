@@ -74,14 +74,14 @@
                             <table class='table table-bordered table-hover'>
                                 <thead class='thead-light'>
                                     <tr>
-                                        <th>STT</th>
+                                        <th>No.</th>
                                         <th>ID</th>
                                         <th>Full name</th>
                                         <th>Account name</th>
                                         <th>Profession</th>
                                         <th># Accepted requests</th>
-                                        <th>Percentage completed (%)</th>
-                                        <th>Rate star</th>
+                                        <th>Completion Rate (%)</th>
+                                        <th>Rated star</th>
                                         <th>Status</th>
                                         <th>Active/Inactive</th>
                                     </tr>
