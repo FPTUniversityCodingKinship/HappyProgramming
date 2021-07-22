@@ -24,11 +24,15 @@
             <h1 class="text-danger">
                 Unauthorised access detected! Redirecting...
             </h1>
-
             <script>
-                setTimeout(function () {
-                    document.location = "MenteeCreateRequestPage";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0) {
+                        document.location = "MenteeCreateRequestPage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
@@ -36,9 +40,14 @@
                 Unauthorised access detected! Redirecting...           
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0) {
+                        document.location = "FollowingRequest";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">

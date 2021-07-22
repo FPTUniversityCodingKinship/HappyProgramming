@@ -34,7 +34,6 @@
                     countdown -= 1;
                 }, 1000);
             </script>
-
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
@@ -50,7 +49,6 @@
                     countdown -= 1;
                 }, 1000);
             </script>
-
         </c:if>
 
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
