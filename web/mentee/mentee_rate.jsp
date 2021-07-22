@@ -35,9 +35,14 @@
                 Unauthorised access detected! Redirecting...
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0) {
+                        document.location = "FollowingRequest";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
@@ -45,9 +50,14 @@
                 Unauthorised access detected! Redirecting...           
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "AdminViewRequestsListPage";
-                }, 2000);
+                var countdown = 2;
+                setInterval(function () {
+                    if (countdown <= 0) {
+                        document.location = "AdminViewRequestsListPage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
