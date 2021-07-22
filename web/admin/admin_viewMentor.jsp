@@ -19,7 +19,7 @@
     <body>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
             </h1>
             <script>
                 var countdown = 2;
@@ -34,7 +34,7 @@
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
             </h1>
             <script>
                 var countdown = 2;
@@ -129,22 +129,22 @@
                                                 <td>
                                                     <div>
                                                         <div class="mb-2">
-                                                            <c:url var="url1" value="AdminManageMentorStatus">
-                                                                <c:param name="searchValue" value="${param.searchValue}"/>
-                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                                <c:param name="status" value="1"/>
-                                                            </c:url>
-                                                            <a class="btn btn-success" href="${url1}">Active</a> 
-                                                        </div>
-                                                        <div style="display: inline-block">
-                                                            <c:url var="url2" value="AdminManageMentorStatus">
-                                                                <c:param name="searchValue" value="${param.searchValue}"/>
-                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                                <c:param name="status" value="0"/>
-                                                            </c:url>
-                                                            <a class="btn btn-danger" href="${url2}">Inactive</a>
-                                                        </div>
+                                                        <c:url var="url1" value="AdminManageMentorStatus">
+                                                            <c:param name="searchValue" value="${param.searchValue}"/>
+                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                            <c:param name="status" value="1"/>
+                                                        </c:url>
+                                                        <a class="btn btn-success" href="${url1}">Active</a> 
                                                     </div>
+                                                    <div style="display: inline-block">
+                                                        <c:url var="url2" value="AdminManageMentorStatus">
+                                                            <c:param name="searchValue" value="${param.searchValue}"/>
+                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                            <c:param name="status" value="0"/>
+                                                        </c:url>
+                                                        <a class="btn btn-danger" href="${url2}">Inactive</a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </c:forEach>

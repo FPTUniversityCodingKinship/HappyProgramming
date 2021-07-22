@@ -22,7 +22,7 @@
     <body>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
             </h1>
             <script>
                 var countdown = 2;
@@ -37,7 +37,7 @@
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
             </h1>
             <script>
                 var countdown = 2;

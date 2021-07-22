@@ -32,7 +32,8 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
+
             </h1>
             <script>
                 var countdown = 2;
@@ -93,14 +94,14 @@
                                             Title of this request: 
                                         </label>
                                         <span class="text-info">${fn:split(entry.value,',')[0]}<br/></span>
-                                    </c:if>
-                                </c:forEach>
+                                        </c:if>
+                                    </c:forEach>
                                 <form action="MenteeRate" method="POST">
                                     <c:set var="error" value="${requestScope.RATE_ERROR}"/>
                                     <input type="hidden" name="requestID" value="${info[0]}"/>
                                     <input type="hidden" name="menteeID" value="${info[1]}"/>
                                     <input type="hidden" name="mentorID" value="${info[2]}"/>
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-1">
                                             <label for="rate" class="font-weight-bold">Rate</label>

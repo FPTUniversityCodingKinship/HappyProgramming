@@ -34,7 +34,8 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
+
             </h1>
             <script>
                 var countdown = 2;
@@ -49,7 +50,8 @@
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
+
             </h1>
             <script>
                 var countdown = 2;
@@ -114,7 +116,7 @@
                                         </div>
                                         <div class="col-4">
                                             <input class="form-control" type="text" name="deadlineDate" 
-                                                                           value="${fn:split(request.deadline," ")[0]}" /><br/>
+                                                   value="${fn:split(request.deadline," ")[0]}" /><br/>
                                             <c:if test="${not empty error.deadlineDateError}" >
                                                 <font color="red">${error.deadlineDateError}</font><br/>
                                             </c:if>
@@ -127,13 +129,13 @@
                                         </div>
                                         <div class="col-4">
                                             <input class="form-control" type="text" name="deadlineHour" 
-                                                                        value="${fn:substring(hour,0,5)}" /><br/>
+                                                   value="${fn:substring(hour,0,5)}" /><br/>
                                             <c:if test="${not empty error.deadlineTimeError}" >
                                                 <font color="red">${error.deadlineTimeError}</font><br/>
                                             </c:if>
                                         </div>
                                     </div> 
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-3">
                                             <label for="reqContent" class="font-weight-bold">Content</label>
