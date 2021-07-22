@@ -28,33 +28,52 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
-
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                var countdown = 2;
+                var countdown = 3;
                 setInterval(function () {
-                    if (countdown <= 0) {
-                        document.location = "FollowingRequest";
+                    if (countdown == 0) {
+                        document.location.replace("FollowingRequest");
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
                     }
-                    document.getElementById('countdown').innerHTML = countdown;
-                    countdown -= 1;
                 }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
-
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                var countdown = 2;
+                var countdown = 3;
                 setInterval(function () {
-                    if (countdown <= 0) {
+                    if (countdown == 0) {
                         document.location = "AdminViewRequestsListPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
                     }
-                    document.getElementById('countdown').innerHTML = countdown;
-                    countdown -= 1;
+                }, 1000);
+            </script>
+        </c:if>
+            <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
                 }, 1000);
             </script>
         </c:if>

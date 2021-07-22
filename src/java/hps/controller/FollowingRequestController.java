@@ -50,7 +50,7 @@ public class FollowingRequestController extends HttpServlet {
             if (session == null) {
                 url = LOGIN_PAGE;
             } else {
-                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); // TODO code
+                UsersDTO curMentor = (UsersDTO) session.getAttribute("CURRENT_USER"); 
                 if (curMentor == null) {
                     url = LOGIN_PAGE;
                 } else {

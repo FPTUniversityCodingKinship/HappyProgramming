@@ -18,37 +18,57 @@
         <title>Update skill</title>
     </head>
     <body>
-       <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                var countdown = 2;
+                var countdown = 3;
                 setInterval(function () {
-                    if (countdown <= 0) {
+                    if (countdown == 0) {
                         document.location = "MenteeCreateRequestPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
                     }
-                    document.getElementById('countdown').innerHTML = countdown;
-                    countdown -= 1;
                 }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting in <span id='countdown'>2</span>...
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                var countdown = 2;
+                var countdown = 3;
                 setInterval(function () {
-                    if (countdown <= 0) {
-                        document.location = "FollowingRequest";
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
                     }
-                    document.getElementById('countdown').innerHTML = countdown;
-                    countdown -= 1;
                 }, 1000);
             </script>
         </c:if>
-
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
             <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
@@ -90,7 +110,7 @@
                                     <c:set var="skillInfo" value="${sessionScope.SKILL_INFO}"/>
                                     <input type="hidden" name="skillID" value="${skillInfo.skillID}"/>
                                     <input type="hidden" name="currentSkillName" value="${skillInfo.skillName}"/>
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-2">
                                             <label for="txtSkillName" class="font-weight-bold">Skill name</label>
@@ -107,18 +127,18 @@
                                     </div>
                                     <label class="font-weight-bold">Current status </label> <c:if test="${skillInfo.status eq 'true'}">Active</c:if>
                                     <c:if test="${skillInfo.status eq 'false'}">Inactive</c:if>
-                                    <br/>
-                                    <div class="form-group row">
-                                        <div class="col-2">
-                                            <label class="font-weight-bold">Status</label>
+                                        <br/>
+                                        <div class="form-group row">
+                                            <div class="col-2">
+                                                <label class="font-weight-bold">Status</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select name="status">
+                                                    <option>Active</option>
+                                                    <option>Inactive</option>
+                                                </select> <br/>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <select name="status">
-                                                <option>Active</option>
-                                                <option>Inactive</option>
-                                            </select> <br/>
-                                        </div>
-                                    </div>
                                         <input class='btn btn-primary' type="submit" value="OK" />
                                     </form>
                             </c:if>
