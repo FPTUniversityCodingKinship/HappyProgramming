@@ -34,22 +34,51 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "AdminViewRequestsListPage";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "AdminViewRequestsListPage";
+                    }
+                    document.getElementById('countdown').innerHTML = countdown;
+                    countdown -= 1;
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
@@ -65,7 +94,7 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Update Request</h1>
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
-                            <label class="font-weight-bold">Please choose request for updating </label> <br/>
+                            <label class="font-weight-bold">Please choose the request to be updated </label> <br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
                                 <c:url var="url" value="MenteeShowRequest">
                                     <c:param name="action" value="Update"/>
@@ -104,7 +133,7 @@
                                         </div>
                                         <div class="col-4">
                                             <input class="form-control" type="text" name="deadlineDate" 
-                                                                           value="${fn:split(request.deadline," ")[0]}" /><br/>
+                                                   value="${fn:split(request.deadline," ")[0]}" /><br/>
                                             <c:if test="${not empty error.deadlineDateError}" >
                                                 <font color="red">${error.deadlineDateError}</font><br/>
                                             </c:if>
@@ -113,17 +142,17 @@
                                     <c:set var="hour" value="${fn:split(request.deadline,' ')[1]}"/>
                                     <div class="form-group row">
                                         <div class="col-3">
-                                            <label for="deadlineHour" class="font-weight-bold">Deadline hour (hour:minute)</label>
+                                            <label for="deadlineHour" class="font-weight-bold">Deadline time (hour:minute)</label>
                                         </div>
                                         <div class="col-4">
                                             <input class="form-control" type="text" name="deadlineHour" 
-                                                                        value="${fn:substring(hour,0,5)}" /><br/>
+                                                   value="${fn:substring(hour,0,5)}" /><br/>
                                             <c:if test="${not empty error.deadlineTimeError}" >
                                                 <font color="red">${error.deadlineTimeError}</font><br/>
                                             </c:if>
                                         </div>
                                     </div> 
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-3">
                                             <label for="reqContent" class="font-weight-bold">Content</label>

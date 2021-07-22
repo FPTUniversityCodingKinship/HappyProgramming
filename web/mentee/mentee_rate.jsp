@@ -32,22 +32,54 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "AdminViewRequestsListPage";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "AdminViewRequestsListPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
@@ -83,14 +115,14 @@
                                             Title of this request: 
                                         </label>
                                         <span class="text-info">${fn:split(entry.value,',')[0]}<br/></span>
-                                    </c:if>
-                                </c:forEach>
+                                        </c:if>
+                                    </c:forEach>
                                 <form action="MenteeRate" method="POST">
                                     <c:set var="error" value="${requestScope.RATE_ERROR}"/>
                                     <input type="hidden" name="requestID" value="${info[0]}"/>
                                     <input type="hidden" name="menteeID" value="${info[1]}"/>
                                     <input type="hidden" name="mentorID" value="${info[2]}"/>
-                                    
+
                                     <div class="form-group row">
                                         <div class="col-1">
                                             <label for="rate" class="font-weight-bold">Rate</label>

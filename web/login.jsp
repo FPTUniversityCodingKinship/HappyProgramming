@@ -108,8 +108,7 @@
                         <p class="text-right">
                             Forgot your password?
                             <a href="ResetPasswordPage">
-                                <span>Thì cút đi bạn</span>
-                                <span hidden>Reset now</span>
+                                <span>Reset now</span>
                             </a>
                         </p>
                     </div> 
@@ -125,10 +124,9 @@
             </form>
             <div class="more-thing">
                 <p>
-                    Or if you are the new one. 
+                    Wanting to join us?
                     <a href="SignUpPage">
-                        <span>Thì cút đi bạn</span>
-                        <span hidden>Create new account now</span>
+                        <span>Create a new account now</span>
                     </a>
                 </p>
             </div>

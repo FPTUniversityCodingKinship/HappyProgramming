@@ -22,23 +22,55 @@
     <body>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...
-            </h1>
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
 
+            </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "MenteeCreateRequestPage";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MenteeCreateRequestPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-danger">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
@@ -91,7 +123,7 @@
                                         <div class="col-5">
                                             <input type="text" class="form-control" name="searchValue"
                                                    value="${param.searchValue}" placeholder="Java, Algorithm..." aria-describedby="searchHelp"/>
-                                            <small id="searchHelp" class="form-text text-muted">Enter value you want the request's content to contain, or leave blank to search all the requests</small>
+                                            <small id="searchHelp" class="form-text text-muted">Enter the value contained in a request's content, leave blank to search all the requests</small>
                                         </div>
                                     </div>
 
@@ -130,7 +162,7 @@
                                         <label for="endDate" class="col-4 col-form-label">End Date</label>
                                         <div class="col-5">
                                             <input aria-describedby="dateHelp" class="form-control"  type="date" name="endDate" id="endDate" value="${param.endDate}" />
-                                            <small id="dateHelp" class="form-text text-muted">Filter the requests that have opened date after "Start Date" and closed / rejected date before "End Date</small>
+                                            <small id="dateHelp" class="form-text text-muted">Filter the requests that have opened date after "Start Date" and closed / rejected date before "End Date"</small>
                                         </div>
                                     </div>
                                     <div class='row'>

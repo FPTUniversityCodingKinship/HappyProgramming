@@ -18,27 +18,56 @@
     </head>
     <body>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
-            <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+            <h1 class="text-danger">
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
-
             <script>
-                setTimeout(function () {
-                    document.location = "MenteeCreateRequestPage";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MenteeCreateRequestPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
-            <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+            <h1 class="text-danger">
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
-
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
 
             <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
@@ -74,14 +103,14 @@
                             <table class='table table-bordered table-hover'>
                                 <thead class='thead-light'>
                                     <tr>
-                                        <th>STT</th>
+                                        <th>No.</th>
                                         <th>ID</th>
                                         <th>Full name</th>
                                         <th>Account name</th>
                                         <th>Profession</th>
                                         <th># Accepted requests</th>
-                                        <th>Percentage completed (%)</th>
-                                        <th>Rate star</th>
+                                        <th>Completion Rate (%)</th>
+                                        <th>Rated star</th>
                                         <th>Status</th>
                                         <th>Active/Inactive</th>
                                     </tr>
@@ -120,22 +149,22 @@
                                                 <td>
                                                     <div>
                                                         <div class="mb-2">
-                                                            <c:url var="url1" value="AdminManageMentorStatus">
-                                                                <c:param name="searchValue" value="${param.searchValue}"/>
-                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                                <c:param name="status" value="1"/>
-                                                            </c:url>
-                                                            <a class="btn btn-success" href="${url1}">Active</a> 
-                                                        </div>
-                                                        <div style="display: inline-block">
-                                                            <c:url var="url2" value="AdminManageMentorStatus">
-                                                                <c:param name="searchValue" value="${param.searchValue}"/>
-                                                                <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                                <c:param name="status" value="0"/>
-                                                            </c:url>
-                                                            <a class="btn btn-danger" href="${url2}">Inactive</a>
-                                                        </div>
+                                                        <c:url var="url1" value="AdminManageMentorStatus">
+                                                            <c:param name="searchValue" value="${param.searchValue}"/>
+                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                            <c:param name="status" value="1"/>
+                                                        </c:url>
+                                                        <a class="btn btn-success" href="${url1}">Active</a> 
                                                     </div>
+                                                    <div style="display: inline-block">
+                                                        <c:url var="url2" value="AdminManageMentorStatus">
+                                                            <c:param name="searchValue" value="${param.searchValue}"/>
+                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                            <c:param name="status" value="0"/>
+                                                        </c:url>
+                                                        <a class="btn btn-danger" href="${url2}">Inactive</a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </c:forEach>

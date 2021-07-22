@@ -32,22 +32,54 @@
                 </header>-->
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "FollowingRequest";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
             <h1 class="text-warning">
-                Unauthorised access detected! Redirecting...           
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
             </h1>
             <script>
-                setTimeout(function () {
-                    document.location = "AdminViewRequestsListPage";
-                }, 2000);
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "AdminViewRequestsListPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
         <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
@@ -66,7 +98,7 @@
                             <c:set var="user" value="${sessionScope.CURRENT_USER}"/>
                             <div class="row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Mentee ID</label>
+                                    <label class="font-weight-bold">Mentee's ID</label>
                                 </div>
                                 <div class="col-4">
                                     ${user.userID}<br/>
@@ -81,8 +113,8 @@
                                 <div class="col-4">
                                     <c:set var="titles" value="${requestScope.REQUESTS_TITLE}" />
                                     <c:forEach var="title" items="${titles}">
-                                       <i class="fas fa-chevron-right"></i> &nbsp;
-                                       ${title} <br/>
+                                        <i class="fas fa-chevron-right"></i> &nbsp;
+                                        ${title} <br/>
                                     </c:forEach> 
                                 </div>
                             </div>
@@ -100,7 +132,7 @@
                         <c:if test="${not empty requestScope.TOTAL_REQUEST}" >
                             <div class="form-group row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Total of request</label>
+                                    <label class="font-weight-bold">Total number of requests</label>
                                 </div>
                                 <div class="col-4">
                                     ${requestScope.TOTAL_REQUEST}
@@ -110,7 +142,7 @@
                         <c:if test="${not empty requestScope.TOTAL_HOUR}" >
                             <div class="form-group row">
                                 <div class="col-2">
-                                    <label class="font-weight-bold">Total of hours of all request</label>
+                                    <label class="font-weight-bold">Total time of all request (hours)</label>
                                 </div>
                                 <div class="col-4">
                                     ${requestScope.TOTAL_HOUR}
