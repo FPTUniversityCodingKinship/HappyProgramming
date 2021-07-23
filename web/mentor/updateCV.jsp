@@ -69,7 +69,6 @@
                         document.getElementById('countdown').innerHTML = countdown;
                         countdown -= 1;
                     }
-
                 }, 1000);
             </script>
         </c:if>
@@ -137,35 +136,6 @@
                                                        value="${mentor.username}" readonly="readonly" />
                                             </div>
                                         </div>
-                                    </div>
-                                                     
-                                    <!--Full name-->
-                                    <div class="form-group row">
-                                        <label for="fullname" class="col-4 col-form-label">Full Name</label>
-                                        <div class="col-5">
-                                            <input type="text" class="form-control" name="fullname" id="fullname" 
-                                                   value="<c:if test="${not empty param.fullname}">${param.fullname}</c:if><c:if test="${empty param.fullname}">${mentor.fullname}</c:if>" 
-                                                       />
-                                                <div class="error alert alert-danger d-none mt-2" role="alert" id="errFullname"></div>
-                                        </div>
-                                    </div>
-
-                                    <!--DOB-->
-                                    <div class="form-group row">
-                                        <label for="dob" class="col-4 col-form-label">Date of Birth (dd/mm/yyyy)</label>
-                                        <div class="col-5">
-                                            <input type="date" class="form-control" name="dob" id="dob" 
-                                                   value="<c:if test="${not empty param.dob}">${param.dob}</c:if><c:if test="${empty param.dob}">${mentor.dob}</c:if>" 
-                                                />
-                                            <div class="error alert alert-danger d-none mt-2" role="alert" id="errDob">
-                                                <c:if test="${not empty error}">
-                                                    <c:if test="${not fn:contains(error, 'Date') }">
-                                                        ${error}
-                                                    </c:if>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                         <!--Avatar-->
                                         <div class="form-group">
@@ -194,7 +164,7 @@
                                                            />
                                                        <div class="error alert alert-danger d-none mt-2" role="alert" id="errFullname"></div>
                                                 </div>
-                                            </div>'
+                                            </div>
 
                                             <!--DOB-->
                                             <div class="form-group row">
