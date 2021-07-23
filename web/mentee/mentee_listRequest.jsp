@@ -124,30 +124,32 @@
                                         <c:set var="skillsID" value="${dto.skillsID}" />
                                         <tr>
                                             <td>
-                                                <input id="requestID" type="hidden" name="requestID" value="${dto.requestID}" />
+                                                <input class="form-control" id="requestID" type="hidden" name="requestID" value="${dto.requestID}" />
                                                 ${counter.count}
                                             </td>
                                             <td>
-                                                <input type="text" name="title" value="${dto.title}" />
+                                                <input class="form-control" type="text" name="title" value="${dto.title}" />
                                             </td>
                                             <td>
-                                                <input type="text" name="deadlineDate" value="${(fn:split(dto.deadline," "))[0]}" />
-                                            </td>
+                                                <input class="form-control" type="text" name="deadlineDate" value="${(fn:split(dto.deadline," "))[0]}" />
+                                            </td> 
                                             <td>
                                                 <c:set var="hour" value="${(fn:split(dto.deadline,' '))[1]}" />
-                                                <input type="text" name="deadlineHour" value="${fn:substring(hour,0,5)}" />
+                                                <input class="form-control" type="text" name="deadlineHour" value="${fn:substring(hour,0,5)}" />
                                             </td>
                                             <td>
-                                                <input type="text" name="reqContent" value="${dto.reqContent}" />
+                                                <input class="form-control" type="text" name="reqContent" value="${dto.reqContent}" />
                                             </td>
                                             <td>
-                                                <input type="text" name="skillsName" value="${skillsDAO.getSkillsName(skillsID)}" />
+                                                <input class="form-control" type="text" name="skillsName" value="${skillsDAO.getSkillsName(skillsID)}" />
                                             </td>
                                             <td>
-                                                ${dto.status}
+                                                <c:if test="${dto.status eq 'C'}">Concluded</c:if>
+                                                <c:if test="${dto.status eq 'R'}">Rejected</c:if>
+                                                <c:if test="${dto.status eq 'P'}">Pending</c:if>
                                             </td>
                                             <td>
-                                                <input class="btn btn-primary" type="submit" value="Delete" name="btnAction" 
+                                                <input class="btn btn-danger" type="submit" value="Delete" name="btnAction" 
                                                        onclick="return confirm('Are you sure that you want to DELETE this request?')"/>
                                             </td>
                                             <td>

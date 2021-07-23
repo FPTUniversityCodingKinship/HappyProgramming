@@ -96,19 +96,21 @@
                         <c:if test="${not empty sessionScope.LIST_REQUEST}">
                             <label class="font-weight-bold">Please choose the request to be updated </label> <br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
-                                <c:url var="url" value="MenteeShowRequest">
-                                    <c:param name="action" value="Update"/>
-                                    <c:param name="requestID" value="${request.requestID}"/>
-                                </c:url>
-                                <div class= "row">
-                                    <div class="col-4">
-                                        <i class="fas fa-chevron-right"></i> &nbsp;
-                                        <a href="${url}">${request.title}</a>
+                                <c:if test="${request.status eq 'P'}">
+                                    <c:url var="url" value="MenteeShowRequest">
+                                        <c:param name="action" value="Update"/>
+                                        <c:param name="requestID" value="${request.requestID}"/>
+                                    </c:url>
+                                    <div class= "row">
+                                        <div class="col-4">
+                                            <i class="fas fa-chevron-right"></i> &nbsp;
+                                            <a href="${url}">${request.title}</a>
+                                        </div>
+                                        <div class="col-2">
+                                            (Status: ${request.status})<br/> 
+                                        </div>
                                     </div>
-                                    <div class="col-2">
-                                        (Status: ${request.status})<br/> 
-                                    </div>
-                                </div>
+                                </c:if>
                             </c:forEach>
                             <br/><br/>    
 
@@ -172,7 +174,7 @@
                                             <c:if test="${not empty sessionScope.SKILL_LIST}">
                                                 <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
                                                 <c:forEach var="skill" items="${skillList}">
-                                                    <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                                                    <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
                                                            onclick="return chkControl()"/>${skill.skillName}<br/>
                                                 </c:forEach>
                                             </c:if>

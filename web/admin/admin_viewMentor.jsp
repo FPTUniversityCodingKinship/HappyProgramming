@@ -145,26 +145,24 @@
                                             <td>  
                                                 <c:if test="${fn:split(mentorInfo['value'],',')[6] eq '1'}">Active</c:if>
                                                 <c:if test="${fn:split(mentorInfo['value'],',')[6] eq '0'}">Inactive</c:if>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <div class="mb-2">
-                                                        <c:url var="url1" value="AdminManageMentorStatus">
-                                                            <c:param name="searchValue" value="${param.searchValue}"/>
-                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                            <c:param name="status" value="1"/>
-                                                        </c:url>
-                                                        <a class="btn btn-success" href="${url1}">Active</a> 
-                                                    </div>
-                                                    <div style="display: inline-block">
-                                                        <c:url var="url2" value="AdminManageMentorStatus">
-                                                            <c:param name="searchValue" value="${param.searchValue}"/>
-                                                            <c:param name="mentorID" value="${mentorInfo['key']}"/>
-                                                            <c:param name="status" value="0"/>
-                                                        </c:url>
-                                                        <a class="btn btn-danger" href="${url2}">Inactive</a>
-                                                    </div>
-                                                </div>
+                                            </td>
+                                            <td>
+                                                <c:if test="${fn:split(mentorInfo['value'],',')[6] eq '1'}">
+                                                    <c:url var="url2" value="AdminManageMentorStatus">
+                                                        <c:param name="searchValue" value="${param.searchValue}"/>
+                                                        <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                        <c:param name="status" value="0"/>
+                                                    </c:url>
+                                                    <a class="btn btn-danger" href="${url2}">Inactive</a>
+                                                </c:if>
+                                                <c:if test="${fn:split(mentorInfo['value'],',')[6] eq '0'}">
+                                                    <c:url var="url1" value="AdminManageMentorStatus">
+                                                        <c:param name="searchValue" value="${param.searchValue}"/>
+                                                        <c:param name="mentorID" value="${mentorInfo['key']}"/>
+                                                        <c:param name="status" value="1"/>
+                                                    </c:url>
+                                                    <a class="btn btn-success" href="${url1}">Active</a>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
