@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
-        <a href="http://localhost:8084/HappyProgramming/"> Back to Homepage</a>
+        <a href="/HappyProgramming/"> Back to Homepage</a>
         <h1>JOIN OUR COMMUNITY NOW!!!</h1>
         <br/>
         <form action="SignUp" method="POST">

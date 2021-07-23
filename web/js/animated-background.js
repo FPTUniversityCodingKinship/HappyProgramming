@@ -3,6 +3,7 @@
     Author     : Admin
 */
                     //DON'T BE WORRY ABOUT THIS FACKEN' BULLSHIT ERROR//
+
 const numberOfNodes = 120;
 const connectionRange = 240;
 const connectLineWidth = 1;
