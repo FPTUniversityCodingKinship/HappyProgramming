@@ -4,22 +4,30 @@
  * and open the template in the editor.
  */
 
-function checkPending() {
+function checkStatus() {
     if ($("#pending").is(":checked")) {
-
         $("#startDate").attr("disabled", "disabled");
         $("#endDate").attr("disabled", "disabled");
-    } else {
+    } else if ($("#accepted").is(":checked")) {
+        $("#startDate").removeAttr("disabled");
+        $("#endDate").attr("disabled", "disabled");
+    } 
+    else {
         $("#startDate").removeAttr("disabled");
         $("#endDate").removeAttr("disabled");
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    checkPending();
+    checkStatus();
 
     $("#pending").click(function () {
 
-        checkPending();
+        checkStatus();
+    });
+    
+    $("#accepted").click(function () {
+
+        checkStatus();
     });
 });
