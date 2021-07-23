@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSession;
 
 /**
  * Web application life-cycle listener.
@@ -51,9 +52,11 @@ public class ContextListener implements ServletContextListener {
                     if (line != null && !line.isEmpty()) {
                         if (line.charAt(0) != '#') {
                             String[] entry = line.split(",", 3);
-                            VerifyDTO dto
-                                        = new VerifyDTO(entry[0], entry[1], entry[2]);
-                            VerifyList.add(dto);
+                            if (!entry[2].isEmpty()) {
+                                VerifyDTO dto = new 
+                                        VerifyDTO(entry[0], entry[1], entry[2]);
+                                VerifyList.add(dto);
+                            }
                         }
                     }
                 }
@@ -126,7 +129,8 @@ public class ContextListener implements ServletContextListener {
 
                         if (line.charAt(0) != '#') {
                             String[] entry = line.split("=", 2);
-                            siteMap.put(entry[0].trim(), entry[1].trim());
+                            if (entry.length > 1)
+                                siteMap.put(entry[0].trim(), entry[1].trim());
                         }
                     }
                 }
@@ -210,14 +214,15 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ServletContext application = sce.getServletContext();
+        ServletContext context = sce.getServletContext();
         String filepath;
         String msg = "";
 
         try {
-            if (application != null) {
-                filepath = application.getRealPath(SITE_MAP_PATH);
-                VerifyList = (ArrayList) application.getAttribute("VERIFY_LIST");
+            if (context != null) {
+                // save csv file
+                filepath = context.getRealPath(SITE_MAP_PATH);
+                VerifyList = (ArrayList) context.getAttribute("VERIFY_LIST");
                 if (VerifyList != null) {
                     setVerifyList(filepath, VerifyList);
                     msg = "verifyList write successful. Destination file: " 

@@ -32,90 +32,145 @@
 
     </head>
     <body>
-        <div class="wrapper">
-            <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
-            <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
-                   scope="page"/>
-            <c:if test="${empty user}">
-                <c:redirect url="LoginPage" />
-            </c:if>
-            <c:if test="${not fn:startsWith(user.userID, 'MT')}">
-                <c:redirect url="/" />
-            </c:if>
-            <header>
-                <!--Menu-->
-                <jsp:include flush="true" page="mentorMenu.jsp">
-                    <jsp:param name="page" value="requestStats"/>
-                </jsp:include>
-            </header>
-            <main>
-                <div id="content">
-                    <jsp:include flush="true" page="/topMenu.jsp"/>
-                    <h1>View Statistics about all of the Requests that belong to you</h1>
-                    <c:set var="error" value="${STATISTICS_ERROR}" />
-                    <c:if test="${not empty error}">
-                        <font color="red">
-                        ${error}
-                        </font>
-                    </c:if>
-                    <c:if test="${empty error}">
-                        <c:set var="data" value="${REQUESTS_STATISTICS_DATA}" />
-                        <c:if test="${not empty data}">
-                            <!-- Trigger/Open The Modal -->
-                            <button class="btn btn-outline-primary" id="btnView" 
-                                    data-toggle="modal" data-target="#statistics">View Statistics</button>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
+            <h1 class="text-warning">
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MenteeCreateRequestPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
+            <h1 class="text-warning">
+                Unauthorised access detected! Redirecting <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "AdminViewRequestsListPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
 
-                            <!-- The Modal -->
-                            <div class="modal fade" id="statistics" tabindex="-1" role="dialog" aria-labelledby="statisticsLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="statisticsLabel">Requests Statistics</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p><strong>Your rating:</strong> 
-                                                <c:if test="${data.rate lt '0'}">
-                                                    <span>0/5</span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                </c:if>
-                                                <c:if test="${data.rate ge '0'}">
-                                                    <span>${data.rate}/5</span>
-                                                    <fmt:parseNumber var="rate" value="${data.rate}"/>
-                                                    <c:set var="rate" value="${rate/100}"/>
-                                                    <c:forEach begin="1" end="${rate}">
-                                                        <span class="fa fa-star checked"></span>
-                                                    </c:forEach>
-                                                    <c:set var="rate" value="${5 - rate}"/>
-                                                    <c:forEach begin="1" end="${rate}">
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
+            <div class="wrapper">
+                <jsp:useBean id="userDao" class="hps.users.UsersDAO" scope="session"/>
+                <c:set var="user" value="${userDao.getProfile(sessionScope.CURRENT_USER.userID)}"
+                       scope="page"/>
+                <c:if test="${empty user}">
+                    <c:redirect url="LoginPage" />
+                </c:if>
+                <c:if test="${not fn:startsWith(user.userID, 'MT')}">
+                    <c:redirect url="/" />
+                </c:if>
+                <header>
+                    <!--Menu-->
+                    <jsp:include flush="true" page="mentorMenu.jsp">
+                        <jsp:param name="page" value="requestStats"/>
+                    </jsp:include>
+                </header>
+                <main>
+                    <div id="content">
+                        <jsp:include flush="true" page="/topMenu.jsp"/>
+                        <h1>View Statistics about all of the Requests that belong to you</h1>
+                        <c:set var="error" value="${STATISTICS_ERROR}" />
+                        <c:if test="${not empty error}">
+                            <font color="red">
+                            ${error}
+                            </font>
+                        </c:if>
+                        <c:if test="${empty error}">
+                            <c:set var="data" value="${REQUESTS_STATISTICS_DATA}" />
+                            <c:if test="${not empty data}">
+                                <!-- Trigger/Open The Modal -->
+                                <button class="btn btn-outline-primary" id="btnView" 
+                                        data-toggle="modal" data-target="#statistics">View Statistics</button>
+
+                                <!-- The Modal -->
+                                <div class="modal fade" id="statistics" tabindex="-1" role="dialog" aria-labelledby="statisticsLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="statisticsLabel">Requests Statistics</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Your rating:</strong> 
+                                                    <c:if test="${data.rate lt '0'}">
+                                                        <span>0/5</span>
                                                         <span class="fa fa-star"></span>
-                                                    </c:forEach>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                        <span class="fa fa-star"></span>
+                                                    </c:if>
+                                                    <c:if test="${data.rate ge '0'}">
+                                                        <span>${data.rate}/5</span>
+                                                        <fmt:parseNumber var="rate" value="${data.rate}"/>
+                                                        <c:set var="rate" value="${rate/100}"/>
+                                                        <c:forEach begin="1" end="${rate}">
+                                                            <span class="fa fa-star checked"></span>
+                                                        </c:forEach>
+                                                        <c:set var="rate" value="${5 - rate}"/>
+                                                        <c:forEach begin="1" end="${rate}">
+                                                            <span class="fa fa-star"></span>
+                                                        </c:forEach>
 
-                                                </c:if>
-                                            </p>
-                                            <p><strong>Number of currently accepted request:</strong> ${data.numAccepted}</p>
-                                            <p><strong>Number of currently requests:</strong> ${data.numRequests}</p>
-                                            <p><strong>Number of currently rejected request:</strong> ${data.numRejected}</p>
-                                            <p><strong>Percentage of rejected request:</strong> ${data.percentRejected}%</p>
-                                            <p><strong>Percentage of completed request:</strong> ${data.percentClosed}%</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </c:if>
+                                                </p>
+                                                <p><strong>Number of currently accepted request:</strong> ${data.numAccepted}</p>
+                                                <p><strong>Number of currently requests:</strong> ${data.numRequests}</p>
+                                                <p><strong>Number of currently rejected request:</strong> ${data.numRejected}</p>
+                                                <p><strong>Percentage of rejected request:</strong> ${data.percentRejected}%</p>
+                                                <p><strong>Percentage of completed request:</strong> ${data.percentClosed}%</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </c:if>
-                    </c:if>
-                </div>
-            </main>
-        </div>
+                    </div>
+                </main>
+            </div>
+        </c:if>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>

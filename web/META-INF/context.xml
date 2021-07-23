@@ -2,8 +2,8 @@
 <Context path="/HappyProgramming" allowCasualMultipartParsing="true">
     
     <!-- Local -->
-<!--
-    <Resource     
+
+<!--    <Resource     
     name="DBContext" auth="Container" type="javax.sql.DataSource"
     driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
     url="jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming;

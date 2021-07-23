@@ -91,7 +91,7 @@ public class LoginController extends HttpServlet {
                                 && gmail.isEmpty()) {
                         String key = "HPSWA-" + username;
                         Cookie cookie = new Cookie(key, password);
-                        cookie.setMaxAge(60*60*24);
+                        cookie.setMaxAge(60*60*1);
                         response.addCookie(cookie);
                         session.setAttribute("CURRENT_COOKIE", cookie);
                     }

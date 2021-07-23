@@ -21,4 +21,7 @@
 p, a, span {    
     font-size: 18px;
 }
+.error-text {
+    color: red;
+}
 

@@ -90,7 +90,7 @@
                     </p>
                     </c:if>
                     <c:if test="${not empty errors.loginInfoNotMatch}">
-                    <p>
+                    <p style="color: red;">
                         ${errors.loginInfoNotMatch}
                     </p>
                     </c:if>
@@ -107,9 +107,8 @@
                     <div class="col-sm-offset-8 col-sm-10">
                         <p class="text-right">
                             Forgot your password?
-                            <a href="ResetPassword">
-                                <span>Thì cút đi bạn</span>
-                                <span hidden>Reset now</span>
+                            <a href="ResetPasswordPage">
+                                <span>Reset now</span>
                             </a>
                         </p>
                     </div> 
@@ -125,10 +124,9 @@
             </form>
             <div class="more-thing">
                 <p>
-                    Or if you are the new one. 
+                    Wanting to join us?
                     <a href="SignUpPage">
-                        <span>Thì cút đi bạn</span>
-                        <span hidden>Create new account now</span>
+                        <span>Create a new account now</span>
                     </a>
                 </p>
             </div>

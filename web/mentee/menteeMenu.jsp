@@ -30,16 +30,16 @@
                 <a href="MenteeStatisticRequest">Statistic of requests</a>
             </li>
             <li class="<c:if test="${iPage eq 'updateRequest'}">${"active"}</c:if>">
-                <a href="MenteeLoadRequest?action=Update">Update request</a>
+                <a href="MenteeLoadRequest?action=Update">Update a request</a>
             </li>
             <li class="<c:if test="${iPage eq 'rate'}">${"active"}</c:if>">
-                <a href="MenteeRate">Rate & Comment mentor</a>
+                <a href="MenteeRate">Rate & Comment on a mentor</a>
             </li>
             <li class="<c:if test="${iPage eq 'listSuggestion'}">${"active"}</c:if>">
-                <a href="MenteeLoadRequest?action=Suggest">List mentor suggestion</a>
+                <a href="MenteeLoadRequest?action=Suggest">List suggested Mentors</a>
             </li>
             <li class="<c:if test="${iPage eq 'followMentor'}">${"active"}</c:if>">
-            <a href="MenteeFollowMentor">Follow mentor</a><br/>
+            <a href="MenteeFollowMentor">Follow a mentor</a><br/>
         </li>
     </ul>
 </nav>

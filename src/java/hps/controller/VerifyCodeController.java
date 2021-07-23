@@ -35,9 +35,7 @@ public class VerifyCodeController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String code = request.getParameter("authCode");
         String url = DEFAULT_PAGE;
-        
         String msg = "";
-        boolean flag = false;
         
         try {
             HttpSession session = request.getSession();
@@ -46,39 +44,41 @@ public class VerifyCodeController extends HttpServlet {
             UsersDTO user = (UsersDTO) session.getAttribute("CURRENT_USER");
             
             if (verifyList != null && user != null) {
+                String email = user.getEmail();
                 for (VerifyDTO entry : verifyList) {
-                    if (entry.getEmail().equals(user.getEmail())) {
+                    if (email != null && entry.getEmail().equals(email)) {
                         if (code.equals(entry.getCode())) {
                             // Call DAO
                             UsersDAO dao = new UsersDAO();
                             if (user.isStatus())
                                 // this pass condition  for signing in but inactive
-                                user = dao.verifyUser(user.getEmail());
+                                user = dao.verifyUser(email);
                             else
                                 // this pass condition  for signing up
-                                user = dao.verifyUserSignUp(user.getEmail());
+                                user = dao.verifyUserSignUp(email);
                             if (user != null)
                                 if (user.isEmailStatus()) {
-                                    //set the url
-                                    url = LOGIN_CONTROLLER + "?txtGmail=" 
-                                                + user.getEmail();
-                                    
+                                    //set the param for url
+                                    url += "?txtGmail=" + email;
+                                    //set success state
+                                    request.setAttribute("SUCCESS_VERIFY", user);
                                     // kick the entry out of the list
                                     verifyList.remove(entry);
                                     // update list
                                     context.setAttribute("VERIFY_LIST", verifyList);
+                                    msg = url;
                                     break;
                                 }
                         }
                         else {
-                            flag = true;
-                            String wrongCode = "You have entered a wrong verification code!";
+                            String wrongCode = 
+                                        "You have entered a wrong verification code!"
+                                        + "Please recheck and enter again:";
                             request.setAttribute("WRONG_VERIFY", wrongCode);
                             break;
                         }
                     }
-                    else
-                        msg = "No email found in verify list on system.";
+                    else msg = "No email found in verify list on system.";
                 }
             }
             RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -96,9 +96,18 @@ public class VerifyCodeController extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
         processRequest(request, response);
     }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
+        processRequest(request, response);
+    }
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
     
 }

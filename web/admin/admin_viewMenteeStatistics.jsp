@@ -20,76 +20,130 @@
         <title>View Mentee Statistics</title>
     </head>
     <body>
-        <div class="wrapper">
-            <c:set var="user" value="${sessionScope.CURRENT_USER}" scope="page"/>
-            <c:if test="${empty user}">
-                <c:redirect url="LoginPage" />
-            </c:if>
-            <c:if test="${not fn:startsWith(user.userID, 'AD')}">
-                <c:redirect url="/" />
-            </c:if>
-            <header>
-                <!--Menu-->
-                <jsp:include flush="true" page="adminMenu.jsp">
-                    <jsp:param name="page" value="menteeStatistics"/>
-                </jsp:include>
-            </header>
-            <main>
-                <div id="content">
-                    <jsp:include flush="true" page="/topMenu.jsp"/>
-                    <h1>View Statistics about all the Mentees</h1>
-                    <div class="row">
-                        <div class="col-8">
-                            <c:set var="error" value="${MENTEE_STATISTICS_ERROR}" />
-                            <c:if test="${not empty error}">
-                                <div class="alert alert-danger mt-2" role="alert">
-                                    ${error}
-                                </div>
-                            </c:if>
-                            <c:set var="data" value="${MENTEE_STATISTICS_DATA}" />
-                            <c:if test="${not empty data}">
-                                <table class='table table-bordered table-hover mt-3'>
-                                    <thead class='thead-light'>
-                                        <tr>
-                                            <th class="align-middle" scope='col'>No.</th>
-                                            <th class="align-middle" scope='col'>Mentee's Full name</th>
-                                            <th class="align-middle" scope='col'>Mentee's Username</th>
-                                            <th class="align-middle" scope='col'>Total number of Mentors</th>
-                                            <th class="align-middle" scope='col'>Total hours of Requests</th>
-                                            <th class="align-middle" scope='col'>Total skills of all Requests</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${data}" var="statistics" varStatus="count">
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'ME')}">
+            <h1 class="text-danger">
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MenteeCreateRequestPage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'MT')}">
+            <h1 class="text-danger">
+                Unauthorised access detected! Redirecting in <span id='countdown'>3</span>...
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "MentorHomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.userID eq null}">
+            <h1 class="text-warning">
+                An unexpected error has happened! Redirecting in <span id='countdown'>3</span>...           
+            </h1>
+            <script>
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming/HomePage";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
+            </script>
+        </c:if>
+        <c:if test="${fn:contains(sessionScope.CURRENT_USER.userID, 'AD')}">
+            <div class="wrapper">
+                <c:set var="user" value="${sessionScope.CURRENT_USER}" scope="page"/>
+                <c:if test="${empty user}">
+                    <c:redirect url="LoginPage" />
+                </c:if>
+                <c:if test="${not fn:startsWith(user.userID, 'AD')}">
+                    <c:redirect url="/" />
+                </c:if>
+                <header>
+                    <!--Menu-->
+                    <jsp:include flush="true" page="adminMenu.jsp">
+                        <jsp:param name="page" value="menteeStatistics"/>
+                    </jsp:include>
+                </header>
+                <main>
+                    <div id="content">
+                        <jsp:include flush="true" page="/topMenu.jsp"/>
+                        <h1>View Statistics about all the Mentees</h1>
+                        <div class="row">
+                            <div class="col-8">
+                                <c:set var="error" value="${MENTEE_STATISTICS_ERROR}" />
+                                <c:if test="${not empty error}">
+                                    <div class="alert alert-danger mt-2" role="alert">
+                                        ${error}
+                                    </div>
+                                </c:if>
+                                <c:set var="data" value="${MENTEE_STATISTICS_DATA}" />
+                                <c:if test="${not empty data}">
+                                    <table class='table table-bordered table-hover mt-3'>
+                                        <thead class='thead-light'>
                                             <tr>
-                                                <td class="align-middle" scope='row'>
-                                                    ${count.count}
-                                                </td>
-                                                <td class="align-middle">
-                                                    ${statistics.menteeName}
-                                                </td>
-                                                <td class="align-middle">
-                                                    ${statistics.username}
-                                                </td>
-                                                <td class="align-middle">
-                                                    ${statistics.numMentor}
-                                                </td>
-                                                <td class="align-middle">
-                                                    ${statistics.requestTotalHour}
-                                                </td>
-                                                <td class="align-middle">
-                                                    ${statistics.totalSkills}
-                                                </td>
+                                                <th class="align-middle" scope='col'>No.</th>
+                                                <th class="align-middle" scope='col'>Mentee's Full name</th>
+                                                <th class="align-middle" scope='col'>Mentee's Username</th>
+                                                <th class="align-middle" scope='col'>Total number of Mentors</th>
+                                                <th class="align-middle" scope='col'>Total Request time</th>
+                                                <th class="align-middle" scope='col'>Total Requested Skills</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </c:if>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${data}" var="statistics" varStatus="count">
+                                                <tr>
+                                                    <td class="align-middle" scope='row'>
+                                                        ${count.count}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        ${statistics.menteeName}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        ${statistics.username}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        ${statistics.numMentor}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        ${statistics.requestTotalHour}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        ${statistics.totalSkills}
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </main>
-        </div>
+                </main>
+            </div>
+        </c:if>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>

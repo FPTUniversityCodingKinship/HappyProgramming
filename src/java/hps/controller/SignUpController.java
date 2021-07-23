@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SignUpController", urlPatterns = {"/SignUpController"})
 public class SignUpController extends HttpServlet {
     private final String SIGNUP_INVALID_PAGE = "SignUpPage";
-    private final String SIGNUP_SUCCESS_PAGE = "Login";
+    private final String SIGNUP_SUCCESS_PAGE = "SignUpSuccessPage";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,6 +41,7 @@ public class SignUpController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        /* Thiếu userID */
         String url = SIGNUP_INVALID_PAGE;
         String email = request.getParameter("txtEmail");
         String username = request.getParameter("txtUsername");
@@ -65,11 +66,11 @@ public class SignUpController extends HttpServlet {
             } else {
                 //2. call DAO if no error found.
                 UsersDAO dao = new UsersDAO();
-                UsersDTO user = dao.newMentee(username, email, password, 
-                            fullname, phone, address, Date.valueOf(dob), sex, 
-                            image, false, false);
+                UsersDTO user;
+                user = dao.newMentee(username, email, password, fullname, phone,
+                            address, Date.valueOf(dob), sex, image, false, false);
                 if (user != null) {
-                    url = SIGNUP_SUCCESS_PAGE;
+                    url = SIGNUP_SUCCESS_PAGE + "?txtGmail=" + email;
                     // CHECK IF ACTIVE OR NOT
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
@@ -78,14 +79,19 @@ public class SignUpController extends HttpServlet {
         } catch (SQLException ex) {
             String errMsg = ex.getMessage();
             log("\nRegisterServlet_SQL: " + errMsg);
+            if (errors == null)
+                errors = new UsersCreateError();
             //if primary key is duplicated, SQL will throws error here.
-            if (errMsg.contains("duplicate")) {
-                errors.setUsernameIsExisted(username + " is existed.");
-                request.setAttribute("CREATE_ERROR", errors);
-            }
+            if (errMsg.contains("username"))
+                errors.setUsernameIsExisted("The username '" + username + "' is existed.");
+            else if (errMsg.contains("email"))
+                errors.setEmailIsExisted("The email '" + email + "' is existed.");
+            else
+                errors.setUserIDFailedToGenerate("Something went wrong =.=");
+            request.setAttribute("CREATE_ERROR", errors);
         } catch (NamingException ex) {
             String errMsg = ex.getMessage();
-            log("RegisterServlet_Naming: " + errMsg);
+            log("\nRegisterServlet_Naming: " + errMsg);
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

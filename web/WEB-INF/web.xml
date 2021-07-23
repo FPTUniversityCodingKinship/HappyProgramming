@@ -4,7 +4,6 @@
         <param-name>ImageFolder</param-name>
         <param-value>/images</param-value>
     </context-param>
-    
     <listener>
         <description>ServletContextListener</description>
         <listener-class>hps.listener.ContextListener</listener-class>
@@ -34,10 +33,50 @@
             5
         </session-timeout>
     </session-config>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>502</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>408</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>504</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>505</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
     <resource-ref>
         <res-ref-name>DBContext</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/omni_error.jsp</location>
+    </error-page>
 </web-app>

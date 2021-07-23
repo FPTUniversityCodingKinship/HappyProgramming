@@ -29,7 +29,7 @@ public class UsersDTO implements Serializable{
     public UsersDTO() {
     }
 
-
+    //CÁI CỦ LÒN NÀY ĐỂ LÀM GÌ VẬY?
     public UsersDTO(String userID, String username, String email, String password, String fullname, String phone, String address, Date dob, String sex, String image, boolean status) {
         this.userID = userID;
         this.username = username;

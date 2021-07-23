@@ -25,38 +25,54 @@ public class UsersDAO implements Serializable {
             //1. Make connection.
             con = DBHelper.makeConnection();
             if (con != null) {
-                //2.Create SQL String.
-                String sql = "Insert Into "
-                        + "users(username, email, password, fullname, phone, "
-                        + "address, dob, sex, image, status, emailStatus) "
-                        + "Values( ?, ?, ?, ?)";
-
-                //3. Create Statement and assign Parameter(s) if any.
-                stm = con.prepareStatement(sql);
-                stm.setString(1, username);
-                stm.setString(2, email);
-                stm.setString(3, password);
-                stm.setString(4, fullname);
-                stm.setString(5, phone);
-                stm.setString(6, address);
-                stm.setDate(7, dob);
-                stm.setString(8, sex);
-                stm.setString(9, image);
-                stm.setBoolean(10, status);
-                stm.setBoolean(11, emailStatus);
-                //4. Execute Query.
-                ResultSet rs = stm.executeQuery();
-
-                //5. Process resultSet.
-                if (rs != null) {
-                    UsersDTO newUser = new UsersDTO();
-                    newUser.setUsername(username);
-                    newUser.setEmail(email);
-                    newUser.setPassword(password);
-                    newUser.setStatus(status);
-                    newUser.setEmailStatus(emailStatus);
-                    return newUser;
+            //1 Check if new userID can use
+                boolean canUse = false;
+                //1.1 Check if username or email was use
+                String unique = checkUniqueNewbie(con, email, username);
+                if (!unique.isEmpty()) {
+                    // if has a value, make SQLException in dupplicate
+                    if (unique.equals("@EXISTED_EMAIL"))
+                        throw new SQLException("duplicate email in table 'users'.");
+                    else
+                        throw new SQLException("duplicate username in table 'users'.");
                 }
+                //1.2 Generate new userID
+                String userID = DBHelper.generateUserID(con);
+                if (!userID.isEmpty()) {
+                    if (userID.contains("ME"))
+                        canUse = true;
+                }
+                if (canUse) {
+                    //3. 
+                    String sql = "INSERT INTO "
+                            + "users(userID, username, email, password, fullname, "
+                            + "phone, address, dob, sex, image, status, emailStatus) "
+                            + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    stm = con.prepareStatement(sql);
+                    stm.setString(1, userID);
+                    stm.setString(2, username);
+                    stm.setString(3, email);
+                    stm.setString(4, password);
+                    stm.setString(5, fullname);
+                    stm.setString(6, phone);
+                    stm.setString(7, address);
+                    stm.setDate(8, dob);
+                    stm.setString(9, sex);
+                    stm.setString(10, image);
+                    stm.setBoolean(11, status);
+                    stm.setBoolean(12, emailStatus);
+                    int row = stm.executeUpdate();
+
+                    if (row > 0) {
+                        UsersDTO newUser = new UsersDTO(userID, username, email,
+                                    password, fullname, phone, address, dob, sex,
+                                    image, status, emailStatus);
+                        return newUser;
+                    }
+                    else throw new SQLException("failed to insert new user.");
+                }
+                else throw new 
+                    SQLException("something wrong in accessing the database.");
             }
         } finally {
             if (stm != null) {
@@ -68,13 +84,43 @@ public class UsersDAO implements Serializable {
         }
         return null;
     }
+    
+    private static String checkUniqueNewbie(Connection con, 
+                String email, String username) throws SQLException {
+        //connection existed.
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String sql;
+        
+        try {
+            sql = "SELECT userID FROM users WHERE email = ?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, email);
+            rs = stm.executeQuery();
+            if (rs.next())
+                return "@EXISTED_EMAIL";
+            sql = "SELECT userID FROM users WHERE username = ?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, username);
+            rs = stm.executeQuery();
+            if (rs.next())
+                return "@EXISTED_USERNAME";
+            
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stm != null)
+                stm.close();
+        }
+        return "";
+    }
 
     public UsersDTO checkLogin(String username, String password)
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
-        UsersDTO user = null;
+        ResultSet rs;
+        UsersDTO user;
         try {
             //1.Establish Connection
             con = DBHelper.makeConnection();
@@ -151,7 +197,7 @@ public class UsersDAO implements Serializable {
         }
         return null;
     }
-
+    // On Updating user's profile
     public boolean checkUsername(String username, String userID)
             throws NamingException, SQLException {
         Connection con = null;
@@ -294,7 +340,7 @@ public class UsersDAO implements Serializable {
         //1. Establish DB Connection
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
+        ResultSet rs;
         try {
             con = DBHelper.makeConnection();
             if (con != null) {
@@ -377,7 +423,7 @@ public class UsersDAO implements Serializable {
             throws NamingException, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
+        ResultSet rs;
         try {
             //1.Establish Connection
             con = DBHelper.makeConnection();
@@ -391,8 +437,7 @@ public class UsersDAO implements Serializable {
                 //3. Store in ResultSet
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    UsersDTO dto = new UsersDTO();
-                    dto = new UsersDTO(
+                    UsersDTO dto = new UsersDTO(
                             rs.getString("userID"), rs.getString("username"),
                             rs.getString("email"), rs.getString("password"),
                             rs.getNString("fullname"), rs.getString("phone"),

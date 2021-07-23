@@ -7,12 +7,14 @@ package hps.users;
  */
 public class UsersCreateError {
     //register
+    private String userIDFailedToGenerate;
     private String usernameLengthErr;
     private String emailInvalid;
     private String passwordLengthErr;
     private String confirmNotMatch;
     private String fullnameLengthErr;
     private String usernameIsExisted;
+    private String emailIsExisted;
     private String phoneInvalid;
     private String addressInvalid;
     private String dobInvalid;
@@ -22,6 +24,20 @@ public class UsersCreateError {
 
     public UsersCreateError() {
         
+    }
+    
+    /**
+     * @return the userIDFailedToGenerate
+     */
+    public String getUserIDFailedToGenerate() {
+        return userIDFailedToGenerate;
+    }
+
+    /**
+     * @param userIDFailedToGenerate the userIDFailedToGenerate to set
+     */
+    public void setUserIDFailedToGenerate(String userIDFailedToGenerate) {
+        this.userIDFailedToGenerate = userIDFailedToGenerate;
     }
 
     /**
@@ -106,6 +122,20 @@ public class UsersCreateError {
      */
     public void setUsernameIsExisted(String usernameIsExisted) {
         this.usernameIsExisted = usernameIsExisted;
+    }
+
+    /**
+     * @return the emailIsExisted
+     */
+    public String getEmailIsExisted() {
+        return emailIsExisted;
+    }
+
+    /**
+     * @param emailIsExisted the emailIsExisted to set
+     */
+    public void setEmailIsExisted(String emailIsExisted) {
+        this.emailIsExisted = emailIsExisted;
     }
 
     /**

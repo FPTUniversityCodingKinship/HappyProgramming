@@ -109,17 +109,27 @@ public class Validation implements Serializable{
                 String address, String phone) {
         UsersCreateError errors = new UsersCreateError();
         boolean foundErr = false;
-        if (!email.trim().matches("/^[^\\s@]+@[^\\s@]+$/")) {
+        
+        if (!email.trim().matches("[a-zA-Z0-9]*@[a-z.]*")
+                    || email.trim().length() < 1) {
             foundErr = true;
-            errors.setUsernameLengthErr("Email not matches.");
+            errors.setEmailInvalid("Email is invalid.");
         }
         if (username.trim().length() < 6 || username.trim().length() > 30) {
             foundErr = true;
             errors.setUsernameLengthErr("Username requires input between 6 and 30 characters.");
         }
+        else if (!username.trim().matches("[a-zA-Z]+[a-zA-Z0-9]*")) {
+            foundErr = true;
+            errors.setUsernameLengthErr("Username cannot include special characters.");
+        }
         if (password.trim().length() < 6 || password.trim().length() > 20) {
             foundErr = true;
             errors.setPasswordLengthErr("Password requires input between 6 and 20 characters.");
+        }
+        else if (!password.trim().matches("[a-zA-Z0-9]*")) {
+            foundErr = true;
+            errors.setPasswordLengthErr("Password cannot include special characters.");
         }
         if (!confirm.trim().equals(password.trim())) {
             foundErr = true;
@@ -129,19 +139,22 @@ public class Validation implements Serializable{
             foundErr = true;
             errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
         }
-        if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
+        if (dob.trim().length() < 8) {
             foundErr = true;
-            errors.setFullnameLengthErr("Fullname requires input between 2 and 50 characters.");
+            errors.setDobInvalid("Birthday requires input.");
         }
         if (address.trim().length() < 2) {
             foundErr = true;
-            errors.setFullnameLengthErr("Address requires not empty.");
+            errors.setAddressInvalid("Address requires input.");
         }
-        if (phone.trim().length() < 9 || fullname.trim().length() > 10) {
+        if (!address.trim().matches("[a-zA-Z0-9 /.,]*")) {
             foundErr = true;
-            errors.setFullnameLengthErr("Phone number is not correct.");
+            errors.setAddressInvalid("Address seems wrong or contains unexpected characters.");
         }
-        
+        if (!phone.trim().matches("[0-9]{9,12}")) {
+            foundErr = true;
+            errors.setPhoneInvalid("It might not a phone number.");
+        }
         if (foundErr)
             return errors;
         return null;
