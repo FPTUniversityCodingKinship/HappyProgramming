@@ -141,7 +141,7 @@
                                                     <c:if test="${data.rate ge '0'}">
                                                         <span>${data.rate}/5</span>
                                                         <fmt:parseNumber var="rate" value="${data.rate}"/>
-                                                        <c:set var="rate" value="${rate/100}"/>
+                                                        <c:set var="rate" value="${REQUESTS_STATISTICS_DATA_STAR}"/>
                                                         <c:forEach begin="1" end="${rate}">
                                                             <span class="fa fa-star checked"></span>
                                                         </c:forEach>

@@ -60,6 +60,7 @@
                 <main>
                     <div id="content">
                         <jsp:include flush="true" page="/topMenu.jsp"/>
+                         <h1>Your Profile</h1>
                         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
                             <div class="container">
                                 <div class="row">

@@ -69,7 +69,6 @@
                         document.getElementById('countdown').innerHTML = countdown;
                         countdown -= 1;
                     }
-
                 }, 1000);
             </script>
         </c:if>
@@ -165,7 +164,7 @@
                                                            />
                                                        <div class="error alert alert-danger d-none mt-2" role="alert" id="errFullname"></div>
                                                 </div>
-                                            </div>'
+                                            </div>
 
                                             <!--DOB-->
                                             <div class="form-group row">

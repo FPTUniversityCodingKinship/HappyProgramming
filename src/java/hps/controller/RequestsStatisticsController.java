@@ -83,6 +83,7 @@ public class RequestsStatisticsController extends HttpServlet {
                     RequestsStatisticsDTO returnDTO = new RequestsStatisticsDTO(numAccepted, numRequests, numRejected, percentRejected, percentClosed, rate);
 
                     request.setAttribute("REQUESTS_STATISTICS_DATA", returnDTO);
+                    request.setAttribute("REQUESTS_STATISTICS_DATA_STAR", (int)rate);
                     url = VIEW_PAGE;
 
                 }
