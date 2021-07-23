@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Login Page</title>
-        
+        <link rel="icon" href="images/webpage.ico">
         <!-- External ref -->
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="401908117605-vofu7m8maarbv0c6remdnf8n1r568060.apps.googleusercontent.com">
@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="css/login.css">
         <link rel="stylesheet" href="css/header.css">
         <link rel="stylesheet" href="css/animated-background.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.0/css/font-awesome.css" integrity="sha512-CB+XYxRC7cXZqO/8cP3V+ve2+6g6ynOnvJD6p4E4y3+wwkScH9qEOla+BTHzcwB4xKgvWn816Iv0io5l3rAOBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!-- Script ref -->
         <script src="js/login.js"></script>
     </head>
@@ -36,7 +36,7 @@
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
-                <form class="form-inline input-group"
+                <form class="form-inline input-group" action="#"
                       style="width: 320px; float: left; margin-left: 12px">
                     <input class="form-control" type="search"
                            placeholder="Search something..." aria-label="Search">
@@ -98,7 +98,8 @@
                 <c:set var="errors" value="${requestScope.LOGIN_ERROR}"/>
                 <form method="POST" action="Login" class="form-horizontal">
                     <div class="form-group">
-                        <label for="txtUsername" class="col-md-2 col-form-label col-form-label-lg">
+                        <label for="txtUsername" class="col-md-4 col-form-label col-form-label-lg">
+                            <i class="fas fa-user" style="margin-right: 12px;"></i>
                             Username:
                         </label>
                         <div class="col-md-10">
@@ -114,7 +115,8 @@
                         </c:if>
                     </div>
                     <div class="form-group">
-                        <label for="txtPassword" class="col-md-2 col-form-label col-form-label-lg">
+                        <label for="txtPassword" class="col-md-4 col-form-label col-form-label-lg">
+                            <i class="fas fa-key" style="margin-right: 12px;"></i>
                             Password:
                         </label>
                         <div class="col-md-10">
