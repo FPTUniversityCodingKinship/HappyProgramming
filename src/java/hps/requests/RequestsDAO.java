@@ -1218,7 +1218,7 @@ public class RequestsDAO implements Serializable {
                 }
                 if (status != null && status.length > 0) {
                     if (!searchValue.trim().isEmpty()) {
-                        sql += "AND ";
+                        sql += " AND ";
                     }
                     sql += "(";
                     for (int i = 0; i < status.length; i++) {
@@ -1240,10 +1240,11 @@ public class RequestsDAO implements Serializable {
                     } else {
                         sql += "openedTime >= '" + startDate + "'";
                     }
+                    
                 } else {
                     if (endDate != null) {
-                        if (!searchValue.trim().isEmpty() || (status != null && status.length > 0)) {
-                            sql += "AND ";
+                        if (!searchValue.trim().isEmpty() || (status != null && status.length > 0) || startDate != null) {
+                            sql += " AND ";
                         }
                         sql += "(closedTime <= '" + endDate + "' OR canceledTime <= '" + endDate + "')";
                     }
