@@ -13,13 +13,13 @@
     
     <!-- Cloud -->
     
-    <Resource
+<!--    <Resource
         name="DBContext" auth="Container" type="javax.sql.DataSource"
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
         url="jdbc:sqlserver://SQL5053.site4now.net:1433;
             databaseName=db_a75ca4_happyprogramming;"
         username="db_a75ca4_happyprogramming_admin" password="Hps123456"
-    />
+    />-->
 
 <!--    
     <Resource
@@ -30,4 +30,11 @@
         username="hpsAdmin" password="Happy123456"
     />
 -->    
+    <Resource
+        name="DBContext" auth="Container" type="javax.sql.DataSource" 
+        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+        url="jdbc:sqlserver://happyprogramming.database.windows.net:1433;
+                database=happyprogramming;"
+        username="happyprogramming_admin@happyprogramming" password="Team3@SWP_FPTU"
+    />
 </Context>
