@@ -147,10 +147,8 @@
                                                 ${dto.status}
                                             </td>
                                             <td>
-                                                <c:if test="${dto.status eq 'P'}">
-                                                    <input class="btn btn-primary" type="submit" value="Delete" name="btnAction" 
-                                                           onclick="return confirm('Are you sure that you want to DELETE this request?')"/>
-                                                </c:if> 
+                                                <input class="btn btn-primary" type="submit" value="Delete" name="btnAction" 
+                                                       onclick="return confirm('Are you sure that you want to DELETE this request?')"/>
                                             </td>
                                             <td>
                                                 <c:if test="${dto.status eq 'P'}">
@@ -193,7 +191,7 @@
                 </main>
             </div>
         </c:if>
-
+            
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdn.tiny.cloud/1/uvrwnlarfgzt2bb56y6vdl6cb5mhfr6h5sl6tqnucb5yuvvu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
