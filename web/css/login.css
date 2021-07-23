@@ -3,14 +3,24 @@
     Author     : Admin
 */
 @charset "UTF-8";
+body {
+    width: 100%;
+    height: auto;
+    
+}
 a {
     text-decoration: none;
+}
+
+.animated-background {
+    position: absolute;
+    z-index: -1;
 }
 .frm-login {
     width: 40%;
     float: left;
     height: 660px;
-    margin-left: 25%;
+    margin-left: 30%;
     margin-top: 120px;
     background-color: #f0f0f0;
     border-radius: 2%;

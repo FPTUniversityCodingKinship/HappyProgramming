@@ -1,0 +1,46 @@
+
+/* 
+    Created on : Jul 20, 2021, 4:26:38 PM
+    Author     : Admin
+*/
+
+.w-100 {
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+.bold-text {
+    width: auto;
+    display: flex;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+.header-button {
+    font-size: 27px;
+    color: #FFF;
+    transition: .3s;
+}
+.header-background {
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+    height: 72px;
+    background-color: #f0f0f0;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.67));
+    opacity: 0;
+    transition: .3s;
+}
+
+/* Animate area */
+.animated-logo:hover {
+    opacity: 60%;
+    transition: .3s;
+}
+.animated-logo:active {
+    opacity: 100%;
+    transition: .2s;
+}
+.header-button:hover {
+    color: #33BEEE;
+}

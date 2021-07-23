@@ -1,5 +1,5 @@
 var headerBackground = document.getElementById('headerBackground');
-
+var headerLink = document.getElementById('headerLink').children;
 
 $(document).ready(function () {
     if (history.scrollRestoration) {
@@ -28,9 +28,25 @@ $(document).ready(function () {
 
         $('#scrollPercentLabel>span').html(scrollPercentRounded);
         if (scrollPercentRounded > 0) {
-            headerBackground.setAttribute('style', 'opacity:' + scrollPercent*50 + ';');
+            headerBackground.setAttribute('style', 'opacity:' + scrollPercent * 50 + ';');
+            headerLink[0].style.color = '#309937';
+            headerLink[1].style.color = '#309937';
+            $(".header-button").hover(function () {
+                $(this).css("color", "#104E91");
+            }, function () {
+                $(this).css("color", "#309937");
+            });
         } else {
             headerBackground.setAttribute('style', 'opacity: 0;');
+            headerLink[0].style.color = '#FFF';
+            headerLink[1].style.color = '#FFF';
+            $(".header-button").hover(function () {
+                $(this).css("color", "#33BEEE");
+            }, function () {
+                $(this).css("color", "#FFF");
+            });
         }
     });
+
 });
+

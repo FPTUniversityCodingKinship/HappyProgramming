@@ -17,6 +17,7 @@
         
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/guest_homepage.css">
+        <link rel="stylesheet" href="css/header.css">
         <!-- Source for animated background -->
         <link rel="stylesheet" href="css/animated-background.css">
         <!-- External script -->
@@ -35,8 +36,8 @@
         <nav class="navbar navbar-light w-100">
             <div class="navbar-brand">
                 <a class="animated-logo" href="">
-                    <img src="images/webpage.ico" alt=""
-                         style="width: 32px; float: left"/>
+                    <img src="images/main-logo.png" alt=""
+                         style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
                 <form class="form-inline input-group"
                       style="width: 320px; float: left; margin-left: 12px">
@@ -47,9 +48,9 @@
                     </div>
                 </form>
             </div>
-            <div class="bold-text text-right">
-                <a class="nav-link" href="LoginPage">Log In</a>
-                <a class="nav-link" href="SignUpPage">Sign Up</a>
+            <div class="bold-text text-right" id="headerLink">
+                <a class="nav-link header-button" href="LoginPage">Log In</a>
+                <a class="nav-link header-button" href="SignUpPage">Sign Up</a>
             </div>
             <div class="header-background" id="headerBackground"></div>
         </nav>

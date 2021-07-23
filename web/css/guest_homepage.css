@@ -7,31 +7,11 @@ body {
     height: 1800px;
     position: absolute;
     z-index: -1;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 footer {
     height: 0;
-}
-.w-100 {
-    width: 100%;
-    position: fixed;
-    z-index: 10;
-}
-
-.bold-text {
-    width: auto;
-    display: flex;
-    font-weight: bold;
-}
-
-.header-background {
-    width: 100%;
-    position: fixed;
-    z-index: -1;
-    height: 72px;
-    background-color: #f0f0f0;
-    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.67));
-    opacity: 0;
-    transition: .3s;
 }
 
 .animated-background {
@@ -50,14 +30,6 @@ footer {
 }
 
 /* Animate area */
-.animated-logo:hover {
-    opacity: 60%;
-    transition: .3s;
-}
-.animated-logo:active {
-    opacity: 100%;
-    transition: .2s;
-}
 .fade-in{
     animation: fadeIn ease 5s;
 }
