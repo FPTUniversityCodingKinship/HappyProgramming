@@ -164,13 +164,13 @@
                                                                 <c:url var="approveURL" value="Approve">
                                                                     <c:param name="requestID" value="${request.requestID}" />
                                                                     <c:param name="mentorID" value="${user.userID}" />
-                                                                    <c:param name="redirect" value="FollowingRequest" />
+                                                                    <c:param name="redirect" value="InvitingRequest" />
                                                                 </c:url>
                                                                 <a class='btn btn-outline-primary d-block' href="${approveURL}">Approve</a>
                                                                 <c:url var="rejectURL" value="Reject">
                                                                     <c:param name="requestID" value="${request.requestID}" />
                                                                     <c:param name="mentorID" value="${user.userID}" />
-                                                                    <c:param name="redirect" value="FollowingRequest" />
+                                                                    <c:param name="redirect" value="InvitingRequest" />
                                                                 </c:url>
                                                                 <a class='btn btn-outline-danger d-block mt-2' href="${rejectURL}">Reject</a>
                                                             </td>
@@ -183,7 +183,7 @@
                                                             <td class="align-middle">
                                                                 <c:url var="closeURL" value="Close">
                                                                     <c:param name="requestID" value="${request.requestID}" />
-                                                                    <c:param name="redirect" value="FollowingRequest" />
+                                                                    <c:param name="redirect" value="InvitingRequest" />
                                                                 </c:url>
                                                                 <a class='btn btn-outline-success' href="${closeURL}">Closed</a>
                                                             </td>
