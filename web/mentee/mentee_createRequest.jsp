@@ -97,6 +97,14 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Create Request</h1>
                         <c:set var="error" value="${requestScope.REQUEST_ERROR}"/>
+                        <c:set var="success" value="${requestScope.SUCCESS_MESSAGE}"/>
+                        <c:if test="${not empty success}">
+                            <h3>
+                                <span class="badge badge-success">
+                                    <c:out value="${success}"/>
+                                </span>
+                            </h3>
+                        </c:if>
                         <form action="MenteeCreateRequest" method="POST">
                             <div class="form-group row">
                                 <div class="col-3">
@@ -150,7 +158,7 @@
                                     <c:if test="${not empty sessionScope.SKILL_LIST}">
                                         <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
                                         <c:forEach var="skill" items="${skillList}">
-                                            <input type="checkbox" name="ckb" value="${skill.skillName}" 
+                                            <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
                                                    onclick="return chkControl()"/>${skill.skillName}<br/>
                                         </c:forEach>
                                     </c:if>
@@ -176,44 +184,44 @@
                 </main>
             </div>
         </c:if>
-
+            
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <script src="https://cdn.tiny.cloud/1/uvrwnlarfgzt2bb56y6vdl6cb5mhfr6h5sl6tqnucb5yuvvu/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <script src="js/menu.js"></script>
         <script>
-                                function chkControl() {
-                                    var a = document.getElementsByName("ckb");
-                                    var total = 0;
-                                    var count;
-                                    for (count = 0; count < a.length; count++) {
-                                        if (a[count].checked == true) {
-                                            total = total + 1;
-                                        }
-                                    }
-                                    if (total > 3 || total < 1) {
-                                        alert("Select at least 1, at most 3");
-                                        return false;
-                                    }
-                                }
-                                function valCkb()
-                                {
-                                    var checkboxs = document.getElementsByName("ckb");
-                                    var iCheck = false;
-                                    for (var i = 0; i < checkboxs.length; i++)
-                                    {
-                                        if (checkboxs[i].checked)
-                                        {
-                                            iCheck = true;
-                                            break;
-                                        }
-                                    }
-                                    if (iCheck) {
+            function chkControl() {
+                var a = document.getElementsByName("ckb");
+                var total = 0;
+                var count;
+                for (count = 0; count < a.length; count++) {
+                    if (a[count].checked == true) {
+                        total = total + 1;
+                    }
+                }
+                if (total > 3 || total < 1) {
+                    alert("Select at least 1, at most 3");
+                    return false;
+                }
+            }
+            function valCkb()
+            {
+                var checkboxs = document.getElementsByName("ckb");
+                var iCheck = false;
+                for (var i = 0; i < checkboxs.length; i++)
+                {
+                    if (checkboxs[i].checked)
+                    {
+                        iCheck = true;
+                        break;
+                    }
+                }
+                if (iCheck) {
 
-                                    } else
-                                        alert("Please select at least 1 skill");
-                                }
+                } else
+                    alert("Please select at least 1 skill");
+            }
         </script>
     </body>
 </html>

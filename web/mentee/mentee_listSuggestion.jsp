@@ -103,12 +103,14 @@
                                 Please choose a request to get the list of suggested Mentor 
                             </label><br/>
                             <c:forEach var="request" items="${sessionScope.LIST_REQUEST}">
-                                <c:url var="url" value="MenteeShowRequest">
-                                    <c:param name="action" value="Suggest"/>
-                                    <c:param name="requestID" value="${request.requestID}"/>
-                                </c:url>
-                                <i class="fas fa-chevron-right"></i> &nbsp;
-                                <a href="${url}">${request.title}</a><br/>
+                                <c:if test="${request.status eq 'P'}">
+                                    <c:url var="url" value="MenteeShowRequest">
+                                        <c:param name="action" value="Suggest"/>
+                                        <c:param name="requestID" value="${request.requestID}"/>
+                                    </c:url>
+                                    <i class="fas fa-chevron-right"></i> &nbsp;
+                                    <a href="${url}">${request.title}</a><br/>
+                                </c:if>
                             </c:forEach>
                             <br/><br/>
                             <c:if test="${not empty sessionScope.REQUEST_INFO}">

@@ -40,6 +40,7 @@ private final String REQUEST_ERROR = "MenteeCreateRequestPage";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         
         String title = request.getParameter("title");
@@ -90,6 +91,7 @@ private final String REQUEST_ERROR = "MenteeCreateRequestPage";
                     mentorID, skillsID, deadline, title, reqContent, status, openedTime);
                 if(result){
                     url = REQUEST_SUCCESS;
+                    request.setAttribute("SUCCESS_MESSAGE", "Request Successfully!");
                 }
             }
         } catch (NamingException ex) {
