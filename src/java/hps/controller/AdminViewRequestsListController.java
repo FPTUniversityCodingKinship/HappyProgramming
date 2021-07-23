@@ -76,11 +76,11 @@ public class AdminViewRequestsListController extends HttpServlet {
                     } else {
                         Date startDate = null;
                         Date endDate = null;
-                        if (startDate != null && !startDateStr.trim().isEmpty()) {
+                        if (startDateStr != null && !startDateStr.trim().isEmpty()) {
                             startDate = java.sql.Date.valueOf(startDateStr);
                         }
-                        if (endDate != null && !endDateStr.trim().isEmpty()) {
-                            endDate = java.sql.Date.valueOf(endDateStr);
+                        if (endDateStr != null && !endDateStr.trim().isEmpty()) {
+                            endDate = java.sql.Date.valueOf(java.sql.Date.valueOf(endDateStr).toLocalDate().plusDays(1));
                         }
 
                         RequestsDAO requestsDAO = new RequestsDAO();
