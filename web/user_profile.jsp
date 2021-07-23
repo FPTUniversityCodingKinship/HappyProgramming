@@ -58,7 +58,7 @@
                     <jsp:include flush="true" page="${menu}/${menu}Menu.jsp"/>
                 </header>
                 <main>
-                    <div id="content">
+                    <div id="content" class="form-group">
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                          <h1>Your Profile</h1>
                         <form action="UpdateProfileController" enctype="multipart/form-data" method="POST">
@@ -72,7 +72,7 @@
                                         <input type="hidden" name="txtUserImg" value="${user.image}" />
                                     </div>
                                     <div class="col col-md-5" style="margin-bottom: 3%">
-                                        Update your avatar here: <input type="file" name="imageFile"/><br />
+                                        Update your avatar here: <input type="file" class="form-control-file" name="imageFile"/>
                                         User ID: ${user.userID}<br />
                                         <input type="hidden" name="txtUserID" value="${user.userID}" />
                                         <font color="red">
@@ -80,28 +80,32 @@
                                         </font>
                                         <font color="red">
                                         ${err.usernameIsExisted}
-                                        </font><br />
-                                        Username: <input type="text" name="txtUsername" value="${user.username}" /><br />
+                                        </font>
+                                        <br />
+                                        Username: <input type="text" class="form-control" name="txtUsername" value="${user.username}" />
                                         <font color="red">
                                         ${err.passwordLengthErr}
-                                        </font><br />
-                                        Password: <input type="text" name="txtPassword" value="${user.password}" /><br />
-                                        </font><br />
-                                        Email: ${user.email}<br />
+                                        </font>
+                                        <br />
+                                        Password: <input type="text" class="form-control" name="txtPassword" value="${user.password}" />
+                                        <br />
+                                        Email: ${user.email}
+                                        <br />
                                         <font color="red">
                                         ${err.fullnameLengthErr}
-                                        </font><br />
-                                        Full name: <input type="text" name="txtFullname" value="${user.fullname}" /><br />
+                                        </font>
                                         <br />
-                                        Phone: <input type="text" name="txtPhone" value="${user.phone}" /><br />
+                                        Full name: <input type="text"  class="form-control" name="txtFullname" value="${user.fullname}" />
                                         <br />
-                                        Address: <input type="text" name="txtAddress" value="${user.address}" /><br />
+                                        Phone: <input type="text"  class="form-control" name="txtPhone" value="${user.phone}" />
+                                        <br />
+                                        Address: <input type="text"  class="form-control" name="txtAddress" value="${user.address}" />
                                         <font color="red">
                                         ${err.dateOfBirthInvalidError}
-                                        </font><br />
-                                        Date of Birth: <input type="text" name="txtDob" value="${user.dob}" /><br />
+                                        </font>
                                         <br />
-                                        Sex: <select name="txtSex">
+                                        Date of Birth: <input type="date"  class="form-control" name="txtDob" value="${user.dob}" /><br />
+                                        Sex: <select name="txtSex" class="form-control">
                                             <c:if test="${user.sex eq 'M'}">
                                                 <option selected="true">M</option>
                                                 <option>F</option>
@@ -118,7 +122,6 @@
                                                 <option selected="true">X</option>
                                             </c:if>
                                         </select><br />
-                                        <br />
                                         <div class="row text-success">
                                             <input type="submit" value="Update" name="btAction" class="btn btn-success"/>
                                             ${requestScope.UPDATE_STATUS}<br />
