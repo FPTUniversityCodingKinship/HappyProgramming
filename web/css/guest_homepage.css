@@ -7,8 +7,6 @@ body {
     height: 1800px;
     position: absolute;
     z-index: -1;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 footer {
     height: 0;

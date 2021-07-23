@@ -41,7 +41,7 @@
                 </a>
                 <form class="form-inline input-group"
                       style="width: 320px; float: left; margin-left: 12px">
-                    <input class="form-control" type="search"
+                    <input class="form-control" type="search" action="#"
                            placeholder="Search something..." aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">Search</button>

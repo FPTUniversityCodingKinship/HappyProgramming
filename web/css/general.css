@@ -3,20 +3,23 @@
     Author     : DELL
 */
 @charset "UTF-8";
-
 @font-face {
     font-family: NTR;
     src: url('../css/NTR-Regular.ttf');
 }
-
 @font-face{
     font-family: requiem;
     src: url('../css/Requiem.ttf');
 }
+
 *{
     font-family: NTR;
     top: 0;
     left: 0;
+}
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 p, a, span {    
     font-size: 18px;
