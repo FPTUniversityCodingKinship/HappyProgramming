@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +61,8 @@ public class RequestsDAO implements Serializable {
                         + "deadline, title, reqContent, status, openedTime, "
                         + "approvedTime, canceledTime, closedTime "
                         + "FROM requests "
-                        + "WHERE menteeID = ? AND (status = ? OR status = ?)";
+                        + "WHERE menteeID = ? AND (status = ? OR status = ?) "
+                        + "ORDER BY openedTime DESC";
 
                 for (String follower : listFollowers) {
                     String menteeID = follower;
@@ -91,6 +93,12 @@ public class RequestsDAO implements Serializable {
                         stmt.close();
                     }
                 }
+                listRequests.sort(new Comparator<RequestsDTO>() {
+                    @Override
+                    public int compare(RequestsDTO o1, RequestsDTO o2) {
+                        return - (o1.getOpenedTime().compareTo(o2.getOpenedTime())); //To change body of generated lambdas, choose Tools | Templates.
+                    }
+                });
             }
         } finally {
             if (rs != null) {
@@ -159,6 +167,12 @@ public class RequestsDAO implements Serializable {
                 if (stmt != null) {
                     stmt.close();
                 }
+                listRequests.sort(new Comparator<RequestsDTO>() {
+                    @Override
+                    public int compare(RequestsDTO o1, RequestsDTO o2) {
+                        return - (o1.getOpenedTime().compareTo(o2.getOpenedTime())); //To change body of generated lambdas, choose Tools | Templates.
+                    }
+                });
             }
         } finally {
             if (rs != null) {
