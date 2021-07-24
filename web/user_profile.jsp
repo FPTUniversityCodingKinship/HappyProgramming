@@ -72,7 +72,7 @@
                                              alt="The user's avatar"><br />
                                         <input type="hidden" name="txtUserImg" value="${user.image}" />
                                     </div>
-                                    <div class="col col-md-5" style="margin-bottom: 3%">
+                                    <div class="col col-md-4" style="margin-bottom: 3%">
                                         Update your avatar here: <input type="file" class="form-control-file" name="imageFile"/>
                                         User ID: ${user.userID}<br />
                                         <input type="hidden" name="txtUserID" value="${user.userID}" />
@@ -106,21 +106,21 @@
                                         </font>
                                         <br />
                                         Date of Birth: <input type="date"  class="form-control" name="txtDob" value="${user.dob}" /><br />
-                                        Sex: <select name="txtSex" class="form-control">
+                                        Sex: <select name="txtSex" class="form-select">
                                             <c:if test="${user.sex eq 'M'}">
-                                                <option selected="true">M</option>
-                                                <option>F</option>
-                                                <option>X</option>
+                                                <option selected="true" value="M">Male</option>
+                                                <option value="F">Female</option>
+                                                <option value="X">Other</option>
                                             </c:if>
                                             <c:if test="${user.sex eq 'F'}">
-                                                <option>M</option>
-                                                <option selected="true">F</option>
-                                                <option>X</option>
+                                                <option value="M">Male</option>
+                                                <option selected="true" value="F">Female</option>
+                                                <option value="X">Other</option>
                                             </c:if>
                                             <c:if test="${user.sex eq 'X'}">
-                                                <option>M</option>
-                                                <option>F</option>
-                                                <option selected="true">X</option>
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                                <option selected="true" value="X">Other</option>
                                             </c:if>
                                         </select><br />
                                         <div class="row text-success">

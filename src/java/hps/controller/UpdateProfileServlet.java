@@ -56,6 +56,7 @@ public class UpdateProfileServlet extends HttpServlet {
             String address = request.getParameter("txtAddress");
             String dob = request.getParameter("txtDob");
             String sex = request.getParameter("txtSex");
+            System.out.println(sex);
             //User's avatar sent as comparmentalised data
             Part filePart = request.getPart("imageFile");
             String fileName = request.getParameter("txtUserImg");
@@ -65,9 +66,9 @@ public class UpdateProfileServlet extends HttpServlet {
             UserUpdateError err = new UserUpdateError();
 
             request.setAttribute("ERR", err);
-            if (username.trim().length() < 6 || username.trim().length() > 30) {
+            if (username.trim().length() < 5 || username.trim().length() > 30) {
                 foundErr = true;
-                err.setUsernameLengthErr("Username must be between 6 and 30 characters only!");
+                err.setUsernameLengthErr("Username must be between 5 and 30 characters only!");
             }
             if (password.trim().length() < 6 || password.trim().length() > 30) {
                 foundErr = true;
