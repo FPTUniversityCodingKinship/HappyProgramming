@@ -95,6 +95,14 @@
                     <div id="content">
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Create Skill</h1>
+                        <c:set var="success" value="${requestScope.SUCCESS_MESSAGE}"/>
+                        <c:if test="${not empty success}">
+                            <h3>
+                                <span class="badge badge-success">
+                                    <c:out value="${success}"/>
+                                </span>
+                            </h3>
+                        </c:if>
                         <form action="AdminCreateSkill" method="POST">
                             Skill name: <input type="text" name="skillName" value="${param.skillName}" /><br/>
                             <c:if test="${not empty requestScope.SKILL_NAME_ERROR.skillNameExisted}">
