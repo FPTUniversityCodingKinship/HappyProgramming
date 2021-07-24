@@ -32,7 +32,7 @@
         <!-- Header -->
         <nav class="navbar navbar-light w-100">
             <div class="navbar-brand">
-                <a class="animated-logo" href="">
+                <a class="animated-logo" href="/HappyProgramming">
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
