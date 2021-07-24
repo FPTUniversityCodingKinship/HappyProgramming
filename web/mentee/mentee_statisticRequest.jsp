@@ -106,16 +106,33 @@
                             </div>
                         </c:if>
                         <c:if test="${not empty requestScope.REQUESTS_TITLE}" >
-                            <div class="form-group row">
-                                <div class="col-2">
+                            <div class="container">
+                                <div class="row">
                                     <label for="" class="font-weight-bold">Title of requests</label>
-                                </div>
-                                <div class="col-4">
+                                </div><br/>
+                                <div class="row w-50">
                                     <c:set var="titles" value="${requestScope.REQUESTS_TITLE}" />
-                                    <c:forEach var="title" items="${titles}">
-                                        <i class="fas fa-chevron-right"></i> &nbsp;
-                                        ${title} <br/>
-                                    </c:forEach> 
+                                    <table class='table table-bordered table-hover'>
+                                        <thead class='thead-light'>
+                                            <tr class="d-flex">
+                                                <th class="col-3">No.</th>
+                                                <th class="col-9">Title</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="title" items="${titles}" varStatus="counter">
+                                                <tr class="d-flex">
+                                                    <td class="col-3">
+                                                        ${counter.count}
+                                                    </td>
+                                                    <td class="col-9">
+                                                        ${title}
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </c:if>

@@ -84,6 +84,7 @@ private final String SUCCESS_PAGE = "MenteeRatePage";
                                 menteeID, mentorID, rate, comments, timestamp);
                         if(result){
                             url = SUCCESS_PAGE;
+                            request.setAttribute("SUCCESS_MESSAGE", "Rate Successfully!");
                             session.removeAttribute("RATING_INFO");
                         }
                     }
