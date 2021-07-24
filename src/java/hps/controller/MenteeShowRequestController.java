@@ -5,9 +5,11 @@ import hps.mentorSkills.MentorSkillsDAO;
 import hps.requests.RequestsDAO;
 import hps.requests.RequestsDTO;
 import hps.skills.SkillsDAO;
+import hps.users.UsersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -52,7 +54,14 @@ private final String SUCCESS_PAGE = "MenteeLoadRequest";
             String skillsName = sDAO.getSkillsName(skillsID);
             session.setAttribute("SKILLS_NAME", skillsName);
             MentorSkillsDAO msDAO = new MentorSkillsDAO();
-            List<String> mappingMentorsID = msDAO.getMappingMentorId(skillsID);
+            List<String> MentorsID = msDAO.getMappingMentorId(skillsID);
+            UsersDAO uDAO = new UsersDAO();
+            List<String> mappingMentorsID = new ArrayList<String>();
+            for(String ID : MentorsID){
+                if(uDAO.checkActiveUser(ID) != null){
+                    mappingMentorsID.add(ID);
+                }
+            }
             session.setAttribute("MAPPING_MENTORS_ID", mappingMentorsID);
             url = SUCCESS_PAGE;
         } catch (NamingException ex) {

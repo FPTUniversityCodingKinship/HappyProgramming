@@ -856,4 +856,40 @@ public class UsersDAO implements Serializable {
         }
         return mentorList;
     }
+    
+    public String checkActiveUser(String userID) 
+            throws SQLException, NamingException {
+        
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Select userID "
+                        + "From users "
+                        + "Where status = 1 and userID = ? ";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, userID);
+                rs = stmt.executeQuery();
+                
+                if (rs.next()) {
+                    return rs.getString("userID");
+                }
+            }
+        }
+        finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return null;
+    }
 }

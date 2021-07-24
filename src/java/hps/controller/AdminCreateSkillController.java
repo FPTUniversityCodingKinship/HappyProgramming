@@ -60,6 +60,7 @@ private final String SUCCESS_PAGE = "AdminCreateSkillPage";
                 String skillID = dao.generateSkillID(skillType);
                 boolean result = dao.addNewSkill(skillID, skillName, 1);
                 if(result){
+                    request.setAttribute("SUCCESS_MESSAGE", "Add skill successfully!");
                     url = SUCCESS_PAGE;
                 }
             }
