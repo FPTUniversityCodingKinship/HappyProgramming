@@ -168,13 +168,15 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
+                            <ul class="pagination">
                             <c:forEach var="i" begin="1" end="${sessionScope.NUM_OF_PAGES}">
                                 <c:url var="url" value="AdminViewMentor">
                                     <c:param name="pageID" value="${i}"/>
                                     <c:param name="searchValue" value="${param.searchValue}"/>
                                 </c:url>
-                                <a href="${url}" style="text-decoration: underline">${i}</a>
+                                <li class="page-item"><a href="${url}" class="page-link">${i}</a></li>
                             </c:forEach>
+                            </ul>
                         </c:if>
                     </div>
                 </main>
