@@ -45,6 +45,7 @@ private final String ERROR_PAGE = "MenteeListSuggestionPage";
             boolean result = dao.inviteMentor(requestID, mentorID);
             if(result){
                 url = SUCCESS_PAGE;
+                request.setAttribute("SUCCESS_MESSAGE", "Invite Mentor Successfully!");
                 HttpSession session = request.getSession();
                 session.removeAttribute("REQUEST_INFO");
                 session.removeAttribute("MAPPING_MENTORS_ID");

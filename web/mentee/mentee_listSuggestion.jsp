@@ -113,6 +113,14 @@
                                 </c:if>
                             </c:forEach>
                             <br/><br/>
+                            <c:set var="success" value="${requestScope.SUCCESS_MESSAGE}"/>
+                            <c:if test="${not empty success}">
+                                <h3>
+                                    <span class="badge badge-success">
+                                        <c:out value="${success}"/>
+                                    </span>
+                                </h3>
+                            </c:if>
                             <c:if test="${not empty sessionScope.REQUEST_INFO}">
                                 <c:set var="request" value="${sessionScope.REQUEST_INFO}"/>
                                 <c:set var="skillsName" value="${sessionScope.SKILLS_NAME}"/>

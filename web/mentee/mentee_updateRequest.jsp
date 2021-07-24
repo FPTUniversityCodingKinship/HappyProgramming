@@ -113,7 +113,14 @@
                                 </c:if>
                             </c:forEach>
                             <br/><br/>    
-
+                            <c:set var="success" value="${requestScope.SUCCESS_MESSAGE}"/>
+                            <c:if test="${not empty success}">
+                                <h3>
+                                    <span class="badge badge-success">
+                                        <c:out value="${success}"/>
+                                    </span>
+                                </h3>
+                            </c:if>
                             <c:if test="${not empty sessionScope.REQUEST_INFO}">
                                 <c:set var="request" value="${sessionScope.REQUEST_INFO}"/>
                                 <form action="MenteeUpdateRequestSeparately" method="POST">
@@ -160,7 +167,7 @@
                                             <label for="reqContent" class="font-weight-bold">Content</label>
                                         </div>
                                         <div class="col-4">
-                                            <textarea class="form-control" name="reqContent" rows="4" cols="30"></textarea><br/>
+                                            <textarea class="form-control" name="reqContent" rows="4" cols="30">${request.reqContent}</textarea><br/>
                                             <c:if test="${not empty error.contentLengthError}" >
                                                 <font color="red">${error.contentLengthError}</font><br/>
                                             </c:if>
@@ -171,11 +178,16 @@
                                             <label class="font-weight-bold">Select skill (1-3) </label> 
                                         </div>
                                         <div class="col-4">
+                                            <c:set var="selectedSkillsName" value="${sessionScope.SKILLS_NAME}"/>
                                             <c:if test="${not empty sessionScope.SKILL_LIST}">
                                                 <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
                                                 <c:forEach var="skill" items="${skillList}">
                                                     <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
-                                                           onclick="return chkControl()"/>${skill.skillName}<br/>
+                                                           onclick="return chkControl()" 
+                                                           <c:if test="${fn:contains(selectedSkillsName, skill.skillName)}">
+                                                               checked="checked"
+                                                           </c:if>
+                                                           />${skill.skillName}<br/>
                                                 </c:forEach>
                                             </c:if>
                                             <c:if test="${not empty error.ckbError}" >

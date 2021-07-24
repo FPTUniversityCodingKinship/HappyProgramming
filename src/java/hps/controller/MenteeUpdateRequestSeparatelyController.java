@@ -82,6 +82,7 @@ private final String UPDATE_REQUEST_ERROR_PAGE = "MenteeUpdateRequestPage";
                         title, deadline, reqContent, skillsID, mentorID);
                 if(result){
                     url = UPDATE_REQUEST_SUCCESS_PAGE;
+                    request.setAttribute("SUCCESS_MESSAGE", "Update Successfully!");
                     session.removeAttribute("REQUEST_INFO");
                 }
             }
