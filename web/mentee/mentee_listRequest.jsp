@@ -145,6 +145,7 @@
                                             </td>
                                             <td>
                                                 <c:if test="${dto.status eq 'C'}">Concluded</c:if>
+                                                <c:if test="${dto.status eq 'A'}">Accepted</c:if>
                                                 <c:if test="${dto.status eq 'R'}">Rejected</c:if>
                                                 <c:if test="${dto.status eq 'P'}">Pending</c:if>
                                             </td>

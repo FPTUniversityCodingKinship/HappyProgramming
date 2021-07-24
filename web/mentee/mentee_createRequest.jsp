@@ -144,13 +144,16 @@
                                     <label for="reqContent" class="font-weight-bold">Content</label>
                                 </div>
                                 <div class="col-4">
-                                    <textarea class="form-control" name="reqContent" rows="4" cols="30"></textarea><br/>
+                                    <textarea class="form-control" name="reqContent" rows="4" cols="30">${param.reqContent}</textarea><br/>
                                     <c:if test="${not empty error.contentLengthError}" >
                                         <font color="red">${error.contentLengthError}</font><br/>
                                     </c:if>
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <c:if test="${not empty requestScope.SKILLS_ID}">
+                                    <c:set var="selectedSkills" value="${requestScope.SKILLS_ID}"/>
+                                </c:if>
                                 <div class="col-3" class="font-weight-bold">
                                     <label class="font-weight-bold">Select skill (1-3) </label> 
                                 </div>
@@ -159,7 +162,11 @@
                                         <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
                                         <c:forEach var="skill" items="${skillList}">
                                             <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
-                                                   onclick="return chkControl()"/>${skill.skillName}<br/>
+                                                   onclick="return chkControl()"
+                                                   <c:if test="${fn:contains(selectedSkills, skill.skillID)}">
+                                                       checked="checked"
+                                                   </c:if>
+                                                   />${skill.skillName}<br/>
                                         </c:forEach>
                                     </c:if>
                                     <c:if test="${not empty error.ckbError}" >

@@ -92,6 +92,8 @@ private final String REQUEST_ERROR = "MenteeCreateRequestPage";
                 if(result){
                     url = REQUEST_SUCCESS;
                     request.setAttribute("SUCCESS_MESSAGE", "Request created Successfully!");
+                    request.setAttribute("SKILLS_ID", skillsID);
+                    request.setAttribute("SUCCESS_MESSAGE", "Request created Successfully!");
                 }
             }
         } catch (NamingException ex) {

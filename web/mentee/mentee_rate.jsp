@@ -95,7 +95,7 @@
                         <jsp:include flush="true" page="/topMenu.jsp"/>
                         <h1>Rate Mentor</h1>
                         <c:if test="${not empty sessionScope.REQ_INFO_FOR_RATING}">
-                            <label class="font-weight-bold">Please select the concluded request you want to rate</label>
+                            <label class="font-weight-bold">Please select the <span class="text-info">concluded</span> request you want to rate</label>
                             <br/>
                             <c:set var="reqInfo" value="${sessionScope.REQ_INFO_FOR_RATING}"/>
                             <c:forEach var="entry" items="${reqInfo}">
@@ -107,6 +107,14 @@
                                 <a href="${url}">${fn:split(entry.value,',')[0]}</a><br/>
                             </c:forEach>
                             <br/>
+                            <c:set var="success" value="${requestScope.SUCCESS_MESSAGE}"/>
+                            <c:if test="${not empty success}">
+                                <h3>
+                                    <span class="badge badge-success">
+                                        <c:out value="${success}"/>
+                                    </span>
+                                </h3>
+                            </c:if>
                             <c:if test="${not empty sessionScope.RATING_INFO}">
                                 <c:set var="info" value="${sessionScope.RATING_INFO}"/>
                                 <c:forEach var="entry" items="${reqInfo}">
