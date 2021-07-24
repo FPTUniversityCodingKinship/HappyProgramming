@@ -144,7 +144,7 @@
                                     <label for="reqContent" class="font-weight-bold">Content</label>
                                 </div>
                                 <div class="col-4">
-                                    <textarea class="form-control" name="reqContent" rows="4" cols="30"></textarea><br/>
+                                    <textarea class="form-control" name="reqContent" rows="4" cols="30">${param.reqContent}</textarea><br/>
                                     <c:if test="${not empty error.contentLengthError}" >
                                         <font color="red">${error.contentLengthError}</font><br/>
                                     </c:if>
@@ -159,7 +159,11 @@
                                         <c:set var="skillList" value="${sessionScope.SKILL_LIST}"/>
                                         <c:forEach var="skill" items="${skillList}">
                                             <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
-                                                   onclick="return chkControl()"/>${skill.skillName}<br/>
+                                                   onclick="return chkControl()"
+                                                   <c:if test="${fn:contains(requestScope.SKILLS_ID, skill.skillID)}">
+                                                       checked="checked"
+                                                   </c:if>
+                                                   />${skill.skillName}<br/>
                                         </c:forEach>
                                     </c:if>
                                     <c:if test="${not empty error.ckbError}" >

@@ -91,6 +91,7 @@ private final String REQUEST_ERROR = "MenteeCreateRequestPage";
                     mentorID, skillsID, deadline, title, reqContent, status, openedTime);
                 if(result){
                     url = REQUEST_SUCCESS;
+                    request.setAttribute("SKILLS_ID", skillsID);
                     request.setAttribute("SUCCESS_MESSAGE", "Request Successfully!");
                 }
             }
