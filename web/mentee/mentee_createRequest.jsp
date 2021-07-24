@@ -151,6 +151,9 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <c:if test="${not empty requestScope.SKILLS_ID}">
+                                    <c:set var="selectedSkills" value="${requestScope.SKILLS_ID}"/>
+                                </c:if>
                                 <div class="col-3" class="font-weight-bold">
                                     <label class="font-weight-bold">Select skill (1-3) </label> 
                                 </div>
@@ -160,7 +163,7 @@
                                         <c:forEach var="skill" items="${skillList}">
                                             <input class="form-check-input" type="checkbox" name="ckb" value="${skill.skillName}" 
                                                    onclick="return chkControl()"
-                                                   <c:if test="${fn:contains(requestScope.SKILLS_ID, skill.skillID)}">
+                                                   <c:if test="${fn:contains(selectedSkills, skill.skillID)}">
                                                        checked="checked"
                                                    </c:if>
                                                    />${skill.skillName}<br/>
