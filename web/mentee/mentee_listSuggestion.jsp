@@ -157,7 +157,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-3">
-                                                <label class="font-weight-bold">Number currently requests:</label>
+                                                <label class="font-weight-bold">Number current requests:</label>
                                             </div>
                                             <div class="col-4">
                                                 ${fn:split(mentorInfo, ",")[3]}<br/>

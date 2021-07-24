@@ -22,7 +22,7 @@
             To make sure you are not a robot, please verify your account<br/>
         </p>
         <p>
-            <a onclick="sendMail();">Click here</a> to send verify mail now
+            <a href="#" onclick="sendMail();">Click here</a> to send verify mail now
                     or wait for <span id="countdown"></span> second(s).
         </p>
     </body>

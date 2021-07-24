@@ -153,7 +153,7 @@
                                                     </c:if>
                                                 </p>
                                                 <p><strong>Number of currently accepted request:</strong> ${data.numAccepted}</p>
-                                                <p><strong>Number of currently requests:</strong> ${data.numRequests}</p>
+                                                <p><strong>Total number of requests:</strong> ${data.numRequests}</p>
                                                 <p><strong>Number of currently rejected request:</strong> ${data.numRejected}</p>
                                                 <p><strong>Percentage of rejected request:</strong> ${data.percentRejected}%</p>
                                                 <p><strong>Percentage of completed request:</strong> ${data.percentClosed}%</p>
