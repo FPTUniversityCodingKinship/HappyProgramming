@@ -3,13 +3,13 @@
     
     <!-- Local -->
 
-<!--    <Resource     
+    <Resource     
     name="DBContext" auth="Container" type="javax.sql.DataSource"
     driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
     url="jdbc:sqlserver://localhost:1433;databaseName=HappyProgramming;
                 instanceName=SQLExpress2019"
     username="sa" password="123456"
-    />-->
+    />
     
     <!-- Cloud -->
     
@@ -29,12 +29,12 @@
             databaseName=HappyProgramming;"
         username="hpsAdmin" password="Happy123456"
     />
--->    
+   
     <Resource
         name="DBContext" auth="Container" type="javax.sql.DataSource" 
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
         url="jdbc:sqlserver://happyprogramming.database.windows.net:1433;
                 database=happyprogramming;"
         username="happyprogramming_admin@happyprogramming" password="Team3@SWP_FPTU"
-    />
+    />--> 
 </Context>

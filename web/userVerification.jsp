@@ -15,14 +15,16 @@
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>
-            <c:if test="${not empty sessionScope.CURRENT_USER}">
-                <form action="Logout" method="POST" id="Logout">
-                    <p id="Welcome">
-                        <input type="submit" value="Logout" class="btn"/>
-                    </p>
-                </form>
-            </c:if>
+        <c:if test="${not empty sessionScope.CURRENT_USER}">
+            <form action="Logout" id="Logout">
+                <p id="Welcome">
+                    <input type="submit" value="Logout" class="btn"/>
+                </p>
+            </form>
+        </c:if>
+        
         <c:set var="successVerify" value="${requestScope.SUCCESS_VERIFY}"/>
+        
         <c:if test="${empty successVerify}">
             <c:if test="${empty requestScope.WRONG_VERIFY}">
                 <span>We already send a verification  code to your email.</span>
@@ -35,35 +37,27 @@
                 <input type="submit" value="verify">
             </form>
         </c:if>
+                
         <c:if test="${not empty successVerify}">
             <h1>
                 Verified successfully!!!
             </h1>
-            <p>
-                Please wait <span id="countdown"></span> second
-                to be redirected and see amazing things...
+            <p> 
+                Everything is almost done.
+                Please wait <span id="countdown"></span> second(s)
+                and you will be able to join in our amazing world.
             </p>
-            <c:set var="txtGmail" value="${requestScope.TO_LOGIN_MAIL}"/>
             <script>
-                $(document).ready(function () {
-                    var params = window.location.href.split("?")[1];
-                    var countDown = document.getElementById("countdown");
-                    countDown.innerHTML = '3';
-                    setTimeout(function () {
-                        countDown.innerHTML = '2';
-                        setTimeout(function () {
-                            countDown.innerHTML = '1';
-                            setTimeout(function () {
-                                countDown.innerHTML = '0';
-                                var origin = window.location.origin;
-//                                window.location.href = origin + 
-//                                        "/HappyProgramming/Login?" + params;
-                                window.location.href = origin +
-                                        "/HappyProgramming/";
-                            }, 1000);
-                        }, 1000);
-                    }, 1000);
-                });
+                var countdown = 3;
+                setInterval(function () {
+                    if (countdown == 0) {
+                        document.location = "/HappyProgramming";
+                        countdown -= 1;
+                    } else if (countdown > 0) {
+                        document.getElementById('countdown').innerHTML = countdown;
+                        countdown -= 1;
+                    }
+                }, 1000);
             </script>
         </c:if>
     </body>

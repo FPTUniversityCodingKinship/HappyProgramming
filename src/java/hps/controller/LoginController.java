@@ -114,6 +114,9 @@ public class LoginController extends HttpServlet {
                         }
                     }
                     else {
+                        // check if there is already a code in the context
+                        
+                        
                         sm = new MailHandler();
                         //get the 6-digit code
                         String code = sm.getVerifyCode();

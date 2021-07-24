@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Login Page</title>
-        <link rel="icon" href="images/webpage.ico">
+        <link rel="icon" href="images/favicon.ico">
         <!-- External ref -->
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="401908117605-vofu7m8maarbv0c6remdnf8n1r568060.apps.googleusercontent.com">
@@ -82,8 +82,8 @@
 
                         //disable auto login for the next time login
                         gapi.auth2.getAuthInstance().disconnect().then(function () {
-                            var mainPath = "http://localhost:8084/HappyProgramming/LoginController";
-                            document.location.href = mainPath + "?txtGmail=" + profile.getEmail();
+                            var mainPath = "/HappyProgramming/Login";
+                            document.location = mainPath + "?txtGmail=" + profile.getEmail();
                             console.log('Google auto login disabled.');
                         });
                     }
