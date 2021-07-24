@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Create Account</title>
+        <link rel="icon" href="images/favicon.ico">
         <link rel="stylesheet" href="css/general.css">
     </head>
     <body>

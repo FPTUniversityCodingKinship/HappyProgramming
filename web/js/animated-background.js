@@ -20,7 +20,6 @@ const gHeight = Math.max(window.innerHeight,
 
   c.width = gWidth;
   c.height = gHeight;
-  console.log(c.width + "x" + c.height);
 
   class Particles {
     constructor({ x, y, color, radius, d }) {

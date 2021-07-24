@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
 public class LogoutController extends HttpServlet {
-
+    private final String HOME_PAGE = "HomePage";
     private final String LOGIN_PAGE = "LoginPage";
 
     /**
@@ -34,7 +34,7 @@ public class LogoutController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(false);
-        String url = LOGIN_PAGE;
+        String url = HOME_PAGE;
 
         try {
             Cookie[] cookies = request.getCookies();
