@@ -1266,7 +1266,7 @@ public class RequestsDAO implements Serializable {
                 sql += ") as m "
                         + "WHERE m.numRow > ? AND m.numRow < ?";
                 stmt = con.prepareStatement(sql);
-                stmt.setInt(1, pageID - 1);
+                stmt.setInt(1, (pageID - 1)*total);
                 stmt.setInt(2, pageID * total + 1);
                 rs = stmt.executeQuery();
                 while (rs.next()) {
