@@ -189,7 +189,7 @@
                                                                     <c:param name="requestID" value="${request.requestID}" />
                                                                     <c:param name="redirect" value="FollowingRequest" />
                                                                 </c:url>
-                                                                <a class='btn btn-outline-success' href="${closeURL}">Closed</a>
+                                                                <a class='btn btn-outline-success' href="${closeURL}">Close</a>
                                                             </td>
                                                         </c:if>
 

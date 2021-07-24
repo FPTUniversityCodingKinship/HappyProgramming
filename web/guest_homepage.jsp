@@ -14,7 +14,7 @@
         <link rel="icon" href="images/webpage.ico">
         <!-- External stylesheet -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
+
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/guest_homepage.css">
         <link rel="stylesheet" href="css/header.css">
@@ -23,13 +23,11 @@
         <!-- External script -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="module"  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        
-        <%--
+
         <jsp:useBean id="comDAO" class="hps.comments.CommentsDAO" scope="request"/>
         <jsp:useBean id="usersDAO" class="hps.users.UsersDAO" scope="request"/>
         <jsp:useBean id="mentorSkillsDAO" class="hps.mentorSkills.MentorSkillsDAO" scope="request"/>
         <jsp:useBean id="skillsDAO" class="hps.skills.SkillsDAO" scope="request"/>
-        --%>
     </head>
     <body>
         <!-- Header -->
