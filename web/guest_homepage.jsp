@@ -33,7 +33,7 @@
         <!-- Header -->
         <nav class="navbar navbar-light w-100">
             <div class="navbar-brand">
-                <a class="animated-logo" href="">
+                <a class="animated-logo" href="/HappyProgramming">
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
@@ -47,8 +47,16 @@
                 </form>
             </div>
             <div class="bold-text text-right" id="headerLink">
-                <a class="nav-link header-button" href="LoginPage">Log In</a>
-                <a class="nav-link header-button" href="SignUpPage">Sign Up</a>
+                <c:if test="${empty sessionScope.CURRENT_USER}">
+                    <a class="nav-link header-button" href="LoginPage">Log In</a>
+                    <a class="nav-link header-button" href="SignUpPage">Sign Up</a>
+                </c:if>
+                <c:if test="${not empty sessionScope.CURRENT_USER}">
+                    <c:set value="${sessionScope.CURRENT_USER}" var="user"/>
+                    <a class="nav-link header-button" href="/HappyProgramming"
+                       style="font-family: Segoe UI">
+                        Welcome, ${user.fullname}</a>
+                </c:if>
             </div>
             <div class="header-background" id="headerBackground"></div>
         </nav>
