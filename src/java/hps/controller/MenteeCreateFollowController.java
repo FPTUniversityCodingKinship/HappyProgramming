@@ -40,11 +40,14 @@ private final String MENTEE_FOLLOW = "MenteeFollowMentor";
             FollowersDAO fDAO = new FollowersDAO();
             String menteeID = request.getParameter("menteeID");
             String mentorID = request.getParameter("mentorID");
+            String status = request.getParameter("status");
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime now = LocalDateTime.now();
             String currentTime = dtf.format(now);
-            if(menteeID != null && mentorID != null){
+            if(menteeID != null && mentorID != null && status.equals("1")){
                 fDAO.addNewFollow(menteeID, mentorID, currentTime);
+            }else if(menteeID != null && mentorID != null && status.equals("0")){
+                fDAO.removeFollow(menteeID, mentorID);
             }
         } catch (SQLException ex) {
             log("MenteeCreateFollowController SQLException: " + ex.getMessage());

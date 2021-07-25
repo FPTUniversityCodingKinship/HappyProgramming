@@ -100,7 +100,8 @@
                                         <th>Full name</th>
                                         <th>Account name</th>
                                         <th>Profession</th>
-                                        <th>Follow</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,16 +124,29 @@
                                                 </c:forEach>
                                             </td>
                                             <td>
-
                                                 <c:if test="${fn:contains(followedMentors, mentor.userID)}">
-                                                    Followed    
+                                                    Following  
+                                                </c:if>
+                                                <c:if test="${not fn:contains(followedMentors, mentor.userID)}">
+                                                    Not Following    
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <c:if test="${fn:contains(followedMentors, mentor.userID)}">
+                                                    <c:url var="url" value="MenteeCreateFollow">
+                                                        <c:param name="menteeID" value="${sessionScope.CURRENT_USER.userID}"/>
+                                                        <c:param name="mentorID" value="${mentor.userID}"/>
+                                                        <c:param name="status" value="0"/>
+                                                    </c:url>
+                                                    <a class="btn btn-danger" href="${url}">Unfollow</a>
                                                 </c:if>
                                                 <c:if test="${not fn:contains(followedMentors, mentor.userID)}">
                                                     <c:url var="url" value="MenteeCreateFollow">
                                                         <c:param name="menteeID" value="${sessionScope.CURRENT_USER.userID}"/>
                                                         <c:param name="mentorID" value="${mentor.userID}"/>
+                                                        <c:param name="status" value="1"/>
                                                     </c:url>
-                                                    <a href="${url}" style="text-decoration: underline !important">Follow</a>
+                                                    <a class="btn btn-success" href="${url}">Follow</a>
                                                 </c:if>
                                             </td>
                                         </tr>

@@ -124,4 +124,33 @@ public class FollowersDAO implements Serializable {
         }
         return false;
     }
+    public boolean removeFollow(String menteeID, String mentorID)
+            throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBHelper.makeConnection();
+            if (con != null) {
+                String sql = "Delete "
+                        + "From followers "
+                        + "Where menteeID = ? and mentorID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, menteeID);
+                stm.setString(2, mentorID);
+                
+                int row = stm.executeUpdate();
+                if( row > 0) return true;
+            }
+        }
+        finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }
