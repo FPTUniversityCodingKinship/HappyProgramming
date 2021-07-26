@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -80,10 +81,12 @@ public class LoginController extends HttpServlet {
             if (flag == false) {
                 UsersDAO dao = new UsersDAO();
                 UsersDTO user;
+                
                 if (!gmail.isEmpty())
                     user = dao.checkLoginByMail(gmail);
                 else
                     user = dao.checkLogin(username, password);
+                
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("CURRENT_USER", user);
@@ -114,46 +117,34 @@ public class LoginController extends HttpServlet {
                         }
                     }
                     else {
-                        // check if there is already a code in the context
-                        
-                        
-                        sm = new MailHandler();
-                        //get the 6-digit code
-                        String code = sm.getVerifyCode();
-                        //get the date time at the sendding
-                        String time = sm.getCurrentDateTime();
-                        verifier = new VerifyDTO(user.getEmail(), code, time);
-                        //add verify code to context
                         ServletContext context = getServletContext();
-                        ArrayList<VerifyDTO> verifyList = (ArrayList<VerifyDTO>) 
-                                    context.getAttribute("VERIFY_LIST");
+                        // check if there is already a code in the context
+                        List<VerifyDTO> verifyList = (List<VerifyDTO>)
+                                            context.getAttribute("VERIFY_LIST");
                         if (verifyList != null) {
-                            verifyList.add(verifier);
                             for (VerifyDTO entry : verifyList) {
-                                //if email existed, replace time and code
-                                if (entry.getEmail().equals(verifier.getEmail())) {
-                                    if (verifyList.remove(entry)) {
-                                        System.out.println("[UserVerify] remove:" 
-                                                    + entry.toString());
-                                    }
-                                    if (verifyList.add(verifier)) {
-                                        System.out.println("[UserVerify] add:" 
-                                                    + verifier.toString());
-                                    }
+                                //if email existed, use it, don't send
+                                if (entry.getEmail().equals(user.getEmail())) {
                                     existCode = true;
-                                    break;
+                                    request.setAttribute("VERIFY_MSG", 
+                                                "You are already received a verify mail.");
                                 }
                             }
-                            if (!existCode) {
-                                verifyList.add(verifier);
-                            }
-
+                        } else {
+                            //create and send mail
+                            sm = new MailHandler();
+                            //get the 6-digit code
+                            String code = sm.getVerifyCode();
+                            //get the date time at the sendding
+                            String time = sm.getCurrentDateTime();
+                            verifier = new VerifyDTO(user.getEmail(), code, time);
+                            // add to list
+                            verifyList.add(verifier);
                         }
+                        
                         //re-up list onto context Scope's attribute
                         context.setAttribute("VERIFY_LIST", verifyList);
                         url = INACTIVE_PAGE;
-                        sout += "Activation Status of ["
-                                    + user.getUsername() + "] is [false]";
                     }
                 } 
                 else {
@@ -177,7 +168,7 @@ public class LoginController extends HttpServlet {
             log(ex.getMessage());
             sout = "SQLException was caught.";
         } finally {
-            if (verifier != null && sm != null) {
+            if (!existCode) {
                 boolean isSend = sm.sendEmail(verifier);
                 System.out.println("[UserVerify] isSend:" + isSend);
             }

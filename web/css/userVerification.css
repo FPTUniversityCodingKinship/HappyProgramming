@@ -1,0 +1,17 @@
+/* 
+    Created on : Jul 25, 2021, 8:34:49 AM
+    Author     : Admin
+*/
+
+.float-center {
+    margin: 48px 0 0 0;
+    text-align: center;
+}
+.float-center p, a {
+    font-size: 24px;
+}
+
+.float-center form {
+    display: flex;
+    justify-content: center;
+}

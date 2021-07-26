@@ -22,11 +22,22 @@ footer {
 }
 .content-child {
     width: 100%;
-    margin: 240px 0;
+    margin: 240px 0 120px 0;
     display: flex;
     justify-content: center;
 }
+.break-line {
+    width: 66%;
+    float: left;
+    margin-left: 17%;
+    height: 3px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
 
+.text-stroke {
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
 /* Animate area */
 .fade-in{
     animation: fadeIn ease 5s;
