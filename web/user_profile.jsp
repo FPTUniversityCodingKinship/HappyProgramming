@@ -88,7 +88,7 @@
                                         ${err.passwordLengthErr}
                                         </font>
                                         <br />
-                                        Password: <input type="text" class="form-control" name="txtPassword" value="${user.password}" />
+                                        Password: <input type="password" class="form-control" name="txtPassword" value="${user.password}" />
                                         <br />
                                         Email: ${user.email}
                                         <br />
