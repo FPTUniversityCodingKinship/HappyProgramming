@@ -5,11 +5,15 @@
 @charset "UTF-8";
 body {
     width: 100%;
-    height: auto;
+    height: 1600px;
     
 }
 a {
     text-decoration: none;
+}
+
+#headerLink {
+    margin-top: -16px;
 }
 
 .animated-background {
@@ -19,7 +23,7 @@ a {
 .frm-signup {
     width: 40%;
     float: left;
-    height: 1260px;
+    height: 1280px;
     margin-left: 30%;
     margin-top: 120px;
     background-color: #f0f0f0;

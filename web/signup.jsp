@@ -33,6 +33,11 @@
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
+                <a href="/HappyProgramming" style="text-decoration: none;">
+                    <p class="h1 bold-text" style="color: #fff" id="headerName">
+                        HAPPY PROGRAMMING
+                    </p>
+                </a>
             </div>
             <div class="bold-text text-right" id="headerLink">
                 <a class="nav-link header-button" href="LoginPage">Log In</a>
@@ -53,6 +58,16 @@
                 <h1>JOIN OUR COMMUNITY NOW!!!</h1>
                 <hr>
                 <c:set var="errors" value="${requestScope.CREATE_ERROR}"/>
+                <c:if test="${not empty errors}">
+                    <style>
+                        body {
+                            height: 2200px;
+                        }
+                        .frm-signup {
+                            height: 1480px;
+                        }
+                    </style>
+                </c:if>
                 <form action="SignUp" method="POST" class="form-horizontal">
                     <c:if test="${not empty errors.userIDFailedToGenerate}">
                         <p style="color: red;">
@@ -261,4 +276,5 @@
             </div>
         </div>
     </body>
+    <script src="js/signup.js"></script>
 </html>

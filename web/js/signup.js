@@ -48,8 +48,6 @@ $(document).ready(function () {
                 $(this).css("color", "#FFF");
             });
         }
-        $('#background').css('opacity', 1 - scrollPercent / 3);
     });
 
 });
-

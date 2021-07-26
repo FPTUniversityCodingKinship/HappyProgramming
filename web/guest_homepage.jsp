@@ -23,12 +23,6 @@
         <!-- External script -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="module"  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <%--
-        <jsp:useBean id="comDAO" class="hps.comments.CommentsDAO" scope="request"/>
-        <jsp:useBean id="usersDAO" class="hps.users.UsersDAO" scope="request"/>
-        <jsp:useBean id="mentorSkillsDAO" class="hps.mentorSkills.MentorSkillsDAO" scope="request"/>
-        <jsp:useBean id="skillsDAO" class="hps.skills.SkillsDAO" scope="request"/>
-    --%>
     </head>
     <body>
         <!-- Header -->
@@ -39,13 +33,18 @@
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
                 <form class="form-inline input-group"
-                      style="width: 320px; float: left; margin-left: 12px">
+                      style="width: 320px; float: left; margin-left: 12px" hidden>
                     <input class="form-control" type="search" action="#"
                            placeholder="Search something..." aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">Search</button>
                     </div>
                 </form>
+                <a href="/HappyProgramming" style="text-decoration: none;">
+                    <p class="h1 bold-text" style="color: #fff" id="headerName">
+                        HAPPY PROGRAMMING
+                    </p>
+                </a>
             </div>
             <div class="bold-text text-right" id="headerLink">
                 <c:if test="${empty sessionScope.CURRENT_USER}">
@@ -76,7 +75,7 @@
                         style="text-transform: uppercase">
                         Greetings!
                     </h1>
-                    <h2 class="text-warning">Who we are: </h2>
+                    <h2 class="text-warning h3">Who we are: </h2>
                     <p class="text-light h4">
                         A group of young, aspiring, and dedicated individuals seeking
                         to harbour a haven to nourish the talents of the like-minded.
@@ -105,7 +104,9 @@
                             Cum scientia et dedication, 
                             nos de servitute voverint reddent
                         </p>
-                        <h1 class="text-warning" style="transition: .3s">Meet our ingenious minds!</h1>
+                        <h1 class="text-warning h3" style="transition: .3s">
+                            Meet our ingenious minds!
+                        </h1>
                         
                         <p class="text-light h4">
                             We recruit only individuals who possess the essence 
@@ -114,10 +115,7 @@
                             Masters of the most abstruse Algorithms.<br/>
                             Creators of unchained data.
                         </p>
-                        <form action="SignUpPage" method="POST">
-                            <input type="submit" class="btn btn-outline-success btn-lg"
-                                   value="Join us! Let yourself be known">
-                        </form>
+                        
                         <h2 class="text-light h5" hidden>
                             <a href="#mentorsList">
                                 Meet the team first 
@@ -130,111 +128,34 @@
             
             <div class=" row content-child">
                 <div class="col col-md-8">
-                    <p class="text-success text-stroke display-1"
+                    <p class="text-success text-stroke display-4"
                         style="text-transform: uppercase">
                         professional
                     </p>
-                    <h1 class="text-warning">Many certified and skillful mentors:</h1>
-                    
-                </div>
-            </div>
-            <%--
-            <c:set var="" value="${requestScope.BEST_MENTOR}"/>
-            <div id="carouselExampleControls" class="carousel slide content-child" data-ride="carousel">
-                <div class="carousel-inner">
-                    <c:forEach var="mentor" items="${comDAO.bestMentor}">
-                        <c:set var="dto" value="${usersDAO.getProfile(mentor)}" />
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="./images/${mentor}.jpg" alt="First slide">
-                            
-                            <div id="toggle-info">
-                                <p>
-                                    Name:
-                                </p>
-                                <p>
-                                    Skill:
-                                </p>
+                    <h1 class="text-warning h3">
+                        Many certified and skillful mentors...
+                    </h1>
+                    <form action="SignUpPage" method="POST">
+                        <input type="submit" class="btn btn-outline-success btn-lg"
+                               value="Join us! Let yourself be known">
+                    </form>
+                    <%--
+                    <c:set var="mentors" value="${requestScope.MENTOR_LIST}"/>
+                    <c:forEach var="dto" items="${mentors}" varStatus="counter">
+                        <div class="mentor-container">
+                            <div class="mt-left">
+                                <img class="img-thumbnail" src="./images/${user.image}" 
+                                     alt="The user's avatar" width="128">
+                            </div>
+                            <div class="mt-right">
+                                
                             </div>
                         </div>
                     </c:forEach>
+                    --%>
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
-            --%>
-            <%--
-                <div id="mentorsList" style="margin-top: 20%; color: white;">
-                    <h1 class="text-warning test-right">Some of our best</h1>
-                    <table border="1" class="text-middle">
-                        <thead>
-                            <tr class="text-light">
-                                <th class="col-md-4">Avatar</th>
-                                <th class="col-md-4">Mentor's Name</th>
-                                <th class="col-md-4">Skills</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-light text-middle">
-                            <c:forEach var="mentor" items="${comDAO.bestMentor}">
-                                <c:set var="dto" value="${usersDAO.getProfile(mentor)}" />
-                                <tr>
-                                    <td>
-                                        <img src='./images/${mentor}.jpg'
-                                             style="width: 100%; height: auto"/>
-                                    </td>
-                                    <td>
-                                        ${dto.fullname}
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            <c:forEach var="skill" 
-                                                       items="${mentorSkillsDAO.getMentorSkills(mentor)}">
-                                                <li>
-                                                    <c:set var="skillId" value="${skill.skillID}"/>
-                                                    ${skillsDAO.getSkillsName(skillId)}
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div> 
-                <script>
-                    $(window).on("load", function () {
-                        $(".fade-in").css("opacity", 0);
-                        $(window).scroll(function () {
-                            var windowBottom = $(this).scrollTop() + $(this).innerHeight();
-                            $(".fade-in").each(function () {
-                                /* Check the location the element */
-                                var objectBottom = $(this).offset().top + $(this).outerHeight();
-                                if (Math.abs(windowBottom - objectBottom) <= $(window).height() / 3) {
-                                    if ($(this).css("opacity") === 0) {
-                                        $(this).fadeTo(300, 1);
-                                    }
-                                } else {
-                                    if ($(this).css("opacity") === 1) {
-                                        $(this).fadeTo(100, 0);
-                                    }
-                                }
-                            });
-                        }).scroll(); //invoke scroll-handler on page-load
-                    }
-                    );
-                </script>
-            --%>
-            <%--
-            <script>
-                var href = window.location.href;
-                var mainURL = href.substring(0, href.indexOf(href.split("/")[4]));
-            </script>
-            --%>
+            
         </div>
     </body>
     <script src="js/guest_homepage.js"></script>
