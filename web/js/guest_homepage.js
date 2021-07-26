@@ -46,6 +46,8 @@ $(document).ready(function () {
                 $(this).css("color", "#FFF");
             });
         }
+        console.log(scrollPercent);
+        $('#background').css('opacity', 1 - scrollPercent / 3);
     });
 
 });
