@@ -36,14 +36,6 @@
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
-                <form class="form-inline input-group" action="#"
-                      style="width: 320px; float: left; margin-left: 12px">
-                    <input class="form-control" type="search"
-                           placeholder="Search something..." aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="submit">Search</button>
-                    </div>
-                </form>
             </div>
             <div class="bold-text text-right" id="headerLink">
                 <a class="nav-link header-button" href="LoginPage">Log In</a>

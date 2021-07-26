@@ -10,5 +10,5 @@ package hps.mentorDetails;
  * @author Admin
  */
 public class MentorHomepageDTO {
-    
+    private String mentorID;
 }
