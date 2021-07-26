@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" href="images/favicon.ico">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -203,7 +204,11 @@
                                             <c:forEach items="${data}" var="request" varStatus="count">
                                                 <tr>
                                                     <td class="align-middle" scope='row'>
-                                                        ${(param.page - 1) * 10 + count.count}
+                                                        <c:set var="numPage" value="${param.page}" />
+                                                        <c:if test="${(empty numPage) or (numPage eq 0)}">
+                                                            <c:set var="numPage" value="${1}" />
+                                                        </c:if>
+                                                        ${(numPage - 1) * 10 + count.count}
                                                     </td>
                                                     <td class="align-middle">
                                                         <c:url var="requestDetail" value="AdminViewRequestDetail">
