@@ -203,7 +203,11 @@
                                             <c:forEach items="${data}" var="request" varStatus="count">
                                                 <tr>
                                                     <td class="align-middle" scope='row'>
-                                                        ${(param.page - 1) * 10 + count.count}
+                                                        <c:set var="numPage" value="${param.page}" />
+                                                        <c:if test="${(empty numPage) or (numPage eq 0)}">
+                                                            <c:set var="numPage" value="${1}" />
+                                                        </c:if>
+                                                        ${(numPage - 1) * 10 + count.count}
                                                     </td>
                                                     <td class="align-middle">
                                                         <c:url var="requestDetail" value="AdminViewRequestDetail">
