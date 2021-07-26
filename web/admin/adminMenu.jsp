@@ -22,7 +22,7 @@
     <div class="sidebar-header">
         <div class="row">
             <div class="col-6">
-                <img src="images/favicon.ico" class="img-thumbnail" />
+                <img src="images/favicon.ico" class="w-100" />
             </div>
         </div>
         <h3>Happy Programming</h3>
