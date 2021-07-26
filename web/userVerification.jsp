@@ -20,7 +20,7 @@
         
     </head>
     <body>
-        <c:if test="${empty sessionScope.CURRENT_USER}">
+        <c:if test="${not empty sessionScope.CURRENT_USER}">
             <form action="Logout" id="Logout">
                 <p id="Welcome" class="text-right" style="margin: 16px;">
                     <input type="submit" value="Logout" class="btn btn-outline-danger"/>
