@@ -5,9 +5,23 @@
  */
 package hps.controller;
 
+import hps.comments.CommentsDAO;
+import hps.mentorDetails.MentorDetailsDAO;
 import hps.mentorDetails.MentorDetailsDTO;
+import hps.mentorDetails.MentorHomepageDTO;
+import hps.mentorSkills.MentorSkillsDAO;
+import hps.mentorSkills.MentorSkillsDTO;
+import hps.skills.SkillsDAO;
+import hps.users.UsersDAO;
+import hps.users.UsersDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,10 +48,36 @@ public class LoadHomepageController extends HttpServlet {
                 throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        MentorDetailsDTO mentor;
+        List<MentorHomepageDTO> listLoad = new ArrayList<>();
         
         try {
+            CommentsDAO cDao = new CommentsDAO();
+            List<String> listID = cDao.getBestMentor();
             
+            if (listID.size() > 0) {
+                UsersDAO uDao = new UsersDAO();
+                MentorSkillsDAO msDao = new MentorSkillsDAO();
+                for (String id : listID) {
+                    UsersDTO mentor = uDao.getProfile(id);
+                    List<MentorSkillsDTO> skills = msDao.getMentorSkills(id);
+                    if (skills != null && mentor != null) {
+                        String skillString = "";
+                        SkillsDAO skDao = new SkillsDAO();
+                        
+                        for (MentorSkillsDTO skill : skills) {
+                            skillString += skDao.getSkillsName(skill.getSkillID()) + ", ";
+                        }
+                        skillString += "...";
+                        
+                        listLoad.add(new MentorHomepageDTO(id, mentor.getFullname(),
+                                    mentor.getImage(), skillString));
+                    }
+                }
+                
+                request.setAttribute("MENTOR_LIST", listLoad);
+            }
+        } catch (SQLException | NamingException ex) {
+            Logger.getLogger(LoadHomepageController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (out != null)
                 out.close();

@@ -4,12 +4,15 @@
 */
 body {
     width: 100%;
-    height: 1800px;
+    height: 2000px;
     position: absolute;
     z-index: -1;
 }
 footer {
     height: 0;
+}
+#headerLink {
+    margin-top: -16px;
 }
 
 .animated-background {
@@ -33,6 +36,24 @@ footer {
     height: 3px;
     border-radius: 3px;
     background-color: #f0f0f0;
+}
+.mentor-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.mt-left {
+    width: 20%;
+    float: left;
+    height: 120px;
+    background-color: #7386D5;
+}
+.mt-left {
+    width: 50%;
+    float: left;
+    height: 120px;
+    background-color: #7386D5;
 }
 
 .text-stroke {

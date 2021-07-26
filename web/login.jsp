@@ -36,6 +36,11 @@
                     <img src="images/main-logo.png" alt=""
                          style="width: 64px; float: left; margin: -12px 12px 0 0;"/>
                 </a>
+                <a href="/HappyProgramming" style="text-decoration: none;">
+                    <p class="h1 bold-text" style="color: #fff">
+                        HAPPY PROGRAMMING
+                    </p>
+                </a>
             </div>
             <div class="bold-text text-right" id="headerLink">
                 <a class="nav-link header-button" href="LoginPage">Log In</a>
