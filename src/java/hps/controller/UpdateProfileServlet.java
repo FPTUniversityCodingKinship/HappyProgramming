@@ -70,9 +70,9 @@ public class UpdateProfileServlet extends HttpServlet {
                 foundErr = true;
                 err.setUsernameLengthErr("Username must be between 5 and 30 characters only!");
             }
-            if (password.trim().length() < 6 || password.trim().length() > 30) {
+            if (password.trim().length() < 5 || password.trim().length() > 30) {
                 foundErr = true;
-                err.setPasswordLengthErr("Password must be between 6 and 30 characters only!");
+                err.setPasswordLengthErr("Password must be between 5 and 30 characters only!");
             }
             if (fullname.trim().length() < 2 || fullname.trim().length() > 50) {
                 foundErr = true;
