@@ -128,9 +128,14 @@ public class LoginController extends HttpServlet {
                                     existCode = true;
                                     request.setAttribute("VERIFY_MSG", 
                                                 "You are already received a verify mail.");
+                                    break;
                                 }
                             }
                         } else {
+                            verifyList = new ArrayList<>();
+                        }
+                        
+                        if (!existCode) {
                             //create and send mail
                             sm = new MailHandler();
                             //get the 6-digit code
@@ -140,6 +145,9 @@ public class LoginController extends HttpServlet {
                             verifier = new VerifyDTO(user.getEmail(), code, time);
                             // add to list
                             verifyList.add(verifier);
+                            
+                            boolean isSend = sm.sendEmail(verifier);
+                            System.out.println("[UserVerify] isSend:" + isSend);
                         }
                         
                         //re-up list onto context Scope's attribute
@@ -168,10 +176,6 @@ public class LoginController extends HttpServlet {
             log(ex.getMessage());
             sout = "SQLException was caught.";
         } finally {
-            if (!existCode) {
-                boolean isSend = sm.sendEmail(verifier);
-                System.out.println("[UserVerify] isSend:" + isSend);
-            }
             System.out.println("[LoginController] " + sout);
             if (out != null) {
                 out.close();
