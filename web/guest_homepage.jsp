@@ -96,7 +96,7 @@
             <div class=" row content-child">
                 <div class="col col-md-3">
                     <img class="" src="https://raw.githubusercontent.com/giangntse150746/xamxidu/main/img/visit-arc.svg" alt="Top Image" 
-                         style="margin-top: 24px">
+                         style="margin-top: 64px">
                 </div>
                 <div class="col col-md-5">
                     <div class="text-right">
@@ -105,7 +105,7 @@
                             Cum scientia et dedication, 
                             nos de servitute voverint reddent
                         </p>
-                        <h1 class="text-warning" style="transition: .3s">Meet Our Ingenious Minds!</h1>
+                        <h1 class="text-warning" style="transition: .3s">Meet our ingenious minds!</h1>
                         
                         <p class="text-light h4">
                             We recruit only individuals who possess the essence 
@@ -127,6 +127,17 @@
                 </div>  
             </div>
             <div class="break-line"></div>
+            
+            <div class=" row content-child">
+                <div class="col col-md-8">
+                    <p class="text-success text-stroke display-1"
+                        style="text-transform: uppercase">
+                        professional
+                    </p>
+                    <h1 class="text-warning">Many certified and skillful mentors:</h1>
+                    
+                </div>
+            </div>
             <%--
             <c:set var="" value="${requestScope.BEST_MENTOR}"/>
             <div id="carouselExampleControls" class="carousel slide content-child" data-ride="carousel">
