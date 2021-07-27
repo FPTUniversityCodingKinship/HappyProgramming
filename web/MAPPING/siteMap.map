@@ -45,6 +45,7 @@ AdminViewSkillsUpdateStatus = AdminViewSkillsUpdateStatusController
 AdminViewSkillsUpdateName = AdminViewSkillsUpdateNameController
 AdminViewRequestsList = AdminViewRequestsListController
 AdminViewRequestDetail = AdminViewRequestDetailController
+ResendCode = ResendCodeController
 # End of Controller
 # -----------------------------------------------
 # Start of Page

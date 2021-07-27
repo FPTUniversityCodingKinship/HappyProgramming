@@ -82,7 +82,8 @@
         </form>
         </c:if>
         <c:if test="${empty param.type}">
-            <h1>Something went wrong and we're trying to fix it</h1>
+            <h1>We're working hard on updating our website</h1>
+            <p>So please wait until this features is updated.</p>
             <a href="guest_homepage.jsp">
                 Back to Homepage...
             </a>

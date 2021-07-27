@@ -46,7 +46,7 @@
                 </form>
                 <p style="margin-top: 24px;">
                     Did not receive the code? 
-                    <a href="#">Resend it.</a>
+                    <a href="/HappyProgramming/ResendCode">Resend it.</a>
                 </p>
             </c:if>
 
